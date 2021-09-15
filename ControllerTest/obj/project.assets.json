@@ -1253,16 +1253,6 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
-      },
-      "Controller/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "compile": {
-          "bin/placeholder/Controller.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Controller.dll": {}
-        }
       }
     }
   },
@@ -4952,16 +4942,10 @@
         "system.xml.xpath.xmldocument.4.3.0.nupkg.sha512",
         "system.xml.xpath.xmldocument.nuspec"
       ]
-    },
-    "Controller/1.0.0": {
-      "type": "project",
-      "path": "../Controller/Controller.csproj",
-      "msbuildProject": "../Controller/Controller.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "Controller >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 16.9.4",
       "NUnit >= 3.13.1",
       "NUnit3TestAdapter >= 3.17.0",
@@ -4994,11 +4978,7 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {
-            "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\Controller\\Controller.csproj": {
-              "projectPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\Controller\\Controller.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
