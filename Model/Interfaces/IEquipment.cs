@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Model.Interfaces
 {
-    public interface IEquipment
+    public interface IEquipment // Racemiddel
     {
         int Quality { get; }
         int Performance { get; }

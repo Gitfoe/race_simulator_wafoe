@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Model.Classes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Model.Interfaces
 {
-    public interface IParticipant
+    public interface IParticipant // Deelnemer
     {
         string Name { get; }
         int Points { get; }

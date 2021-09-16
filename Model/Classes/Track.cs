@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Model.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Model.Classes
 {
-    public class Track
+    public class Track // Racebaan
     {
         // Properties
         public string Name { get; set; }

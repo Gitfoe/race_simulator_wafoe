@@ -8,12 +8,9 @@ namespace Model.Classes
     public class Driver : IParticipant
     {
         // Constructors
-        public Driver(string _name, int _points, IEquipment _equipment, TeamColors _teamColor)
+        public Driver(string name)
         {
-            Name = _name;
-            Points = _points;
-            Equipment = _equipment;
-            TeamColor = _teamColor;
+            Name = name;
         }
         // Properties
         public string Name { get; set; }

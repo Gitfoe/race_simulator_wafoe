@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model.Classes
 {
-    public class Competition
+    public class Competition // Competitie
     {
         // Properties
         public List<IParticipant> Participants { get; set; }
