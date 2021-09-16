@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Model.Classes
 {
-    class Track
+    public class Track
     {
         // Properties
         public string Name { get; set; }

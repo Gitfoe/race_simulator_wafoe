@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,7 +12,7 @@ namespace Model.Classes
         public Queue<Track> Tracks { get; set; }
 
         // Methods
-        public void NextTrack() : Track 
+        public Track NextTrack()
         {
 
         }

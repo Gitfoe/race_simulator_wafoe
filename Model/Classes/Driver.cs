@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model.Classes
 {
-    class Driver : IParticipant
+    public class Driver : IParticipant
     {
         // Constructors
         public Driver(string _name, int _points, IEquipment _equipment, TeamColors _teamColor)

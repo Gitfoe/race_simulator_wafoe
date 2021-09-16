@@ -4,12 +4,13 @@ using System.Text;
 
 namespace Model.Interfaces
 {
-    interface IParticipant
+    public interface IParticipant
     {
         string Name { get; }
         int Points { get; }
         IEquipment Equipment { get; }
         TeamColors TeamColor { get; }
     }
-    enum TeamColors { Red, Green, Yellow, Grey, Blue };
+    // Enmumerations
+    public enum TeamColors { Red, Green, Yellow, Grey, Blue };
 }

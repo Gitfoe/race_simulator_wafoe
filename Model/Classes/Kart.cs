@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Model.Classes
 {
-    class Kart : IEquipment
+    public class Kart : IEquipment
     {
         // Constructors
         public Kart(int _quality, int _performance, int _speed, bool _isBroken)
