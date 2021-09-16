@@ -4,7 +4,16 @@ using System.Text;
 
 namespace Model.Classes
 {
-    class Competition
+    public class Competition
     {
+        // Properties
+        public List<IParticipant> Participants { get; set; }
+        public Queue<Track> Tracks { get; set; }
+
+        // Methods
+        public void NextTrack() : Track 
+        {
+
+        }
     }
 }
