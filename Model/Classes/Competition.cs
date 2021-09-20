@@ -21,7 +21,14 @@ namespace Model.Classes
         public Track NextTrack()
         {
             // Removes and returns the object at the beginning of the Queue<Track>
-            return Tracks.Dequeue();
+            if (Tracks.Count != 0) // Checks if the queue is empty or not
+            {
+                return Tracks.Dequeue(); // Dequeues if it is not empty
+            }
+            else
+            {
+                return null; // Returns null if it is empty
+            }
         }
     }
 }
