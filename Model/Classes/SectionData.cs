@@ -7,6 +7,7 @@ namespace Model.Classes
 {
     public class SectionData
     {
+        // Properties
         public IParticipant Left { get; set; }
         public int DistanceLeft { get; set; }
         public IParticipant Right { get; set; }

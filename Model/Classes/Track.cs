@@ -12,9 +12,14 @@ namespace Model.Classes
         public LinkedList<Section> Sections { get; set; }
         
         // Constructors
-        public Track(string name, SectionTypes[] sections)
+        public Track(string name, Section.SectionTypes[] sections)
         {
-
+            Name = name;
+            Sections = new LinkedList<Section>();
+            foreach (Section.SectionTypes section in sections) // Add all the sections to the LinkedList
+            {
+                Sections.AddLast(new Section(section));
+            }
         }
     }
 }

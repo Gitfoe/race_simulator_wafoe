@@ -7,10 +7,11 @@ namespace Model.Interfaces
 {
     public interface IParticipant // Deelnemer
     {
-        string Name { get; }
-        int Points { get; }
-        IEquipment Equipment { get; }
-        TeamColors TeamColor { get; }
+        // Properties
+        public string Name { get; set; }
+        public int Points { get; set; }
+        public IEquipment Equipment { get; set; }
+        public TeamColors TeamColor { get; set; }
     }
     // Enmumerations
     public enum TeamColors { Red, Green, Yellow, Grey, Blue };

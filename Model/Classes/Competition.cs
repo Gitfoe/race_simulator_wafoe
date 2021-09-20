@@ -11,10 +11,17 @@ namespace Model.Classes
         public List<IParticipant> Participants { get; set; }
         public Queue<Track> Tracks { get; set; }
 
+        // Constructors
+        public Competition() // Initialize properties
+        {
+            Participants = new List<IParticipant>();
+            Tracks = new Queue<Track>();
+        }
         // Methods
         public Track NextTrack()
         {
-
+            // Removes and returns the object at the beginning of the Queue<Track>
+            return Tracks.Dequeue();
         }
     }
 }

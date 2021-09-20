@@ -11,19 +11,6 @@
         "runtime": {
           "bin/placeholder/Model.dll": {}
         }
-      },
-      "View/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "Model": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/View.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/View.dll": {}
-        }
       }
     }
   },
@@ -32,17 +19,11 @@
       "type": "project",
       "path": "../Model/Model.csproj",
       "msbuildProject": "../Model/Model.csproj"
-    },
-    "View/1.0.0": {
-      "type": "project",
-      "path": "../view/View.csproj",
-      "msbuildProject": "../view/View.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "Model >= 1.0.0",
-      "View >= 1.0.0"
+      "Model >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -74,9 +55,6 @@
           "projectReferences": {
             "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\Model\\Model.csproj": {
               "projectPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\Model\\Model.csproj"
-            },
-            "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\view\\View.csproj": {
-              "projectPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\view\\View.csproj"
             }
           }
         }
