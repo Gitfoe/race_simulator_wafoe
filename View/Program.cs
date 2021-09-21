@@ -6,6 +6,7 @@ using Controller;
 using Controller.Classes;
 using View.Classes;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace View
 {
@@ -13,15 +14,13 @@ namespace View
     {
         static void Main(string[] args)
         {
-            Console.SetCursorPosition(2, 2);
-            Console.WriteLine("test");
-            //Thread.Sleep(100); // Timeout after 1 minute and 40 seconds
-            //Data.Initialize();
-            //// Data.NextRace();
-            //Console.WriteLine(Visualisation.DrawTrack());
+            Thread.Sleep(100); // Timeout after 1 minute and 40 seconds
+            Data.Initialize();
+            //Data.NextRace();
+            Visualisation.DrawTrack(Data.GrandPrix.Tracks.Peek());
 
-            //for (; ; ) // Unlimited loop to not immediately close it
-            //{ }
+            for (; ; ) // Unlimited loop to not immediately close it
+            { }
         }
     }
 }

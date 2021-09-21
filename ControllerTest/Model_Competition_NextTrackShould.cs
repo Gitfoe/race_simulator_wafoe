@@ -9,6 +9,7 @@ using Model.Interfaces;
 using Controller;
 using Controller.Classes;
 using View;
+using View.Classes;
 
 namespace ControllerTest
 {
@@ -94,6 +95,32 @@ namespace ControllerTest
             var result = _competition.NextTrack(); // Queue next track, now _trackTwo should be left
             // Queue is FIFO (first in, first out) so it removed _trackOne (now result) and _trackTwo_ should be left
             Assert.AreEqual(result, _trackOne);
+        }
+    }
+    
+    public class View_Visualisation
+    {
+        // Fields
+        private Competition _competition;
+
+        // Methods
+        [SetUp]
+        public void SetUp()
+        {
+            _competition = new Competition(); // Setup the tests with a new Competition
+        }
+
+        [Test]
+        public void FixCursorPositionShould()
+        {
+            List<int[]> testList = new List<int[]>();
+            testList.Add(new int[] { 4, 0 });
+            testList.Add(new int[] { -4, -4 });
+            testList.Add(new int[] { 4, -4 });
+            testList.Add(new int[] { 4, -4 });
+            int[] testArray = Visualisation.FixCursorPosition(testList);
+            Assert.AreEqual(0, testArray[0]); // Should be 4
+            Assert.AreEqual(12, testArray[1]); // Should be 12
         }
     }
 }
