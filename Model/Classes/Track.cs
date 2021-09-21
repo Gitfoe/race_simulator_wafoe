@@ -15,11 +15,19 @@ namespace Model.Classes
         public Track(string name, Section.SectionTypes[] sections)
         {
             Name = name;
-            Sections = new LinkedList<Section>();
-            foreach (Section.SectionTypes section in sections) // Add all the sections to the LinkedList
+            Sections = SectionTypesToLinkedListOfSections(sections);
+        }
+
+        // Methods
+        public LinkedList<Section> SectionTypesToLinkedListOfSections(Section.SectionTypes[] sectionTypesArray)
+        {
+            // Inputs an array of SectionTypes and returns a LinkedList of Section classes with the SectionTypes in them
+            LinkedList<Section> sectionList = new LinkedList<Section>();
+            foreach (Section.SectionTypes sectionType in sectionTypesArray) // Add all the sections to the LinkedList
             {
-                Sections.AddLast(new Section(section));
+                sectionList.AddLast(new Section(sectionType));
             }
+            return sectionList;
         }
     }
 }
