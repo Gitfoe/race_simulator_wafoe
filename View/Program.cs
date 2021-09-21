@@ -4,6 +4,7 @@ using Model.Classes;
 using Model.Interfaces;
 using Controller;
 using Controller.Classes;
+using View.Classes;
 using System.Threading;
 
 namespace View
@@ -12,13 +13,15 @@ namespace View
     {
         static void Main(string[] args)
         {
-            Thread.Sleep(100); // Timeout after 1 minute and 40 seconds
-            Data.Initialize();
-            Data.NextRace();
-            Console.WriteLine(Data.CurrentRace.Track.Name);
+            Console.SetCursorPosition(2, 2);
+            Console.WriteLine("test");
+            //Thread.Sleep(100); // Timeout after 1 minute and 40 seconds
+            //Data.Initialize();
+            //// Data.NextRace();
+            //Console.WriteLine(Visualisation.DrawTrack());
 
-            for (; ; ) // Unlimited loop to not immediately close it
-            { }
+            //for (; ; ) // Unlimited loop to not immediately close it
+            //{ }
         }
     }
 }

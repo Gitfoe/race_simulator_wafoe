@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.Classes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,31 +13,40 @@ namespace View.Classes
         // Methods
         public static void Initiliaze()
         {
-
+            // to initialize vars
         }
 
-        public static void DrawTrack()
+        public static string DrawTrack(Track track)
         {
-
+            Console.SetCursorPosition(0, 0);
         }
 
         // Region
         #region graphics
-        private static string[] _startGridHorizontal = { "----",
-                                                         "  > ", 
-                                                         " >  ",
+        // Draw the graphics per line horizontally - also, karts only move clockwise, not counter clockwise
+        private static string[] _startGridRight =      { "----",
+                                                         "  → ",
+                                                         " →  ",
                                                          "----" };
-        private static string[] _startGridVertical =   { "|  |",
-                                                         "|^ |",
-                                                         "| ^|",
+        private static string[] _startGridLeft =       { "----",
+                                                         "  ← ",
+                                                         " ←  ",
+                                                         "----" };
+        private static string[] _startGridUp=          { "|  |",
+                                                         "|↑ |",
+                                                         "| ↑|",
+                                                         "|  |" };
+        private static string[] _startGridDown =       { "|  |",
+                                                         "|↓ |",
+                                                         "| ↓|",
                                                          "|  |" };
         private static string[] _finishHorizontal =    { "----",
-                                                         "  # ",
-                                                         "  # ",
+                                                         " ## ",
+                                                         " ## ",
                                                          "----" };
         private static string[] _finishVertical =      { "|  |",
                                                          "|##|",
-                                                         "|  |",
+                                                         "|##|",
                                                          "|  |" };
         private static string[] _straightHorizontal =  { "----",
                                                          "    ",
@@ -46,19 +56,19 @@ namespace View.Classes
                                                          "|  |",
                                                          "|  |",
                                                          "|  |" };
-        private static string[] _rightCornerDown =     {@"--\ ",
+        private static string[] _corner1 =             {@"--\ ", // right corner down & left corner up
                                                         @"   \",
                                                          "   |",
                                                         @"\  |" };
-        private static string[] _leftCornerDown =      {@" /--",
+        private static string[] _corner2 =             {@" /--", // left corner down & right corner up
                                                         @"/   ",
                                                          "|   ",
                                                         @"|  /" };
-        private static string[] _rightCornerUp =       {@"|  \",
+        private static string[] _corner3 =             {@"|  \", // right corner up & left corner down
                                                          "|   ",
                                                         @"\   ",
                                                         @" \--" };
-        private static string[] _leftCornerUp =        {@"/  |",
+        private static string[] _corner4 =             {@"/  |", // left corner up & right corner down
                                                          "   |",
                                                         @"   /",
                                                         @"--/ " };
