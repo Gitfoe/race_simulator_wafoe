@@ -7,40 +7,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using static Model.Classes.Section;
-using System.Linq;
 
 namespace View.Classes
 {
     public static class Visualisation
     {
-        // Variables
-        private static Enum[] _movingDirectionNorth = new Enum[] { // x = 0, y = 4
-            GraphicSectionTypes.StartGridNorth,
-            GraphicSectionTypes.FinishNorth,
-            GraphicSectionTypes.StraightNorth
-        };
-        private static Enum[] _movingDirectionEast = new Enum[] { // x = 4, y = 0
-            GraphicSectionTypes.StartGridEast,
-            GraphicSectionTypes.FinishEast,
-            GraphicSectionTypes.StraightEast
-        };
-        private static Enum[] _movingDirectionSouth = new Enum[] { // x = 0, y = -4
-            GraphicSectionTypes.StartGridSouth,
-            GraphicSectionTypes.FinishSouth,
-            GraphicSectionTypes.StraightSouth
-        };
-        private static Enum[] _movingDirectionWest = new Enum[] { // x = -4, y = 0
-            GraphicSectionTypes.StartGridWest,
-            GraphicSectionTypes.FinishWest,
-            GraphicSectionTypes.StraightWest,
-        };
-
         // Methods
         public static void DrawTrack(Track track)
         {
-            // ConvertSectionsToGraphicsSectionTypesAndPositions
-            List<Enum> graphicSectionTypesList = new List<Enum>();
+            // Convert sections to graphicsSectionTypes and positions and also keep track of the direction of the previous graphic section type
+            List<GraphicSectionTypes> graphicSectionTypesList = new List<GraphicSectionTypes>();
             List<int[]> positionsList = new List<int[]>();
+            CardinalDirections directionPreviousGraphicSectionType = default; // Assign temp value
 
             // GraphicSectionTypes enum and int[x, y] array
             int counter = 0;
@@ -48,137 +26,164 @@ namespace View.Classes
             {
                 if (counter > 0)
                 {
-                    graphicSectionTypesList.Add(DetermineNextGraphicSectionType(section, graphicSectionTypesList[counter - 1]));
-                    positionsList.Add(DetermineNextPosition(graphicSectionTypesList[counter]));
+                    graphicSectionTypesList.Add(DetermineNextGraphicSectionType(section, ref directionPreviousGraphicSectionType));
+                    positionsList.Add(DetermineNextPosition(directionPreviousGraphicSectionType));
                 }
                 //graphicSections.Add(DetermineFollowingGraphicSections(graphicSections[counter]));
                 else if (counter == 0)
                 {
-                    // Add the first section to the list and make it always go 4 to the right (the default first values only go to the right)
+                    // Add the first section to the lists and make the outward direction east
                     graphicSectionTypesList.Add(DetermineFirstGraphicSectionType(section));
-                    positionsList.Add(new int[] { 0, 4 });
+                    directionPreviousGraphicSectionType = CardinalDirections.East;
+                    positionsList.Add(DetermineNextPosition(directionPreviousGraphicSectionType));
                 }
                 counter++; // Increment counter for correct looping
             }
             WriteGraphicsToConsole(graphicSectionTypesList, positionsList); // Finally write the track graphics!
         }
 
-        private static Enum DetermineFirstGraphicSectionType(Section section)
-        { // Determine what angle and type the first section will be since this is a guess and can be any angle
+        private static GraphicSectionTypes DetermineFirstGraphicSectionType(Section section)
+        { // Determine what direction and type the first section will be since this is a guess and can be any angle, we put it to east
             return section.SectionType switch
             {
                 SectionTypes.StartGrid => GraphicSectionTypes.StartGridEast,
                 SectionTypes.Finish => GraphicSectionTypes.FinishEast,
                 SectionTypes.Straight => GraphicSectionTypes.StraightEast,
-                SectionTypes.RightCorner => GraphicSectionTypes.CornerSouthWest,
-                SectionTypes.LeftCorner => GraphicSectionTypes.CornerNorthWest,
-                _ => null
+                SectionTypes.RightCorner => GraphicSectionTypes.CornerEastSouth,
+                SectionTypes.LeftCorner => GraphicSectionTypes.CornerNorthEast,
+                _ => default
             };
         }
 
-        private static CardinalDirections DetermineAngleOfGraphicSectionType(Enum graphicSectionType)
+        private static int[] DetermineNextPosition(CardinalDirections directionPreviousGraphicSectionType)
         {
-            // Returns the direction of racing from the graphicSectionType enum
-            if (_movingDirectionNorth.Contains(graphicSectionType))
-            {
-                return CardinalDirections.North;
-            }
-            else if (_movingDirectionEast.Contains(graphicSectionType))
-            {
-                return CardinalDirections.East;
-            }
-            else if (_movingDirectionSouth.Contains(graphicSectionType))
-            {
-                return CardinalDirections.South;
-            }
-            else // the same as _movingDirectionWest.Contains(GraphicSectionType)
-            {
-                return CardinalDirections.West;
-            }
-        }
-
-        private static int[] DetermineNextPosition(Enum graphicSectionType)
-        {
-            CardinalDirections angle = DetermineAngleOfGraphicSectionType(graphicSectionType); // Call this method to request the directon of graphicSectionType
             // Determines the positional values the GraphicSectionType needs to get for the console (returns x and y movement values)
-            if (angle == CardinalDirections.North)
+            if (directionPreviousGraphicSectionType == CardinalDirections.North)
             {
                 return new int[] { 0, -4 }; // x = 0, y = -4
             }
-            else if (angle == CardinalDirections.East)
+            else if (directionPreviousGraphicSectionType == CardinalDirections.East)
             {
                 return new int[] { 4, 0 }; // x = 4, y = 0
             }
-            else if (angle == CardinalDirections.South)
+            else if (directionPreviousGraphicSectionType == CardinalDirections.South)
             {
                 return new int[] { 0, 4 }; // x = 0, y = 4
             }
-            else // the same as direction == "West"
+            else // the same as directionPreviousGraphicSectionType == CardinalDirections.West
             {
                 return new int[] { -4, 0 }; // x = -4, y = 0
             }
         }
 
-        private static Enum DetermineNextGraphicSectionType(Section section, Enum graphicSectionType)
+        private static GraphicSectionTypes DetermineNextGraphicSectionType(Section section, ref CardinalDirections directionPreviousGraphicSectionType)
         {
-            CardinalDirections angle = DetermineAngleOfGraphicSectionType(graphicSectionType); // Call this method to request the directon of graphicSectionType
-            // Based on the previous graphicSectionType and new section, declare a new graphicSectionType
-            if (angle == CardinalDirections.North)
+            // Based on the previous angle of the GraphicSectionType and new section, declare a new graphicSectionType
+            GraphicSectionTypes newGraphicSectionType = default;
+            if (directionPreviousGraphicSectionType == CardinalDirections.North)
             {
-                return section.SectionType switch
+                switch (section.SectionType) // Allocate correct graphic array to Enum and add to list
                 {
-                    SectionTypes.StartGrid => GraphicSectionTypes.StartGridNorth,
-                    SectionTypes.Finish => GraphicSectionTypes.FinishNorth,
-                    SectionTypes.Straight => GraphicSectionTypes.StraightNorth,
-                    SectionTypes.RightCorner => GraphicSectionTypes.CornerEastSouth,
-                    SectionTypes.LeftCorner => GraphicSectionTypes.CornerSouthWest,
-                    _ => null
+                    case SectionTypes.StartGrid: newGraphicSectionType = GraphicSectionTypes.StartGridNorth; break;
+                    case SectionTypes.Finish: newGraphicSectionType = GraphicSectionTypes.FinishNorth; break;
+                    case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightNorth; break;
+                    case SectionTypes.RightCorner:
+                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
+                        directionPreviousGraphicSectionType = CardinalDirections.East;
+                        break;
+                    case SectionTypes.LeftCorner:
+                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
+                        directionPreviousGraphicSectionType = CardinalDirections.West;
+                        break;
+                    default: break;
+                }
+            }
+            else if (directionPreviousGraphicSectionType == CardinalDirections.East)
+            {
+                switch (section.SectionType) // Allocate correct graphic array to Enum and add to list
+                {
+                    case SectionTypes.StartGrid: newGraphicSectionType = GraphicSectionTypes.StartGridEast; break;
+                    case SectionTypes.Finish: newGraphicSectionType = GraphicSectionTypes.FinishEast; break;
+                    case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightEast; break;
+                    case SectionTypes.RightCorner:
+                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
+                        directionPreviousGraphicSectionType = CardinalDirections.South;
+                        break;
+                    case SectionTypes.LeftCorner:
+                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
+                        directionPreviousGraphicSectionType = CardinalDirections.North;
+                        break;
+                    default: break;
+                }
+            }
+            else if (directionPreviousGraphicSectionType == CardinalDirections.South)
+            {
+                switch (section.SectionType) // Allocate correct graphic array to Enum and add to list
+                {
+                    case SectionTypes.StartGrid: newGraphicSectionType = GraphicSectionTypes.StartGridSouth; break;
+                    case SectionTypes.Finish: newGraphicSectionType = GraphicSectionTypes.FinishSouth; break;
+                    case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightSouth; break;
+                    case SectionTypes.RightCorner:
+                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
+                        directionPreviousGraphicSectionType = CardinalDirections.West;
+                        break;
+                    case SectionTypes.LeftCorner:
+                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
+                        directionPreviousGraphicSectionType = CardinalDirections.East;
+                        break;
+                    default: break;
+                }
+            }
+            else // the same as directionPreviousGraphicSectionType == CardinalDirections.West
+            {
+                switch (section.SectionType) // Allocate correct graphic array to Enum and add to list
+                {
+                    case SectionTypes.StartGrid: newGraphicSectionType = GraphicSectionTypes.StartGridWest; break;
+                    case SectionTypes.Finish: newGraphicSectionType = GraphicSectionTypes.FinishWest; break;
+                    case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightWest; break;
+                    case SectionTypes.RightCorner:
+                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
+                        directionPreviousGraphicSectionType = CardinalDirections.North;
+                        break;
+                    case SectionTypes.LeftCorner:
+                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
+                        directionPreviousGraphicSectionType = CardinalDirections.South;
+                        break;
+                    default: break;
+                }
+            }
+            return newGraphicSectionType;
+        }
+
+        private static GraphicSectionTypes DetermineNextCornerGraphicSectionType(SectionTypes currentSectionType, CardinalDirections directionPreviousGraphicSectionType)
+        {
+            // Because corners enter at a certain CardinalDirection and exit at another CardinalDirection,
+            // we nee to find which CardinalDirection the previous track has to declare a correct next GraphicSectionType
+            if (currentSectionType == SectionTypes.RightCorner)
+            {
+                return directionPreviousGraphicSectionType switch
+                {
+                    CardinalDirections.North => GraphicSectionTypes.CornerEastSouth,
+                    CardinalDirections.East => GraphicSectionTypes.CornerSouthWest,
+                    CardinalDirections.South => GraphicSectionTypes.CornerNorthWest,
+                    CardinalDirections.West => GraphicSectionTypes.CornerNorthEast,
+                    _ => default
                 };
             }
-            else if (angle == CardinalDirections.East)
+            else // Same as currentSectionType == SectionTypes.LeftCorner
             {
-                return section.SectionType switch
+                return directionPreviousGraphicSectionType switch
                 {
-                    SectionTypes.StartGrid => GraphicSectionTypes.StartGridEast,
-                    SectionTypes.Finish => GraphicSectionTypes.FinishEast,
-                    SectionTypes.Straight => GraphicSectionTypes.StraightEast,
-                    SectionTypes.RightCorner => GraphicSectionTypes.CornerSouthWest,
-                    SectionTypes.LeftCorner => GraphicSectionTypes.CornerNorthWest,
-                    _ => null
-                };
-            }
-            else if (angle == CardinalDirections.South)
-            {
-                return section.SectionType switch
-                {
-                    SectionTypes.StartGrid => GraphicSectionTypes.StartGridSouth,
-                    SectionTypes.Finish => GraphicSectionTypes.FinishSouth,
-                    SectionTypes.Straight => GraphicSectionTypes.StraightSouth,
-                    SectionTypes.RightCorner => GraphicSectionTypes.CornerNorthWest,
-                    SectionTypes.LeftCorner => GraphicSectionTypes.CornerNorthEast,
-                    _ => null
-                };
-            }
-            else // the same as angle == "South"
-            {
-                return section.SectionType switch
-                {
-                    SectionTypes.StartGrid => GraphicSectionTypes.StartGridWest,
-                    SectionTypes.Finish => GraphicSectionTypes.FinishWest,
-                    SectionTypes.Straight => GraphicSectionTypes.StraightWest,
-                    SectionTypes.RightCorner => GraphicSectionTypes.CornerNorthEast,
-                    SectionTypes.LeftCorner => GraphicSectionTypes.CornerEastSouth,
-                    _ => null
+                    CardinalDirections.North => GraphicSectionTypes.CornerSouthWest,
+                    CardinalDirections.East => GraphicSectionTypes.CornerNorthWest,
+                    CardinalDirections.South => GraphicSectionTypes.CornerNorthEast,
+                    CardinalDirections.West => GraphicSectionTypes.CornerEastSouth,
+                    _ => default
                 };
             }
         }
 
-        private static Enum DetermineNextCornerGraphicSectionType(Enum graphicSectionType, Enum graphicSectionType)
-        {
-            // Because corners enter at an angle and exit at an angle
-        }
-
-        private static List<string[]> ConvertGraphicSectionTypesToGraphicArrays(List<Enum> graphicSectionTypesList)
+        private static List<string[]> ConvertGraphicSectionTypesToGraphicArrays(List<GraphicSectionTypes> graphicSectionTypesList)
         {
             List<string[]> graphicSectionsList = new List<string[]>(); // Create list for all the graphic array values
             foreach (Enum graphicSectionType in graphicSectionTypesList) // Loop through the section Enums
@@ -207,28 +212,32 @@ namespace View.Classes
             return graphicSectionsList;
         }
 
-        private static void WriteGraphicsToConsole(List<Enum> graphicSectionTypesList, List<int[]> positionsList)
+        private static void WriteGraphicsToConsole(List<GraphicSectionTypes> graphicSectionTypesList, List<int[]> positionsList)
         {
-            // First convert using ConvertGraphicSectionTypesToGraphicArrays
-            List<string[]> graphicSectionsList = ConvertGraphicSectionTypesToGraphicArrays(graphicSectionTypesList);
+            List<string[]> graphicSectionsList = ConvertGraphicSectionTypesToGraphicArrays(graphicSectionTypesList); // Convert the Enums to actual Graphics
             int[] tempCursorPosition = FixCursorPosition(positionsList); // Fix the cursor position if the x or y count is negative
             Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1]); // Set the cursor once to the corrected position
             for (int i = 0; i < graphicSectionsList.Count; i++) // Start loop at the length of graphicSectionsList (is the same as positionsList)
             {
+                int counter = 0;
                 foreach (string line in graphicSectionsList[i]) // Print each array line following the for loop index
                 {
                     Console.Write($"{line}\n");
+                    counter++;
+                    // Compensate the cursor so it doesn't go to x = 0 after a new line by using a counter
+                    Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1] + counter);                    
                 }
+                // Set the cursor afterwards to the next position for the next section
                 tempCursorPosition[0] += positionsList[i][0];
                 tempCursorPosition[1] += positionsList[i][1];
-                Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1]); // Set the cursor afterwards to the next position
+                Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1]);
             }
 
         }
 
         public static int[] FixCursorPosition(List<int[]> positionsList)
         {
-            // Compensation method for the console so graphics don't go out of bounds
+            // Compensation algorithm for the console so graphics don't go out of bounds
             int xCount = 0;
             int yCount = 0;
             int lowestXCount = 0;
@@ -248,34 +257,34 @@ namespace View.Classes
                     lowestYCount = yCount;
                 }
             }
-            if (xCount < 0)
+            if (lowestXCount < 0)
             {
-                newXCount = Math.Abs(lowestXCount); // If lowestXCount is negative, for example -8, add 8 to newXCount
+                newXCount = Math.Abs(lowestXCount); // If lowestXCount is negative, for example -8, set 8 to newXCount, otherwise do nothing
             }
-            if (yCount < 0)
+            if (lowestYCount < 0)
             {
-                newYCount = Math.Abs(lowestYCount);
+                newYCount = Math.Abs(lowestYCount); // If lowestYCount is negative, for example -8, set 8 to newYCount, otherwise do nothing
             }
             return new int[] { newXCount, newYCount };
         }
 
         #region graphics
-        // Draw the graphics per line horizontally - also, karts only move clockwise, not counter clockwise
+        // Draw the graphics per line horizontally
         private static string[] _startGridNorth =      { "|  |",
-                                                         "|↑ |",
-                                                         "| ↑|",
+                                                         "|v |",
+                                                         "| v|",
                                                          "|  |" };
         private static string[] _startGridEast =       { "----",
-                                                         "  → ",
-                                                         " →  ",
+                                                         "  > ",
+                                                         " >  ",
                                                          "----" };
         private static string[] _startGridSouth =      { "|  |",
                                                          "|↓ |",
                                                          "| ↓|",
                                                          "|  |" };
         private static string[] _startGridWest =       { "----",
-                                                         "  ← ",
-                                                         " ←  ",
+                                                         "  < ",
+                                                         " <  ",
                                                          "----" };
         private static string[] _finishHorizontal =    { "----",
                                                          " ## ",
@@ -332,7 +341,7 @@ namespace View.Classes
     };
 
     public enum CardinalDirections
-    {
+    { // Cardinal directions of a compass
         North,
         East,
         South,

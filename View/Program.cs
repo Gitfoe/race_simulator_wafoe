@@ -21,6 +21,16 @@ namespace View
 
             for (; ; ) // Unlimited loop to not immediately close it
             { }
+
+            //string[] _startGridWest =       { "----",
+            //                                             "  ← ",
+            //                                             " ←  ",
+            //                                             "----" };
+
+            //foreach (var item in _startGridWest)
+            //{
+            //    Console.WriteLine(item);
+            //}
         }
     }
 }
