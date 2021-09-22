@@ -14,33 +14,25 @@ namespace View.Classes
     public static class Visualisation
     {
         // Variables
-        private static Enum[] _movingDirectionNorth = new Enum[] {
-            GraphicSectionTypes.startGridNorth, // x = 0, y = 4, after north
-            GraphicSectionTypes.finishNorth, // x = 0, y = 4, after north
-            GraphicSectionTypes.straightNorth, // x = 0, y = 4, after north
-            GraphicSectionTypes.cornerNorthEast, // x = 0, y = 4, after west
-            GraphicSectionTypes.cornerNorthWest // x = 0, y = 4, after east
+        private static Enum[] _movingDirectionNorth = new Enum[] { // x = 0, y = 4
+            GraphicSectionTypes.startGridNorth,
+            GraphicSectionTypes.finishNorth,
+            GraphicSectionTypes.straightNorth
         };
-        private static Enum[] _movingDirectionEast = new Enum[] {
-            GraphicSectionTypes.startGridEast, // x = 4, y = 0, after east
-            GraphicSectionTypes.finishEast, // x = 4, y = 0, after east
-            GraphicSectionTypes.straightEast, // x = 4, y = 0, after east
-            GraphicSectionTypes.cornerEastSouth, // x = 4, y = 0, after north
-            GraphicSectionTypes.cornerNorthEast // after west
+        private static Enum[] _movingDirectionEast = new Enum[] { // x = 4, y = 0
+            GraphicSectionTypes.startGridEast,
+            GraphicSectionTypes.finishEast,
+            GraphicSectionTypes.straightEast
         };
-        private static Enum[] _movingDirectionSouth = new Enum[] {
+        private static Enum[] _movingDirectionSouth = new Enum[] { // x = 0, y = -4
             GraphicSectionTypes.startGridSouth,
             GraphicSectionTypes.finishSouth,
-            GraphicSectionTypes.straightSouth,
-            GraphicSectionTypes.cornerEastSouth,
-            GraphicSectionTypes.cornerSouthWest
+            GraphicSectionTypes.straightSouth
         };
-        private static Enum[] _movingDirectionWest = new Enum[] { // possibly not needed anymore
+        private static Enum[] _movingDirectionWest = new Enum[] { // x = -4, y = 0
             GraphicSectionTypes.startGridWest,
             GraphicSectionTypes.finishWest,
             GraphicSectionTypes.straightWest,
-            GraphicSectionTypes.cornerNorthWest,
-            GraphicSectionTypes.cornerSouthWest
         };
 
         // Methods
@@ -231,22 +223,33 @@ namespace View.Classes
 
         public static int[] FixCursorPosition(List<int[]> positionsList)
         {
+            // Compensation method for the console so graphics don't go out of bounds
             int xCount = 0;
             int yCount = 0;
+            int lowestXCount = 0;
+            int lowestYCount = 0;
             int newXCount = 0;
             int newYCount = 0;
             foreach (int[] xy in positionsList)
             {
                 xCount += xy[0]; // x
+                if (xCount < lowestXCount) // If current xCount is lower than the lowest xCount, save the value
+                {
+                    lowestXCount = xCount;
+                }
                 yCount += xy[1]; // y
+                if (yCount < lowestYCount) // If current yCount is lower than the lowest yCount, save the value
+                {
+                    lowestYCount = yCount;
+                }
             }
             if (xCount < 0)
             {
-                newXCount = Math.Abs(xCount); // If xCount is negative, for example -5, add 5 to newXCount
+                newXCount = Math.Abs(lowestXCount); // If lowestXCount is negative, for example -8, add 8 to newXCount
             }
             if (yCount < 0)
             {
-                newYCount = Math.Abs(yCount);
+                newYCount = Math.Abs(lowestYCount);
             }
             return new int[] { newXCount, newYCount };
         }

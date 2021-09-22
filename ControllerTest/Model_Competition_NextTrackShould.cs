@@ -115,12 +115,14 @@ namespace ControllerTest
         {
             List<int[]> testList = new List<int[]>();
             testList.Add(new int[] { 4, 0 });
-            testList.Add(new int[] { -4, -4 });
-            testList.Add(new int[] { 4, -4 });
-            testList.Add(new int[] { 4, -4 });
+            testList.Add(new int[] { 0, -4 });
+            testList.Add(new int[] { 4, 0 });
+            testList.Add(new int[] { 4, 0 });
+            testList.Add(new int[] { 0, -4 });
+            testList.Add(new int[] { 0, 4 });
             int[] testArray = Visualisation.FixCursorPosition(testList);
-            Assert.AreEqual(0, testArray[0]); // Should be 4
-            Assert.AreEqual(12, testArray[1]); // Should be 12
+            Assert.AreEqual(0, testArray[0]); // Should be 0
+            Assert.AreEqual(8, testArray[1]); // Should be 8
         }
     }
 }
