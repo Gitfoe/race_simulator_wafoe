@@ -16,21 +16,11 @@ namespace View
         {
             Thread.Sleep(100); // Timeout after 1 minute and 40 seconds
             Data.Initialize();
-            //Data.NextRace();
+            Data.NextRace();
             Visualisation.DrawTrack(Data.GrandPrix.Tracks.Peek());
 
             for (; ; ) // Unlimited loop to not immediately close it
             { }
-
-            //string[] _startGridWest =       { "----",
-            //                                             "  ← ",
-            //                                             " ←  ",
-            //                                             "----" };
-
-            //foreach (var item in _startGridWest)
-            //{
-            //    Console.WriteLine(item);
-            //}
         }
     }
 }

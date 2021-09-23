@@ -18,41 +18,17 @@ namespace View.Classes
             // Convert sections to graphicsSectionTypes and positions and also keep track of the direction of the previous graphic section type
             List<GraphicSectionTypes> graphicSectionTypesList = new List<GraphicSectionTypes>();
             List<int[]> positionsList = new List<int[]>();
-            CardinalDirections directionPreviousGraphicSectionType = default; // Assign temp value
 
-            // GraphicSectionTypes enum and int[x, y] array
-            int counter = 0;
+            // Assign a random value for the first section
+            Random random = new Random(DateTime.Now.Millisecond);
+            CardinalDirections directionPreviousGraphicSectionType = (CardinalDirections)random.Next(Enum.GetNames(typeof(CardinalDirections)).Length);
+
             foreach (Section section in track.Sections)
             {
-                if (counter > 0)
-                {
                     graphicSectionTypesList.Add(DetermineNextGraphicSectionType(section, ref directionPreviousGraphicSectionType));
                     positionsList.Add(DetermineNextPosition(directionPreviousGraphicSectionType));
-                }
-                //graphicSections.Add(DetermineFollowingGraphicSections(graphicSections[counter]));
-                else if (counter == 0)
-                {
-                    // Add the first section to the lists and make the outward direction east
-                    graphicSectionTypesList.Add(DetermineFirstGraphicSectionType(section));
-                    directionPreviousGraphicSectionType = CardinalDirections.East;
-                    positionsList.Add(DetermineNextPosition(directionPreviousGraphicSectionType));
-                }
-                counter++; // Increment counter for correct looping
             }
             WriteGraphicsToConsole(graphicSectionTypesList, positionsList); // Finally write the track graphics!
-        }
-
-        private static GraphicSectionTypes DetermineFirstGraphicSectionType(Section section)
-        { // Determine what direction and type the first section will be since this is a guess and can be any angle, we put it to east
-            return section.SectionType switch
-            {
-                SectionTypes.StartGrid => GraphicSectionTypes.StartGridEast,
-                SectionTypes.Finish => GraphicSectionTypes.FinishEast,
-                SectionTypes.Straight => GraphicSectionTypes.StraightEast,
-                SectionTypes.RightCorner => GraphicSectionTypes.CornerEastSouth,
-                SectionTypes.LeftCorner => GraphicSectionTypes.CornerNorthEast,
-                _ => default
-            };
         }
 
         private static int[] DetermineNextPosition(CardinalDirections directionPreviousGraphicSectionType)
@@ -235,7 +211,7 @@ namespace View.Classes
 
         }
 
-        public static int[] FixCursorPosition(List<int[]> positionsList)
+        private static int[] FixCursorPosition(List<int[]> positionsList)
         {
             // Compensation algorithm for the console so graphics don't go out of bounds
             int xCount = 0;
@@ -271,16 +247,16 @@ namespace View.Classes
         #region graphics
         // Draw the graphics per line horizontally
         private static string[] _startGridNorth =      { "|  |",
-                                                         "|v |",
-                                                         "| v|",
+                                                         "|^ |",
+                                                         "| ^|",
                                                          "|  |" };
         private static string[] _startGridEast =       { "----",
                                                          "  > ",
                                                          " >  ",
                                                          "----" };
         private static string[] _startGridSouth =      { "|  |",
-                                                         "|↓ |",
-                                                         "| ↓|",
+                                                         "|v |",
+                                                         "| v|",
                                                          "|  |" };
         private static string[] _startGridWest =       { "----",
                                                          "  < ",
