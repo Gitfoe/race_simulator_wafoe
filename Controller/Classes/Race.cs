@@ -40,9 +40,10 @@ namespace Controller.Classes
             return _positions[section];
         }
 
-        public void PlaceParticipantsOnStartGrids(Track track, List<IParticipant> participants)
+        private void PlaceParticipantsOnStartGrids(Track track, List<IParticipant> participants)
         {
-            List<IParticipant> tempParticipants = new List<IParticipant>(participants); // Make copy of participants list
+            List<IParticipant> tempParticipants = FixParticipentOrder(participants, track); // Make fixed copy of participants list
+
             foreach (Section section in track.Sections)
             {
                 SectionData currentSectionData = GetSectionData(section); // Fills the _positions dictionary with the track and empty SectionData instances
@@ -62,7 +63,56 @@ namespace Controller.Classes
             }
         }
 
-        public SectionData AddParticipantsToStartGridSectionData(List<IParticipant> participants, SectionData currentSectionData)
+        private int CountCertainSectionTypes(LinkedList<Section> sectionList, Section.SectionTypes toCount)
+        { // Counts a given SectionType from a (linked)list of Section objects
+            int counter = 0;
+            foreach (Section section in sectionList)
+            {
+                if (section.SectionType == toCount)
+                {
+                    counter++;
+                }
+            }
+            return counter;
+        }
+
+        private List<IParticipant> FixParticipentOrder(List<IParticipant> participants, Track track)
+        { // Fixes the order of participents on the grid so they will start at the front positions near the finish line and not at the last positions
+            List<IParticipant> outputParticipants = new List<IParticipant>(participants);
+            int countOfStartGridPositions = CountCertainSectionTypes(track.Sections, Section.SectionTypes.StartGrid) * 2;
+            IParticipant tempOutputParticipant; // Use the temporary participant variable for swapping
+
+            if (outputParticipants.Count > countOfStartGridPositions)
+            { // Checks if there are more participants than start grid positions, and if so, remove these participants
+                outputParticipants.RemoveRange(countOfStartGridPositions, outputParticipants.Count - countOfStartGridPositions);
+            }
+
+            if (outputParticipants.Count % 2 == 1)
+            { // If the count of participants is not even, add a null value to not break the flipping in the next for loop
+                outputParticipants.Add(null); 
+            }
+
+            for (int i = 0; i < outputParticipants.Count - 1; i++)
+            {
+                if (i % 2 == 0) // Check if the order of the participant is even
+                { // Swap the participant with the place right behind it
+                    tempOutputParticipant = outputParticipants[i];
+                    outputParticipants[i] = outputParticipants[i + 1];
+                    outputParticipants[i + 1] = tempOutputParticipant;
+                }
+            }
+
+            for (int i = outputParticipants.Count; i < countOfStartGridPositions; i++)
+            { // Add null spaces to the participants list for which grid positions are not filled
+                outputParticipants.Add(null);
+            }
+
+            outputParticipants.Reverse(); // Reverse the participant order, because the sections follow themselves and otherwise would be in a wrong order
+
+            return outputParticipants;
+        }
+
+        private SectionData AddParticipantsToStartGridSectionData(List<IParticipant> participants, SectionData currentSectionData)
         {
             // Adds all the participants to the section for the start grid
             for (int i = 0; i < participants.Count; i++) // Loop through all the participants
