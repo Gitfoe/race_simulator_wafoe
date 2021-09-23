@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using static Model.Classes.Section;
+using System.Linq;
 
 namespace View.Classes
 {
@@ -29,7 +30,7 @@ namespace View.Classes
                     positionsList.Add(DetermineNextPosition(directionPreviousGraphicSectionType));
             }
 
-            WriteGraphicsToConsole(graphicSectionTypesList, positionsList); // Finally write the track graphics!
+            WriteGraphicsToConsole(graphicSectionTypesList, positionsList, track.Sections); // Finally write the track graphics!
         }
 
         private static int[] DetermineNextPosition(CardinalDirections directionPreviousGraphicSectionType)
@@ -66,12 +67,10 @@ namespace View.Classes
                     case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightNorth; break;
                     case SectionTypes.RightCorner:
                         newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.East;
-                        break;
+                        directionPreviousGraphicSectionType = CardinalDirections.East; break;
                     case SectionTypes.LeftCorner:
                         newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.West;
-                        break;
+                        directionPreviousGraphicSectionType = CardinalDirections.West; break;
                     default: break;
                 }
             }
@@ -84,12 +83,10 @@ namespace View.Classes
                     case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightEast; break;
                     case SectionTypes.RightCorner:
                         newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.South;
-                        break;
+                        directionPreviousGraphicSectionType = CardinalDirections.South; break;
                     case SectionTypes.LeftCorner:
                         newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.North;
-                        break;
+                        directionPreviousGraphicSectionType = CardinalDirections.North; break;
                     default: break;
                 }
             }
@@ -102,12 +99,10 @@ namespace View.Classes
                     case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightSouth; break;
                     case SectionTypes.RightCorner:
                         newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.West;
-                        break;
+                        directionPreviousGraphicSectionType = CardinalDirections.West; break;
                     case SectionTypes.LeftCorner:
                         newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.East;
-                        break;
+                        directionPreviousGraphicSectionType = CardinalDirections.East; break;
                     default: break;
                 }
             }
@@ -120,12 +115,10 @@ namespace View.Classes
                     case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightWest; break;
                     case SectionTypes.RightCorner:
                         newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.North;
-                        break;
+                        directionPreviousGraphicSectionType = CardinalDirections.North; break;
                     case SectionTypes.LeftCorner:
                         newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.South;
-                        break;
+                        directionPreviousGraphicSectionType = CardinalDirections.South; break;
                     default: break;
                 }
             }
@@ -160,38 +153,43 @@ namespace View.Classes
             }
         }
 
-        private static List<string[]> ConvertGraphicSectionTypesToGraphicArrays(List<GraphicSectionTypes> graphicSectionTypesList)
+        private static List<string[]> ConvertGraphicSectionTypesToGraphicArrays(List<GraphicSectionTypes> graphicSectionTypesList, LinkedList<Section> sections)
         {
             List<string[]> graphicSectionsList = new List<string[]>(); // Create list for all the graphic array values
+            int counter = 0; // Alright, sorry for this, it starts to get quite spaghetti here, but it's my first time coding C# and SOLID
+                             // and I don't want to rewrite all this, so the counter is needed to call the element from section
             foreach (Enum graphicSectionType in graphicSectionTypesList) // Loop through the section Enums
             {
+                IParticipant leftParticipant = Data.CurrentRace.GetSectionData(sections.ElementAt(counter)).Left;
+                IParticipant rightParticipant = Data.CurrentRace.GetSectionData(sections.ElementAt(counter)).Right;
                 switch (graphicSectionType) // Allocate correct graphic array to Enum and add to list
                 {
-                    case GraphicSectionTypes.StartGridNorth: graphicSectionsList.Add(_startGridNorth); break;
-                    case GraphicSectionTypes.StartGridEast: graphicSectionsList.Add(_startGridEast); break;
-                    case GraphicSectionTypes.StartGridSouth: graphicSectionsList.Add(_startGridSouth); break;
-                    case GraphicSectionTypes.StartGridWest: graphicSectionsList.Add(_startGridWest); break;
-                    case GraphicSectionTypes.FinishNorth: graphicSectionsList.Add(_finishVertical); break;
-                    case GraphicSectionTypes.FinishEast: graphicSectionsList.Add(_finishHorizontal); break;
-                    case GraphicSectionTypes.FinishSouth: graphicSectionsList.Add(_finishVertical); break;
-                    case GraphicSectionTypes.FinishWest: graphicSectionsList.Add(_finishHorizontal); break;
-                    case GraphicSectionTypes.StraightNorth: graphicSectionsList.Add(_straightVertical); break;
-                    case GraphicSectionTypes.StraightEast: graphicSectionsList.Add(_straightHorizontal); break;
-                    case GraphicSectionTypes.StraightSouth: graphicSectionsList.Add(_straightVertical); break;
-                    case GraphicSectionTypes.StraightWest: graphicSectionsList.Add(_straightHorizontal); break;
-                    case GraphicSectionTypes.CornerSouthWest: graphicSectionsList.Add(_cornerSouthWest); break;
-                    case GraphicSectionTypes.CornerEastSouth: graphicSectionsList.Add(_cornerEastSouth); break;
-                    case GraphicSectionTypes.CornerNorthEast: graphicSectionsList.Add(_cornerNorthEast); break;
-                    case GraphicSectionTypes.CornerNorthWest: graphicSectionsList.Add(_cornerNorthWest); break;
+                    case GraphicSectionTypes.StartGridNorth: graphicSectionsList.Add(PlaceParticipants(_startGridNorth, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.StartGridEast: graphicSectionsList.Add(PlaceParticipants(_startGridEast, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.StartGridSouth: graphicSectionsList.Add(PlaceParticipants(_startGridSouth, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.StartGridWest: graphicSectionsList.Add(PlaceParticipants(_startGridWest, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.FinishNorth: graphicSectionsList.Add(PlaceParticipants(_finishVertical, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.FinishEast: graphicSectionsList.Add(PlaceParticipants(_finishHorizontal, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.FinishSouth: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishVertical, leftParticipant, rightParticipant))); break;
+                    case GraphicSectionTypes.FinishWest: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishHorizontal, leftParticipant, rightParticipant))); break;
+                    case GraphicSectionTypes.StraightNorth: graphicSectionsList.Add(PlaceParticipants(_straightVertical, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.StraightEast: graphicSectionsList.Add(PlaceParticipants(_straightHorizontal, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.StraightSouth: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightVertical, leftParticipant, rightParticipant))); break;
+                    case GraphicSectionTypes.StraightWest: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightHorizontal, leftParticipant, rightParticipant))); break;
+                    case GraphicSectionTypes.CornerSouthWest: graphicSectionsList.Add(PlaceParticipants(_cornerSouthWest, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.CornerEastSouth: graphicSectionsList.Add(PlaceParticipants(_cornerEastSouth, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.CornerNorthEast: graphicSectionsList.Add(PlaceParticipants(_cornerNorthEast, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.CornerNorthWest: graphicSectionsList.Add(PlaceParticipants(_cornerNorthWest, leftParticipant, rightParticipant)); break;
                     default: break;
                 }
+                counter++;
             }
             return graphicSectionsList;
         }
 
-        private static void WriteGraphicsToConsole(List<GraphicSectionTypes> graphicSectionTypesList, List<int[]> positionsList)
+        private static void WriteGraphicsToConsole(List<GraphicSectionTypes> graphicSectionTypesList, List<int[]> positionsList, LinkedList<Section> sections)
         {
-            List<string[]> graphicSectionsList = ConvertGraphicSectionTypesToGraphicArrays(graphicSectionTypesList); // Convert the Enums to actual Graphics
+            List<string[]> graphicSectionsList = ConvertGraphicSectionTypesToGraphicArrays(graphicSectionTypesList, sections); // Convert the Enums to actual Graphics
             int[] tempCursorPosition = FixCursorPosition(positionsList); // Fix the cursor position if the x or y count is negative
             Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1]); // Set the cursor once to the corrected position
             for (int i = 0; i < graphicSectionsList.Count; i++) // Start loop at the length of graphicSectionsList (is the same as positionsList)
@@ -245,55 +243,92 @@ namespace View.Classes
             return new int[] { newXCount, newYCount };
         }
 
+        private static string[] RotateStringArray180Degrees(string[] inputArray)
+        {
+            string[] outputArray = new string[inputArray.Length]; // Makes new string array with the same length as the input array
+            for (int s = 0; s < inputArray.Length; s++) // Loops through the length of the array
+            {
+                outputArray[s] = new string(inputArray[s].ToCharArray().Reverse().ToArray()); // Uses LINQ to reverse the string and save it
+            }
+            Array.Reverse(outputArray, 0, inputArray.Length); // Reverses the array (because mirror + reverse = 180 degree turn)
+            return outputArray;
+        }
+
+        private static string[] PlaceParticipants(string[] graphicSection, IParticipant leftParticipant, IParticipant rightParticipant)
+        {
+            char leftParticipantFirstLetterName = ' ';
+            char rightParticipantFirstLetterName = ' ';
+            if (leftParticipant != null)
+            { // Assigns the first letter of a name to a temporary variable, or if the participant is not given, it keeps the default blank space
+                leftParticipantFirstLetterName = leftParticipant.Name[0];
+            }
+            if (rightParticipant != null)
+            {
+                rightParticipantFirstLetterName = rightParticipant.Name[0];
+            }
+            for (int i = 1; i <= 2; i++)
+            { // Checks if the numbers 1 or 2 exist in the array and replaces them with the corrosponding left/right participant or a blank space
+                if (graphicSection[1].Contains($"{i}"))
+                {
+                    graphicSection[1] = graphicSection[1].Replace(char.Parse($"{i}"), leftParticipantFirstLetterName);
+                }
+                else if (graphicSection[2].Contains($"{i}"))
+                {
+                    graphicSection[2] = graphicSection[2].Replace(char.Parse($"{i}"), rightParticipantFirstLetterName);
+                }
+            }
+            return graphicSection;
+        }
+
         #region graphics
         // Draw the graphics per line horizontally
-        private static string[] _startGridNorth =      { "|  |",
-                                                         "|^ |",
-                                                         "| ^|",
+        private static string[] _startGridNorth =      { "|^ |",
+                                                         "|1^|",
+                                                         "| 2|",
                                                          "|  |" };
         private static string[] _startGridEast =       { "----",
-                                                         "  > ",
-                                                         " >  ",
+                                                         "  1>",
+                                                         " 2> ",
                                                          "----" };
         private static string[] _startGridSouth =      { "|  |",
-                                                         "|v |",
-                                                         "| v|",
-                                                         "|  |" };
+                                                         "|2 |",
+                                                         "|v1|",
+                                                         "| v|" };
         private static string[] _startGridWest =       { "----",
-                                                         "  < ",
-                                                         " <  ",
+                                                         " <2 ",
+                                                         "<1  ",
                                                          "----" };
-        private static string[] _finishHorizontal =    { "----",
-                                                         " ## ",
-                                                         " ## ",
+        private static string[] _finishVertical =      { "|  |", // Points to the north
+                                                         "|1 |",
+                                                         "| 2|",
+                                                         "|##|" };
+        private static string[] _finishHorizontal =    { "----", // Points to the east
+                                                         "# 1 ",
+                                                         "#2  ",
                                                          "----" };
-        private static string[] _finishVertical =      { "|  |",
-                                                         "|##|",
-                                                         "|##|",
-                                                         "|  |" };
-        private static string[] _straightHorizontal =  { "----",
-                                                         "    ",
-                                                         "    ",
+        private static string[] _straightVertical =    { "|  |", // Points to the north
+                                                         "|1 |",
+                                                         "| 2|",
+                                                         "|  |" }; 
+        private static string[] _straightHorizontal =  { "----", // Points to the east
+                                                         "  1 ",
+                                                         " 2  ",
                                                          "----" };
-        private static string[] _straightVertical =    { "|  |",
-                                                         "|  |",
-                                                         "|  |",
-                                                         "|  |" };
-        private static string[] _cornerSouthWest =     {@"--\ ", // right corner down & left corner up
-                                                        @"   \",
-                                                         "   |",
+        private static string[] _cornerSouthWest =     {@"--\ ", // Right corner down & left corner up
+                                                        @"  2\",
+                                                         " 1 |",
                                                         @"\  |" };
-        private static string[] _cornerEastSouth =     {@" /--", // left corner down & right corner up
-                                                        @"/   ",
-                                                         "|   ",
+        private static string[] _cornerEastSouth =     {@" /--", // Left corner down & right corner up
+                                                        @"/2  ",
+                                                         "| 1 ",
                                                         @"|  /" };
-        private static string[] _cornerNorthEast =     {@"|  \", // right corner up & left corner down
-                                                         "|   ",
-                                                        @"\   ",
+        private static string[] _cornerNorthEast =     {@"|  \", // Right corner up & left corner down
+                                                         "| 1 ",
+                                                        @"\2  ",
                                                         @" \--" };
-        private static string[] _cornerNorthWest =     {@"/  |", // left corner up & right corner down
-                                                         "   |",
-                                                        @"   /",
+        private static string[] _cornerNorthWest =     {@"/  |", // Left corner up & right corner down
+                                                         " 1 |",
+                                                        @"  2/",
                                                         @"--/ " };
         #endregion
     }
