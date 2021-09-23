@@ -14,13 +14,15 @@ namespace View
     {
         static void Main(string[] args)
         {
-            Thread.Sleep(100); // Timeout after 1 minute and 40 seconds
             Data.Initialize();
+            Data.NextRace();
             Data.NextRace();
             Visualisation.DrawTrack(Data.GrandPrix.Tracks.Peek());
 
             for (; ; ) // Unlimited loop to not immediately close it
-            { }
+            {
+                Thread.Sleep(100); // Sleeps 100 milliseconds
+            }
         }
     }
 }
