@@ -21,8 +21,9 @@ namespace View.Classes
             List<int[]> positionsList = new List<int[]>();
 
             // Assign a random value for the first section
-            Random random = new Random(DateTime.Now.Millisecond);
-            CardinalDirections directionPreviousGraphicSectionType = (CardinalDirections)random.Next(Enum.GetNames(typeof(CardinalDirections)).Length);
+            //Random random = new Random(DateTime.Now.Millisecond);
+            //CardinalDirections directionPreviousGraphicSectionType = (CardinalDirections)random.Next(Enum.GetNames(typeof(CardinalDirections)).Length);
+            CardinalDirections directionPreviousGraphicSectionType = CardinalDirections.East;
 
             foreach (Section section in track.Sections)
             {

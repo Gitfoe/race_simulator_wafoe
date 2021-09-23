@@ -103,7 +103,7 @@ namespace Controller.Classes
             }
 
             for (int i = outputParticipants.Count; i < countOfStartGridPositions; i++)
-            { // Add null spaces to the participants list for which grid positions are not filled
+            { // Add null spaces to the participants list if some grid positions are not filled
                 outputParticipants.Add(null);
             }
 

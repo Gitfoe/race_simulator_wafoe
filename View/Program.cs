@@ -16,6 +16,8 @@ namespace View
         {
             Data.Initialize();
             Data.NextRace(); Data.NextRace(); Data.NextRace();
+            Visualisation_Extra.MakeTrack();
+            Data.NextRace();
             Visualisation.DrawTrack(Data.CurrentRace.Track);
 
             for (; ; ) // Unlimited loop to not immediately close the races
