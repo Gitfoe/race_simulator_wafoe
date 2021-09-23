@@ -160,26 +160,25 @@ namespace View.Classes
                              // and I don't want to rewrite all this, so the counter is needed to call the element from section
             foreach (Enum graphicSectionType in graphicSectionTypesList) // Loop through the section Enums
             {
-                IParticipant leftParticipant = Data.CurrentRace.GetSectionData(sections.ElementAt(counter)).Left;
-                IParticipant rightParticipant = Data.CurrentRace.GetSectionData(sections.ElementAt(counter)).Right;
+                SectionData participant = Data.CurrentRace.GetSectionData(sections.ElementAt(counter));
                 switch (graphicSectionType) // Allocate correct graphic array to Enum and add to list
                 {
-                    case GraphicSectionTypes.StartGridNorth: graphicSectionsList.Add(PlaceParticipants(_startGridNorth, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.StartGridEast: graphicSectionsList.Add(PlaceParticipants(_startGridEast, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.StartGridSouth: graphicSectionsList.Add(PlaceParticipants(_startGridSouth, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.StartGridWest: graphicSectionsList.Add(PlaceParticipants(_startGridWest, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.FinishNorth: graphicSectionsList.Add(PlaceParticipants(_finishVertical, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.FinishEast: graphicSectionsList.Add(PlaceParticipants(_finishHorizontal, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.FinishSouth: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishVertical, leftParticipant, rightParticipant))); break;
-                    case GraphicSectionTypes.FinishWest: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishHorizontal, leftParticipant, rightParticipant))); break;
-                    case GraphicSectionTypes.StraightNorth: graphicSectionsList.Add(PlaceParticipants(_straightVertical, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.StraightEast: graphicSectionsList.Add(PlaceParticipants(_straightHorizontal, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.StraightSouth: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightVertical, leftParticipant, rightParticipant))); break;
-                    case GraphicSectionTypes.StraightWest: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightHorizontal, leftParticipant, rightParticipant))); break;
-                    case GraphicSectionTypes.CornerSouthWest: graphicSectionsList.Add(PlaceParticipants(_cornerSouthWest, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.CornerEastSouth: graphicSectionsList.Add(PlaceParticipants(_cornerEastSouth, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.CornerNorthEast: graphicSectionsList.Add(PlaceParticipants(_cornerNorthEast, leftParticipant, rightParticipant)); break;
-                    case GraphicSectionTypes.CornerNorthWest: graphicSectionsList.Add(PlaceParticipants(_cornerNorthWest, leftParticipant, rightParticipant)); break;
+                    case GraphicSectionTypes.StartGridNorth: graphicSectionsList.Add(PlaceParticipants(_startGridNorth, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StartGridEast: graphicSectionsList.Add(PlaceParticipants(_startGridEast, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StartGridSouth: graphicSectionsList.Add(PlaceParticipants(_startGridSouth, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StartGridWest: graphicSectionsList.Add(PlaceParticipants(_startGridWest, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.FinishNorth: graphicSectionsList.Add(PlaceParticipants(_finishVertical, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.FinishEast: graphicSectionsList.Add(PlaceParticipants(_finishHorizontal, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.FinishSouth: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishVertical, participant.Left, participant.Right))); break;
+                    case GraphicSectionTypes.FinishWest: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishHorizontal, participant.Left, participant.Right))); break;
+                    case GraphicSectionTypes.StraightNorth: graphicSectionsList.Add(PlaceParticipants(_straightVertical, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StraightEast: graphicSectionsList.Add(PlaceParticipants(_straightHorizontal, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StraightSouth: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightVertical, participant.Left, participant.Right))); break;
+                    case GraphicSectionTypes.StraightWest: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightHorizontal, participant.Left, participant.Right))); break;
+                    case GraphicSectionTypes.CornerSouthWest: graphicSectionsList.Add(PlaceParticipants(_cornerSouthWest, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.CornerEastSouth: graphicSectionsList.Add(PlaceParticipants(_cornerEastSouth, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.CornerNorthEast: graphicSectionsList.Add(PlaceParticipants(_cornerNorthEast, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.CornerNorthWest: graphicSectionsList.Add(PlaceParticipants(_cornerNorthWest, participant.Left, participant.Right)); break;
                     default: break;
                 }
                 counter++;
@@ -256,6 +255,7 @@ namespace View.Classes
 
         private static string[] PlaceParticipants(string[] graphicSection, IParticipant leftParticipant, IParticipant rightParticipant)
         {
+            string[] outputGraphicSection = (string[])graphicSection.Clone();
             char leftParticipantFirstLetterName = ' ';
             char rightParticipantFirstLetterName = ' ';
             if (leftParticipant != null)
@@ -266,18 +266,12 @@ namespace View.Classes
             {
                 rightParticipantFirstLetterName = rightParticipant.Name[0];
             }
-            for (int i = 1; i <= 2; i++)
-            { // Checks if the numbers 1 or 2 exist in the array and replaces them with the corrosponding left/right participant or a blank space
-                if (graphicSection[1].Contains($"{i}"))
-                {
-                    graphicSection[1] = graphicSection[1].Replace(char.Parse($"{i}"), leftParticipantFirstLetterName);
-                }
-                else if (graphicSection[2].Contains($"{i}"))
-                {
-                    graphicSection[2] = graphicSection[2].Replace(char.Parse($"{i}"), rightParticipantFirstLetterName);
-                }
-            }
-            return graphicSection;
+            // Replaces the 1 for the leftParticipantFirstLetterName and the 2 for the rightParticipantFirstLetterName
+            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse($"1"), leftParticipantFirstLetterName);
+            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse($"1"), leftParticipantFirstLetterName);
+            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse($"2"), rightParticipantFirstLetterName);
+            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse($"2"), rightParticipantFirstLetterName);
+            return outputGraphicSection;
         }
 
         #region graphics

@@ -42,10 +42,10 @@ namespace Controller.Classes
 
         public void PlaceParticipantsOnStartGrids(Track track, List<IParticipant> participants)
         {
+            List<IParticipant> tempParticipants = new List<IParticipant>(participants); // Make copy of participants list
             foreach (Section section in track.Sections)
             {
                 SectionData currentSectionData = GetSectionData(section); // Fills the _positions dictionary with the track and empty SectionData instances
-                List<IParticipant> tempParticipants = new List<IParticipant>(participants); // Make copy of participants list
                 // Find sections that are start grids and add them, together with the driver SectionData positions, to the _positions field
                 if (section.SectionType == Section.SectionTypes.StartGrid)
                 {

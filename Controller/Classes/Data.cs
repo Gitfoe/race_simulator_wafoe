@@ -47,6 +47,8 @@ namespace Controller.Classes
                 } ),
                 new Track("Yoshi Circuit", new Section.SectionTypes[] {
                     SectionTypes.StartGrid,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid,
                     SectionTypes.Finish,
                     SectionTypes.RightCorner,
                     SectionTypes.Straight,
@@ -70,8 +72,6 @@ namespace Controller.Classes
                     SectionTypes.Straight,
                     SectionTypes.Straight,
                     SectionTypes.RightCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.StartGrid
                 } ),
                 new Track("Coconut Mall", new Section.SectionTypes[] {
                     SectionTypes.StartGrid,
