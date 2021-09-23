@@ -19,20 +19,20 @@ namespace Controller.Classes
         public DateTime StartTime { get; set; }
 
         // Constructors
-        public Race(Track track, List<IParticipant> list)
+        public Race(Track track, List<IParticipant> participants)
         {
             // Initializes the properties of this class
             Track = track;
-            Participants = list;
+            Participants = participants;
             _random = new Random(DateTime.Now.Millisecond);
+            _positions = new Dictionary<Section, SectionData>();
             PlaceParticipantsOnStartGrids(Track, Participants);
         }
 
         // Methods
         public SectionData GetSectionData(Section section)
         {
-            // Checks if the key "section" exists in the dictionary and if it exists returns the SectionData for that key section
-            // If it doesn't exist, it creates a new SectionData for that section and returns the SectionData for that key section
+            // Checks if the key "section" exists in the _positions dictionary, and if it does not exist, adds the position and creates a SectionData for it
             if (!_positions.ContainsKey(section))
             {
                 _positions.Add(section, new SectionData());
@@ -42,39 +42,42 @@ namespace Controller.Classes
 
         public void PlaceParticipantsOnStartGrids(Track track, List<IParticipant> participants)
         {
-            List<SectionData> sectionDataStartGridList = AddParticipantsToStartGridSectionData(participants);
-            int counter = 0;
-            
             foreach (Section section in track.Sections)
             {
+                SectionData currentSectionData = GetSectionData(section); // Fills the _positions dictionary with the track and empty SectionData instances
+                List<IParticipant> tempParticipants = new List<IParticipant>(participants); // Make copy of participants list
                 // Find sections that are start grids and add them, together with the driver SectionData positions, to the _positions field
-                // making sure in the if statement that it does not fill the StartGrid positions if there are less drivers than positions
-                if (section.SectionType == Section.SectionTypes.StartGrid && sectionDataStartGridList.Count > counter)
+                if (section.SectionType == Section.SectionTypes.StartGrid)
                 {
-                    _positions.Add(section, sectionDataStartGridList[counter]);
-                    counter++;
+                    _positions[section] = AddParticipantsToStartGridSectionData(tempParticipants, currentSectionData);
+                    if (tempParticipants.Count > 1) // Make sure to remove participants from the temporary list, so it doesn't place the participants twice
+                    {
+                        tempParticipants.RemoveRange(0, 2);
+                    }
+                    else if (tempParticipants.Count == 1) // If only 1 participant is left, remove the last one
+                    {
+                        tempParticipants.RemoveAt(0);
+                    }
                 }
             }
         }
 
-        public List<SectionData> AddParticipantsToStartGridSectionData(List<IParticipant> participants)
+        public SectionData AddParticipantsToStartGridSectionData(List<IParticipant> participants, SectionData currentSectionData)
         {
             // Adds all the participants to the section for the start grid
-            List<SectionData> sectionDataStartGridList = new List<SectionData>(); // Create the SectionData list of participants
-            int counter = 0;
             for (int i = 0; i < participants.Count; i++) // Loop through all the participants
             {
-                if (i % 2 == 0) // If it's the first participant for a section, add it to the left participant position
+                if (i == 0) // If it's the first participant for a section, add it to the left participant position
                 {
-                    sectionDataStartGridList.Add(new SectionData() { Left = participants[i] });
+                    currentSectionData.Left = participants[i];
                 }
                 else // If it's not the first participant for a section, add it to the right participant position
                 {
-                    sectionDataStartGridList[counter].Right = participants[i];
+                    currentSectionData.Right = participants[i];
+                    break; // The brake stops the for loop continuing for no reason
                 }
-                counter++;
             }
-            return sectionDataStartGridList;
+            return currentSectionData;
         }
 
         public void RandomizeEquipment()

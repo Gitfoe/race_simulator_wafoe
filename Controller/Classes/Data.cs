@@ -128,7 +128,7 @@ namespace Controller.Classes
             Track currentTrack = GrandPrix.NextTrack();
             if (currentTrack != null)
             {
-                CurrentRace = new Race(currentTrack, new List<IParticipant>());
+                CurrentRace = new Race(currentTrack, GrandPrix.Participants);
             }
         }
     }

@@ -214,7 +214,7 @@ namespace View.Classes
 
         private static int[] FixCursorPosition(List<int[]> positionsList)
         {
-            // Compensation algorithm for the console so graphics don't go out of bounds and the track always start at x = 0 y = 0
+            // Compensation algorithm for the console so graphics don't go out of bounds and the track always starts at x = 0 y = 0
             int xCount = 0;
             int yCount = 0;
             int lowestXCount = 0;

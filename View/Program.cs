@@ -16,10 +16,9 @@ namespace View
         {
             Data.Initialize();
             Data.NextRace();
-            Data.NextRace();
-            Visualisation.DrawTrack(Data.GrandPrix.Tracks.Peek());
+            Visualisation.DrawTrack(Data.CurrentRace.Track);
 
-            for (; ; ) // Unlimited loop to not immediately close it
+            for (; ; ) // Unlimited loop to not immediately close the races
             {
                 Thread.Sleep(100); // Sleeps 100 milliseconds
             }
