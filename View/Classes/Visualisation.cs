@@ -13,6 +13,8 @@ namespace View.Classes
         // Methods
         public static void DrawTrack(Track track)
         {
+            Data.CurrentRace.DriversChanged += OnDriversChanged; // Subscribe
+
             // Convert sections to graphicsSectionTypes and positions and also keep track of the direction of the previous graphic section type
             List<GraphicSectionTypes> graphicSectionTypesList = new List<GraphicSectionTypes>();
             List<int[]> positionsList = new List<int[]>();
@@ -245,6 +247,12 @@ namespace View.Classes
             outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse("2"), rightParticipantFirstLetterName);
             outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse("2"), rightParticipantFirstLetterName);
             return outputGraphicSection;
+        }
+
+        // Event handler methods
+        public static void OnDriversChanged(object sender, DriversChangedEventArgs changedTrack)
+        {
+            DrawTrack(changedTrack.Track);
         }
 
         #region graphics

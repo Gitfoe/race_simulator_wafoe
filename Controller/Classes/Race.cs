@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Timers;
+using View;
 
 namespace Controller.Classes
 {
@@ -20,6 +21,9 @@ namespace Controller.Classes
         public List<IParticipant> Participants { get; set; }
         public DateTime StartTime { get; set; }
 
+        // Events
+        public event EventHandler<DriversChangedEventArgs> DriversChanged;
+
         // Constructors
         public Race(Track track, List<IParticipant> participants)
         {
@@ -32,7 +36,9 @@ namespace Controller.Classes
 
             // Call methods
             PlaceParticipantsOnStartGrids(Track, Participants);
-            _timer.Elapsed += OnTimedEvent;
+
+            // Subscribe events
+            _timer.Elapsed += OnTimedEvent; // Subscribe timer.Elapsed to OnTimedEvent
         }
 
         // Methods
