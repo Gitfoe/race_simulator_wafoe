@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Timers;
-using View;
 
 namespace Controller.Classes
 {
@@ -36,6 +35,7 @@ namespace Controller.Classes
 
             // Call methods
             PlaceParticipantsOnStartGrids(Track, Participants);
+            RandomizeEquipment();
 
             // Subscribe events
             _timer.Elapsed += OnTimedEvent; // Subscribe timer.Elapsed to OnTimedEvent
@@ -147,21 +147,183 @@ namespace Controller.Classes
             // Iterates over the Participant list and generates random values for Quality and Performance for each driver
             foreach (IParticipant participant in Participants)
             {
-                participant.Equipment.Quality = _random.Next();
-                participant.Equipment.Performance = _random.Next();
+                participant.Equipment.Quality = _random.Next(1, 5);
+                participant.Equipment.Performance = _random.Next(1, 5);
+            }
+        }
+
+        // Participant moving methods
+        private void MoveParticipants()
+        {
+            Dictionary<IParticipant, int> totalSpeedOfParticipant = CalculateTotalSpeedForParticipants(Participants);
+            // Loops through the participants and adds the new total speed to the SectionData the participant is on
+            foreach (IParticipant participant in Participants)
+            {
+                Section sectionParticipantIsOn = FindSectionOfParticipant(participant);
+                if (_positions[sectionParticipantIsOn].Left == participant)
+                {
+                    if (_positions[sectionParticipantIsOn].DistanceLeft + totalSpeedOfParticipant[participant] < 100)
+                    { // Adds the speed to the correct distance
+                        _positions[sectionParticipantIsOn].DistanceLeft += totalSpeedOfParticipant[participant];
+                    }
+                    else
+                    { // Adds the remainder of the distance, so if the distance was 90 and 20 was to be added, the outcome is 30
+                        _positions[sectionParticipantIsOn].DistanceLeft = 100 % _positions[sectionParticipantIsOn].DistanceLeft + totalSpeedOfParticipant[participant];
+                        bool cannotPlaceSection = PlaceParticipantOnNextSection(sectionParticipantIsOn, Placement.Left, participant);
+                        if (cannotPlaceSection == true)
+                        { // If it couldn't place the participant because places are occupied, hold the racer and put distance to max (100)
+                            _positions[sectionParticipantIsOn].DistanceLeft = 100; 
+                        }
+                    }
+                }
+                else
+                {
+                    if (_positions[sectionParticipantIsOn].DistanceRight + totalSpeedOfParticipant[participant] < 100)
+                    { // Adds the speed to the correct distance
+                        _positions[sectionParticipantIsOn].DistanceRight += totalSpeedOfParticipant[participant];
+                    }
+                    else
+                    { // Adds the remainder of the distance, so if the distance was 90 and 20 was to be added, the outcome is 30
+                        _positions[sectionParticipantIsOn].DistanceRight = 100 % _positions[sectionParticipantIsOn].DistanceRight + totalSpeedOfParticipant[participant];
+                        bool cannotPlaceSection = PlaceParticipantOnNextSection(sectionParticipantIsOn, Placement.Right, participant);
+                        if (cannotPlaceSection == true)
+                        { // If it couldn't place the participant because places are occupied, hold the racer and put distance to max (100)
+                            _positions[sectionParticipantIsOn].DistanceRight = 100;
+                        }
+                    }
+                }
+            }
+        }
+
+        public Dictionary<IParticipant, int> CalculateTotalSpeedForParticipants(List<IParticipant> participants)
+        { // Calculates the total karts speed in meters per <timeramount> by multiplying performance with speed for all participants
+            Dictionary<IParticipant, int> totalSpeedOfParticipant = new Dictionary<IParticipant, int>();
+            foreach (IParticipant participant in participants)
+            {
+                totalSpeedOfParticipant.Add(participant, participant.Equipment.Performance * participant.Equipment.Speed);
+            }
+            return totalSpeedOfParticipant;
+        }
+
+        public Section FindSectionOfParticipant(IParticipant participant)
+        { // Returns the section a participant is on
+            foreach (var item in _positions)
+            {
+                if (participant == item.Value.Left || participant == item.Value.Right) // Participant can be on left or right section
+                {
+                    return item.Key;
+                }
+            }
+            throw new InvalidProgramException(); // If it cannot find the participant, throw an exception
+        }
+
+        private bool PlaceParticipantOnNextSection(Section sectionParticipantIsOn, Placement placement, IParticipant participant)
+        { // Places a participant on the next section
+            bool cannotPlaceSection = true; // Begin with true and hopefully make it false within this method
+            SectionData firstSectionData = null;
+            SectionData foundSectionData = null;
+            foreach (var item in _positions) // Loops through every position in _positions
+            {
+                if (firstSectionData == null)
+                { // Save the first SectionData if needed
+                    firstSectionData = item.Value;
+                }
+                else if (item.Key == sectionParticipantIsOn)
+                { // Searches the section in _positions and saves the SectionData if it is found
+                    foundSectionData = item.Value;
+                }
+                else if (foundSectionData != null)
+                { // Executes on the next loop once the section has been found and if it isn't the last section
+                    cannotPlaceSection = PlaceParticipantIfPossible(placement, participant, foundSectionData, item.Value);
+                    break; // Stop the loop from continuing further without reason
+                }
+            }
+            // If the section was the last section, place the participant on the first section
+            if (cannotPlaceSection == true)
+            {
+                bool cannotPlaceSectionAgain = PlaceParticipantIfPossible(placement, participant, foundSectionData, firstSectionData);
+                if (cannotPlaceSectionAgain == true)
+                { // If it couldn't place the participant again (meaning, the first section is also full), return true
+                    return cannotPlaceSectionAgain;
+                }
+            }
+            return cannotPlaceSection; // If the participant is successfully placed somewhere, return false
+        }
+
+        private bool PlaceParticipantIfPossible(Placement placement, IParticipant participant, SectionData foundSectionData, SectionData currentSectionData)
+        {
+            bool cannotPlaceSection = true;
+            bool leftOccupied = CheckIfPositionIsOccupied(currentSectionData, Placement.Left);
+            bool rightOccupied = CheckIfPositionIsOccupied(currentSectionData, Placement.Right);
+            if (placement == Placement.Left && leftOccupied == false)
+            { // If the participant was on the left and the next left position is not occupied, place participant there
+                currentSectionData.Left = participant;
+                foundSectionData.Left = null; // Remove participant from old position
+                cannotPlaceSection = false; // If it placed the participant, set this to false
+            }
+            else if (placement == Placement.Right && rightOccupied == false)
+            { // If the participant was on the right and the next right position is not occupied, place participant there
+                currentSectionData.Right = participant;
+                foundSectionData.Right = null; // Remove participant from old position
+                cannotPlaceSection = false; // If it placed the participant, set this to false
+            }
+            else if (placement == Placement.Left && leftOccupied == true && rightOccupied == false)
+            { // If the participant was on the left and the next left position is occupied, place participant on the right
+                currentSectionData.Right = participant;
+                foundSectionData.Left = null; // Remove participant from old position
+                cannotPlaceSection = false; // If it placed the participant, set this to false
+            }
+            else if (placement == Placement.Right && leftOccupied == false && rightOccupied == true)
+            { // If the participant was on the right and the next right position is occupied, place participant on the left
+                currentSectionData.Left = participant;
+                foundSectionData.Right = null; // Remove participant from old position
+                cannotPlaceSection = false; // If it placed the participant, set this to false
+            } // If none of the above if's succeeded, it returns true, otherwise false
+            return cannotPlaceSection;
+        }
+
+        private bool CheckIfPositionIsOccupied(SectionData sectionData, Placement placement)
+        { // Checks if a placement in SectionData is already occupied (returns true) or not (returns false)
+            if (placement == Placement.Left)
+            {
+                if (sectionData.Left == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (sectionData.Right == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
         // Event handler methods
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}", e.SignalTime);
+            MoveParticipants();
+            DriversChanged(source, new DriversChangedEventArgs() { Track = this.Track });
         }
 
-        private void Start()
+        public void Start()
         { // This method starts the timer
             _timer.AutoReset = true; // Raise the Elapsed event repeatedly (true)
             _timer.Enabled = true;
         }
+    }
+    public enum Placement
+    {
+        Left,
+        Right
     }
 }

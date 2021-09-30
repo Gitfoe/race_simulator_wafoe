@@ -21,16 +21,15 @@ namespace Controller.Classes
             GrandPrix = new Competition();
             AddParticipants(); // Call the AddParticipant method to add partiticpants to the Grand Prix
             AddTracks(); // Call the AddTracks method to add tracks to the Grand Prix
-            CurrentRace.DriversChanged += OnDriversChanged;
         }
         private static void AddParticipants() // Add 3 participants to the race
         {
             GrandPrix.Participants.AddRange(new IParticipant[] { // Add the list of new Driver classes to the Participants list
-                new Driver("Mario", 0, new Kart(8, 10, 16, false), TeamColors.Red),
-                new Driver("Waluigi", 0, new Kart(5, 13, 15, false), TeamColors.Blue),
-                new Driver("Yoshi", 0, new Kart(4, 17, 12, false), TeamColors.Green),
-                new Driver("Bowser", 0, new Kart(4, 6, 12, false), TeamColors.Yellow),
-                new Driver("Dry Bones", 0, new Kart(4, 6, 12, false), TeamColors.Grey),
+                new Driver("Mario", 0, new Kart(10, 3, false), TeamColors.Red),
+                new Driver("Waluigi", 0, new Kart(10, 3, false), TeamColors.Blue),
+                new Driver("Yoshi", 0, new Kart(10, 3, false), TeamColors.Green),
+                new Driver("Bowser", 0, new Kart(10, 3, false), TeamColors.Yellow),
+                new Driver("Dry Bones", 0, new Kart(10, 3, false), TeamColors.Grey),
                 //new Driver("Peach", 0, new Kart(4, 6, 12, false), TeamColors.Blue),
                 //new Driver("Donkey Kong", 0, new Kart(4, 6, 12, false), TeamColors.Grey),
                 //new Driver("Daisy", 0, new Kart(4, 6, 12, false), TeamColors.Yellow)
@@ -136,6 +135,7 @@ namespace Controller.Classes
             {
                 CurrentRace = new Race(currentTrack, GrandPrix.Participants);
             }
+            CurrentRace.Start(); // Start the timer for the race
         }
     }
 }

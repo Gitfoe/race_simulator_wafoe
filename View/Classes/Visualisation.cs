@@ -9,12 +9,10 @@ using static Model.Classes.Section;
 namespace View.Classes
 {
     public static class Visualisation
-    {
+    { 
         // Methods
         public static void DrawTrack(Track track)
         {
-            Data.CurrentRace.DriversChanged += OnDriversChanged; // Subscribe
-
             // Convert sections to graphicsSectionTypes and positions and also keep track of the direction of the previous graphic section type
             List<GraphicSectionTypes> graphicSectionTypesList = new List<GraphicSectionTypes>();
             List<int[]> positionsList = new List<int[]>();
@@ -172,7 +170,9 @@ namespace View.Classes
                 int counter = 0;
                 foreach (string line in graphicSectionsList[i]) // Print each array line following the for loop index
                 {
-                    Console.Write($"{line}\n");
+                    Console.Write("\u001b[105;97m"); // Magenta background, white chars
+                    Console.Write($"{line}");
+                    Console.Write("\u001b[m");
                     counter++;
                     // Compensate the cursor so it doesn't go to x = 0 after a new line by using a counter
                     Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1] + counter);
@@ -257,54 +257,54 @@ namespace View.Classes
 
         #region graphics
         // Draw the graphics per line horizontally
-        private static string[] _startGridNorth =      { "|^ |",
-                                                         "|1^|",
-                                                         "| 2|",
-                                                         "|  |" };
-        private static string[] _startGridEast =       { "----",
+        private static string[] _startGridNorth =      { "│^ │",
+                                                         "│1^│",
+                                                         "│ 2│",
+                                                         "│  │" };
+        private static string[] _startGridEast =       { "────",
                                                          "  1>",
                                                          " 2> ",
-                                                         "----" };
-        private static string[] _startGridSouth =      { "|  |",
-                                                         "|2 |",
-                                                         "|v1|",
-                                                         "| v|" };
-        private static string[] _startGridWest =       { "----",
+                                                         "────" };
+        private static string[] _startGridSouth =      { "│  │",
+                                                         "│2 │",
+                                                         "│v1│",
+                                                         "│ v│" };
+        private static string[] _startGridWest =       { "────",
                                                          " <2 ",
                                                          "<1  ",
-                                                         "----" };
-        private static string[] _finishVertical =      { "|  |", // Points to the north
-                                                         "|1 |",
-                                                         "| 2|",
-                                                         "|##|" };
-        private static string[] _finishHorizontal =    { "----", // Points to the east
+                                                         "────" };
+        private static string[] _finishVertical =      { "│  │", // Points to the north
+                                                         "│1 │",
+                                                         "│ 2│",
+                                                         "│##│" };
+        private static string[] _finishHorizontal =    { "────", // Points to the east
                                                          "# 1 ",
                                                          "#2  ",
-                                                         "----" };
-        private static string[] _straightVertical =    { "|  |", // Points to the north
-                                                         "|1 |",
-                                                         "| 2|",
-                                                         "|  |" };
-        private static string[] _straightHorizontal =  { "----", // Points to the east
+                                                         "────" };
+        private static string[] _straightVertical =    { "│  │", // Points to the north
+                                                         "│1 │",
+                                                         "│ 2│",
+                                                         "│  │" };
+        private static string[] _straightHorizontal =  { "────", // Points to the east
                                                          "  1 ",
                                                          " 2  ",
-                                                         "----" };
-        private static string[] _cornerSouthWest =     {@"--\ ", // Right corner down & left corner up
+                                                         "────" };
+        private static string[] _cornerSouthWest =     {@"──\ ", // Right corner down & left corner up
                                                         @"  2\",
-                                                         " 1 |",
-                                                        @"\  |" };
-        private static string[] _cornerEastSouth =     {@" /--", // Left corner down & right corner up
+                                                         " 1 │",
+                                                        @"\  │" };
+        private static string[] _cornerEastSouth =     {@" /──", // Left corner down & right corner up
                                                         @"/2  ",
-                                                         "| 1 ",
-                                                        @"|  /" };
-        private static string[] _cornerNorthEast =     {@"|  \", // Right corner up & left corner down
-                                                         "| 1 ",
+                                                         "│ 1 ",
+                                                        @"│  /" };
+        private static string[] _cornerNorthEast =     {@"│  \", // Right corner up & left corner down
+                                                         "│ 1 ",
                                                         @"\2  ",
-                                                        @" \--" };
-        private static string[] _cornerNorthWest =     {@"/  |", // Left corner up & right corner down
-                                                         " 1 |",
+                                                        @" \──" };
+        private static string[] _cornerNorthWest =     {@"/  │", // Left corner up & right corner down
+                                                         " 1 │",
                                                         @"  2/",
-                                                        @"--/ " };
+                                                        @"──/ " };
         #endregion
     }
     public enum GraphicSectionTypes
