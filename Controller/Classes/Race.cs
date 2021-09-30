@@ -4,6 +4,7 @@ using Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Timers;
 
 namespace Controller.Classes
 {
@@ -12,6 +13,7 @@ namespace Controller.Classes
         // Attributes
         private Random _random;
         private Dictionary<Section, SectionData> _positions;
+        private Timer _timer;
 
         // Properties
         public Track Track { get; set; }
@@ -21,12 +23,16 @@ namespace Controller.Classes
         // Constructors
         public Race(Track track, List<IParticipant> participants)
         {
-            // Initializes the properties of this class
+            // Initialize the properties of this class
             Track = track;
             Participants = participants;
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
+            _timer = new Timer(500); // 0.5 seconden
+
+            // Call methods
             PlaceParticipantsOnStartGrids(Track, Participants);
+            _timer.Elapsed += OnTimedEvent;
         }
 
         // Methods
@@ -138,6 +144,18 @@ namespace Controller.Classes
                 participant.Equipment.Quality = _random.Next();
                 participant.Equipment.Performance = _random.Next();
             }
+        }
+
+        // Event handler methods
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}", e.SignalTime);
+        }
+
+        private void Start()
+        { // This method starts the timer
+            _timer.AutoReset = true; // Raise the Elapsed event repeatedly (true)
+            _timer.Enabled = true;
         }
     }
 }

@@ -1,13 +1,10 @@
-﻿using Model;
+﻿using Controller.Classes;
 using Model.Classes;
 using Model.Interfaces;
-using Controller;
-using Controller.Classes;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using static Model.Classes.Section;
 using System.Linq;
+using static Model.Classes.Section;
 
 namespace View.Classes
 {
@@ -27,8 +24,8 @@ namespace View.Classes
 
             foreach (Section section in track.Sections)
             {
-                    graphicSectionTypesList.Add(DetermineNextGraphicSectionType(section, ref directionPreviousGraphicSectionType));
-                    positionsList.Add(DetermineNextPosition(directionPreviousGraphicSectionType));
+                graphicSectionTypesList.Add(DetermineNextGraphicSectionType(section, ref directionPreviousGraphicSectionType));
+                positionsList.Add(DetermineNextPosition(directionPreviousGraphicSectionType));
             }
 
             WriteGraphicsToConsole(graphicSectionTypesList, positionsList, track.Sections); // Finally write the track graphics!
@@ -61,69 +58,45 @@ namespace View.Classes
             GraphicSectionTypes newGraphicSectionType = default;
             if (directionPreviousGraphicSectionType == CardinalDirections.North)
             {
-                switch (section.SectionType) // Allocate correct graphic array to Enum and add to list
-                {
-                    case SectionTypes.StartGrid: newGraphicSectionType = GraphicSectionTypes.StartGridNorth; break;
-                    case SectionTypes.Finish: newGraphicSectionType = GraphicSectionTypes.FinishNorth; break;
-                    case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightNorth; break;
-                    case SectionTypes.RightCorner:
-                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.East; break;
-                    case SectionTypes.LeftCorner:
-                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.West; break;
-                    default: break;
-                }
+                AllocateNextGraphicSectionType(section, ref directionPreviousGraphicSectionType, ref newGraphicSectionType, new Enum[] {
+                GraphicSectionTypes.StartGridNorth, GraphicSectionTypes.FinishNorth, GraphicSectionTypes.StraightNorth, CardinalDirections.East, CardinalDirections.West});
             }
             else if (directionPreviousGraphicSectionType == CardinalDirections.East)
             {
-                switch (section.SectionType) // Allocate correct graphic array to Enum and add to list
-                {
-                    case SectionTypes.StartGrid: newGraphicSectionType = GraphicSectionTypes.StartGridEast; break;
-                    case SectionTypes.Finish: newGraphicSectionType = GraphicSectionTypes.FinishEast; break;
-                    case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightEast; break;
-                    case SectionTypes.RightCorner:
-                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.South; break;
-                    case SectionTypes.LeftCorner:
-                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.North; break;
-                    default: break;
-                }
+                AllocateNextGraphicSectionType(section, ref directionPreviousGraphicSectionType, ref newGraphicSectionType, new Enum[] {
+                GraphicSectionTypes.StartGridEast, GraphicSectionTypes.FinishEast, GraphicSectionTypes.StraightEast, CardinalDirections.South, CardinalDirections.North});
             }
             else if (directionPreviousGraphicSectionType == CardinalDirections.South)
             {
-                switch (section.SectionType) // Allocate correct graphic array to Enum and add to list
-                {
-                    case SectionTypes.StartGrid: newGraphicSectionType = GraphicSectionTypes.StartGridSouth; break;
-                    case SectionTypes.Finish: newGraphicSectionType = GraphicSectionTypes.FinishSouth; break;
-                    case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightSouth; break;
-                    case SectionTypes.RightCorner:
-                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.West; break;
-                    case SectionTypes.LeftCorner:
-                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.East; break;
-                    default: break;
-                }
+                AllocateNextGraphicSectionType(section, ref directionPreviousGraphicSectionType, ref newGraphicSectionType, new Enum[] {
+                GraphicSectionTypes.StartGridSouth,GraphicSectionTypes.FinishSouth, GraphicSectionTypes.StraightSouth, CardinalDirections.West, CardinalDirections.East });
             }
             else // the same as directionPreviousGraphicSectionType == CardinalDirections.West
             {
-                switch (section.SectionType) // Allocate correct graphic array to Enum and add to list
-                {
-                    case SectionTypes.StartGrid: newGraphicSectionType = GraphicSectionTypes.StartGridWest; break;
-                    case SectionTypes.Finish: newGraphicSectionType = GraphicSectionTypes.FinishWest; break;
-                    case SectionTypes.Straight: newGraphicSectionType = GraphicSectionTypes.StraightWest; break;
-                    case SectionTypes.RightCorner:
-                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.North; break;
-                    case SectionTypes.LeftCorner:
-                        newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
-                        directionPreviousGraphicSectionType = CardinalDirections.South; break;
-                    default: break;
-                }
+                AllocateNextGraphicSectionType(section, ref directionPreviousGraphicSectionType, ref newGraphicSectionType, new Enum[] {
+                GraphicSectionTypes.StartGridWest, GraphicSectionTypes.FinishWest, GraphicSectionTypes.StraightWest, CardinalDirections.North, CardinalDirections.South });
             }
             return newGraphicSectionType;
+        }
+
+        private static void AllocateNextGraphicSectionType(Section section, ref CardinalDirections directionPreviousGraphicSectionType, ref GraphicSectionTypes newGraphicSectionType, Enum[] values)
+        {
+            switch (section.SectionType) // Allocate correct graphic array to Enum and add to list
+            {
+                case SectionTypes.StartGrid:
+                    newGraphicSectionType = (GraphicSectionTypes)values[0]; break;
+                case SectionTypes.Finish:
+                    newGraphicSectionType = (GraphicSectionTypes)values[1]; break;
+                case SectionTypes.Straight:
+                    newGraphicSectionType = (GraphicSectionTypes)values[2]; break;
+                case SectionTypes.RightCorner:
+                    newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.RightCorner, directionPreviousGraphicSectionType);
+                    directionPreviousGraphicSectionType = (CardinalDirections)values[3]; break;
+                case SectionTypes.LeftCorner:
+                    newGraphicSectionType = DetermineNextCornerGraphicSectionType(SectionTypes.LeftCorner, directionPreviousGraphicSectionType);
+                    directionPreviousGraphicSectionType = (CardinalDirections)values[4]; break;
+                default: break;
+            }
         }
 
         private static GraphicSectionTypes DetermineNextCornerGraphicSectionType(SectionTypes currentSectionType, CardinalDirections directionPreviousGraphicSectionType)
@@ -164,22 +137,22 @@ namespace View.Classes
                 SectionData participant = Data.CurrentRace.GetSectionData(sections.ElementAt(counter));
                 switch (graphicSectionType) // Allocate correct graphic array to Enum and add to list
                 {
-                    case GraphicSectionTypes.StartGridNorth: graphicSectionsList.Add(PlaceParticipants(_startGridNorth, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.StartGridEast: graphicSectionsList.Add(PlaceParticipants(_startGridEast, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.StartGridSouth: graphicSectionsList.Add(PlaceParticipants(_startGridSouth, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.StartGridWest: graphicSectionsList.Add(PlaceParticipants(_startGridWest, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.FinishNorth: graphicSectionsList.Add(PlaceParticipants(_finishVertical, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.FinishEast: graphicSectionsList.Add(PlaceParticipants(_finishHorizontal, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.FinishSouth: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishVertical, participant.Left, participant.Right))); break;
-                    case GraphicSectionTypes.FinishWest: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishHorizontal, participant.Left, participant.Right))); break;
-                    case GraphicSectionTypes.StraightNorth: graphicSectionsList.Add(PlaceParticipants(_straightVertical, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.StraightEast: graphicSectionsList.Add(PlaceParticipants(_straightHorizontal, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.StraightSouth: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightVertical, participant.Left, participant.Right))); break;
-                    case GraphicSectionTypes.StraightWest: graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightHorizontal, participant.Left, participant.Right))); break;
-                    case GraphicSectionTypes.CornerSouthWest: graphicSectionsList.Add(PlaceParticipants(_cornerSouthWest, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.CornerEastSouth: graphicSectionsList.Add(PlaceParticipants(_cornerEastSouth, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.CornerNorthEast: graphicSectionsList.Add(PlaceParticipants(_cornerNorthEast, participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.CornerNorthWest: graphicSectionsList.Add(PlaceParticipants(_cornerNorthWest, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StartGridNorth:  graphicSectionsList.Add(PlaceParticipants(_startGridNorth,     participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StartGridEast:   graphicSectionsList.Add(PlaceParticipants(_startGridEast,      participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StartGridSouth:  graphicSectionsList.Add(PlaceParticipants(_startGridSouth,     participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StartGridWest:   graphicSectionsList.Add(PlaceParticipants(_startGridWest,      participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.FinishNorth:     graphicSectionsList.Add(PlaceParticipants(_finishVertical,     participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.FinishEast:      graphicSectionsList.Add(PlaceParticipants(_finishHorizontal,   participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.FinishSouth:     graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishVertical,     participant.Left, participant.Right))); break;
+                    case GraphicSectionTypes.FinishWest:      graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_finishHorizontal,   participant.Left, participant.Right))); break;
+                    case GraphicSectionTypes.StraightNorth:   graphicSectionsList.Add(PlaceParticipants(_straightVertical,   participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StraightEast:    graphicSectionsList.Add(PlaceParticipants(_straightHorizontal, participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.StraightSouth:   graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightVertical,   participant.Left, participant.Right))); break;
+                    case GraphicSectionTypes.StraightWest:    graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightHorizontal, participant.Left, participant.Right))); break;
+                    case GraphicSectionTypes.CornerSouthWest: graphicSectionsList.Add(PlaceParticipants(_cornerSouthWest,    participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.CornerEastSouth: graphicSectionsList.Add(PlaceParticipants(_cornerEastSouth,    participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.CornerNorthEast: graphicSectionsList.Add(PlaceParticipants(_cornerNorthEast,    participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.CornerNorthWest: graphicSectionsList.Add(PlaceParticipants(_cornerNorthWest,    participant.Left, participant.Right)); break;
                     default: break;
                 }
                 counter++;
@@ -200,14 +173,13 @@ namespace View.Classes
                     Console.Write($"{line}\n");
                     counter++;
                     // Compensate the cursor so it doesn't go to x = 0 after a new line by using a counter
-                    Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1] + counter);                    
+                    Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1] + counter);
                 }
                 // Set the cursor afterwards to the next position for the next section
                 tempCursorPosition[0] += positionsList[i][0];
                 tempCursorPosition[1] += positionsList[i][1];
                 Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1]);
             }
-
         }
 
         private static int[] FixCursorPosition(List<int[]> positionsList)
@@ -268,10 +240,10 @@ namespace View.Classes
                 rightParticipantFirstLetterName = rightParticipant.Name[0];
             }
             // Replaces the 1 for the leftParticipantFirstLetterName and the 2 for the rightParticipantFirstLetterName
-            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse($"1"), leftParticipantFirstLetterName);
-            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse($"1"), leftParticipantFirstLetterName);
-            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse($"2"), rightParticipantFirstLetterName);
-            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse($"2"), rightParticipantFirstLetterName);
+            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse("1"), leftParticipantFirstLetterName);
+            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse("1"), leftParticipantFirstLetterName);
+            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse("2"), rightParticipantFirstLetterName);
+            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse("2"), rightParticipantFirstLetterName);
             return outputGraphicSection;
         }
 
@@ -304,7 +276,7 @@ namespace View.Classes
         private static string[] _straightVertical =    { "|  |", // Points to the north
                                                          "|1 |",
                                                          "| 2|",
-                                                         "|  |" }; 
+                                                         "|  |" };
         private static string[] _straightHorizontal =  { "----", // Points to the east
                                                          "  1 ",
                                                          " 2  ",
