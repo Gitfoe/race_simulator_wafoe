@@ -1,4 +1,5 @@
-﻿using Controller.Classes;
+﻿using Controller;
+using Controller.Classes;
 using Model.Classes;
 using Model.Interfaces;
 using System;
@@ -279,12 +280,16 @@ namespace View.Classes
             }
         }
 
-        
-
         // Event handler methods
-        public static void OnDriversChanged(object sender, DriversChangedEventArgs changedTrack)
+        public static void OnDriversChanged(object sender, DriversChangedEventArgs args)
         {
-            DrawTrack(changedTrack.Track);
+            DrawTrack(args.Track);
+        }
+
+        public static void OnNextRaceEvent(object sender, NextRaceEventArgs args)
+        { // Link events and draw track for the first time
+            args.Race.DriversChanged += OnDriversChanged;
+            DrawTrack(args.Race.Track);
         }
 
         #region graphics

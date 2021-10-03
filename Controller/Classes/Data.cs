@@ -15,6 +15,9 @@ namespace Controller.Classes
         public static Competition GrandPrix { get; set; }
         public static Race CurrentRace { get; set; }
 
+        // Events
+        public static event EventHandler<NextRaceEventArgs> NextRaceEvent;
+
         // Methods
         public static void Initialize() // Initialize a new competition
         {
@@ -40,16 +43,16 @@ namespace Controller.Classes
             // Method that adds all the tracks in the list TrackList to the queue of GrandPrix
             Track[] TrackList = // Create list of tracks
             {
-                //new Track("Rainbow Road", new Section.SectionTypes[] {
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.StartGrid,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.StartGrid,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.StartGrid,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.Finish
-                //} ),
+                new Track("Rainbow Road", new Section.SectionTypes[] {
+                    SectionTypes.LeftCorner,
+                    SectionTypes.StartGrid,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.StartGrid,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.StartGrid,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Finish
+                } ),
                 new Track("Yoshi Circuit", new Section.SectionTypes[] {
                     SectionTypes.StartGrid,
                     SectionTypes.StartGrid,
@@ -130,12 +133,19 @@ namespace Controller.Classes
         }
         public static void NextRace()
         {
+            CurrentRace?.CleanUp(); // Cleans up the current race, the question mark notes it checks if there is a current race
             Track currentTrack = GrandPrix.NextTrack();
             if (currentTrack != null)
             {
                 CurrentRace = new Race(currentTrack, GrandPrix.Participants);
+                CurrentRace.RaceFinished += OnRaceFinished;
+                NextRaceEvent(null, new NextRaceEventArgs() { Race = CurrentRace });
             }
             CurrentRace.Start(); // Start the timer for the race
+        }
+        private static void OnRaceFinished(object sender, EventArgs e)
+        {
+            NextRace();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Controller.Classes
         private Random _random;
         private Dictionary<Section, SectionData> _positions;
         private Timer _timer;
+        private Dictionary<IParticipant, int> _roundsFinished;
 
         // Properties
         public Track Track { get; set; }
@@ -23,6 +24,7 @@ namespace Controller.Classes
 
         // Events
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
+        public event EventHandler RaceFinished;
 
         // Constructors
         public Race(Track track, List<IParticipant> participants)
@@ -33,6 +35,7 @@ namespace Controller.Classes
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
             _timer = new Timer(500); // 0.5 seconden
+            _roundsFinished = new Dictionary<IParticipant, int>();
 
             // Call methods
             PlaceParticipantsOnStartGrids(Track, Participants);
@@ -148,12 +151,12 @@ namespace Controller.Classes
             // Iterates over the Participant list and generates random values for Quality and Performance for each driver
             foreach (IParticipant participant in Participants)
             {
-                participant.Equipment.Quality = _random.Next(1, 10);
-                participant.Equipment.Performance = _random.Next(1, 10);
+                participant.Equipment.Quality = _random.Next(100, 100);
+                participant.Equipment.Performance = _random.Next(100, 100);
             }
         }
 
-        // Participant moving methods
+        // Participant racing methods
         private void MoveParticipants()
         {
             // Loops through the participants and adds the new total speed to the SectionData the participant is on
@@ -161,7 +164,7 @@ namespace Controller.Classes
             {
                 Section sectionParticipantIsOn = FindSectionOfParticipant(participant);
                 int totalSpeedOfParticipant = participant.Equipment.Performance * participant.Equipment.Speed;
-                if (_positions[sectionParticipantIsOn].Left == participant)
+                if (sectionParticipantIsOn != null && _positions[sectionParticipantIsOn].Left == participant) // Also have a check if the participant is not null (removed after finish)
                 {
                     if ((_positions[sectionParticipantIsOn].DistanceLeft + totalSpeedOfParticipant) < 100)
                     { // If the new distance is lower than the maximum track distance, just add the new distance
@@ -172,7 +175,7 @@ namespace Controller.Classes
                         PlaceParticipantOnNextSection(sectionParticipantIsOn, Placement.Left, participant);
                     }
                 }
-                else
+                else if (sectionParticipantIsOn != null) // Also have a check if the participant is not null (removed after finish)
                 {
                     if ((_positions[sectionParticipantIsOn].DistanceRight + totalSpeedOfParticipant) < 100)
                     { // If the new distance is lower than the maximum track distance, just add the new distance
@@ -195,7 +198,7 @@ namespace Controller.Classes
                     return item.Key;
                 }
             }
-            throw new InvalidProgramException(); // If it cannot find the participant, throw an exception
+            return null; // If it cannot find the participant, return null
         }
 
         private void PlaceParticipantOnNextSection(Section sectionParticipantIsOn, Placement placement, IParticipant participant)
@@ -226,6 +229,22 @@ namespace Controller.Classes
             {
                 foundSectionData.DistanceLeft = 100;
             }
+            else
+            {
+                CheckIfParticipantReachedFinish(participant, FindFirstFinishOnTrack());
+            }
+        }
+
+        private Section FindFirstFinishOnTrack()
+        { // Returns the first finish in a track (ignores the others if there are more finish sections)
+            foreach (var item in _positions)
+            {
+                if (item.Key.SectionType == Section.SectionTypes.Finish)
+                {
+                    return item.Key;
+                }
+            }
+            throw new IndexOutOfRangeException(); // Throw an exception if it can't find a finish
         }
 
         private bool PlaceParticipantIfPossible(Placement placement, IParticipant participant, SectionData previousSectionData, SectionData nextSectionData)
@@ -316,17 +335,76 @@ namespace Controller.Classes
             }
         }
 
+        private void CheckIfParticipantReachedFinish(IParticipant participant, Section finish)
+        { // Calls the CountLapsOfParticipants method and removes the participant from the track once the participant is finished and returns true if it finished
+            bool participantFinished = false;
+            if (_positions[finish].Left == participant)
+            {
+                participantFinished = CountLapsOfParticipants(participant);
+                if (participantFinished == true)
+                {
+                    _positions[finish].Left = null;
+                }
+            }
+            else if (_positions[finish].Right == participant)
+            {
+                participantFinished = CountLapsOfParticipants(participant);
+                if (participantFinished == true)
+                {
+                    _positions[finish].Right = null;
+                }
+            }
+        }
+
+        private bool CountLapsOfParticipants(IParticipant participant)
+        { // Gets called once a participant finishes a lap, counts the laps of participants and returns true once they finished the race (3 laps)
+            if (!_roundsFinished.ContainsKey(participant))
+            {
+                _roundsFinished.Add(participant, 1);
+            }
+            else if (_roundsFinished[participant] < 2) // Change 3 here if you want to change the amount of laps
+            {
+                _roundsFinished[participant] += 1;
+            }
+            else if (_roundsFinished[participant] == 2) // Change 3 here if you want to change the amount of laps
+            {
+                _roundsFinished[participant] += 1;
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckIfEveryoneFinishedRace()
+        {
+            if (_roundsFinished.Values.Distinct().Count() == 1 && _roundsFinished.Count > 0 && _roundsFinished.First().Value == 3) // Change 4 here (3 + 1 = 4) to change the amount of laps
+            {
+                return true;
+            }
+            return false;
+        }
+
         // Event handler methods
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             MoveParticipants();
-            DriversChanged(source, new DriversChangedEventArgs() { Track = this.Track });
+            DriversChanged(this, new DriversChangedEventArgs() { Track = this.Track });
+            if (CheckIfEveryoneFinishedRace() == true)
+            {
+                RaceFinished(this, new EventArgs());
+            }
         }
 
         public void Start()
         { // This method starts the timer
             _timer.AutoReset = true; // Raise the Elapsed event repeatedly (true)
             _timer.Enabled = true;
+        }
+
+        public void CleanUp()
+        { // Cleans up old event data
+            DriversChanged = null;
+            _timer.Enabled = false;
+            RaceFinished = null;
         }
     }
     public enum Placement
