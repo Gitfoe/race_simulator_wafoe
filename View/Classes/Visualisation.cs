@@ -16,6 +16,7 @@ namespace View.Classes
             // Convert sections to graphicsSectionTypes and positions and also keep track of the direction of the previous graphic section type
             List<GraphicSectionTypes> graphicSectionTypesList = new List<GraphicSectionTypes>();
             List<int[]> positionsList = new List<int[]>();
+            List<CardinalDirections> directionPreviousGraphicSectionTypeList = new List<CardinalDirections>();
 
             // Assign a random value for the first section
             //Random random = new Random(DateTime.Now.Millisecond);
@@ -26,9 +27,10 @@ namespace View.Classes
             {
                 graphicSectionTypesList.Add(DetermineNextGraphicSectionType(section, ref directionPreviousGraphicSectionType));
                 positionsList.Add(DetermineNextPosition(directionPreviousGraphicSectionType));
+                directionPreviousGraphicSectionTypeList.Add(directionPreviousGraphicSectionType);
             }
 
-            WriteGraphicsToConsole(graphicSectionTypesList, positionsList, track.Sections); // Finally write the track graphics!
+            WriteGraphicsToConsole(graphicSectionTypesList, positionsList, track.Sections, directionPreviousGraphicSectionTypeList); // Finally write the track graphics!
         }
 
         private static int[] DetermineNextPosition(CardinalDirections directionPreviousGraphicSectionType)
@@ -127,7 +129,7 @@ namespace View.Classes
             }
         }
 
-        private static List<string[]> ConvertGraphicSectionTypesToGraphicArrays(List<GraphicSectionTypes> graphicSectionTypesList, LinkedList<Section> sections)
+        private static List<string[]> ConvertGraphicSectionTypesToGraphicArrays(List<GraphicSectionTypes> graphicSectionTypesList, LinkedList<Section> sections, List<CardinalDirections> directionPreviousGraphicSectionType)
         {
             List<string[]> graphicSectionsList = new List<string[]>(); // Create list for all the graphic array values
             int counter = 0; // Alright, sorry for this, it starts to get quite spaghetti here, but it's my first time coding C# and SOLID
@@ -149,10 +151,10 @@ namespace View.Classes
                     case GraphicSectionTypes.StraightEast:    graphicSectionsList.Add(PlaceParticipants(_straightHorizontal, participant.Left, participant.Right)); break;
                     case GraphicSectionTypes.StraightSouth:   graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightVertical,   participant.Left, participant.Right))); break;
                     case GraphicSectionTypes.StraightWest:    graphicSectionsList.Add(RotateStringArray180Degrees(PlaceParticipants(_straightHorizontal, participant.Left, participant.Right))); break;
-                    case GraphicSectionTypes.CornerSouthWest: graphicSectionsList.Add(PlaceParticipants(_cornerSouthWest,    participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.CornerEastSouth: graphicSectionsList.Add(PlaceParticipants(_cornerEastSouth,    participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.CornerNorthEast: graphicSectionsList.Add(PlaceParticipants(_cornerNorthEast,    participant.Left, participant.Right)); break;
-                    case GraphicSectionTypes.CornerNorthWest: graphicSectionsList.Add(PlaceParticipants(_cornerNorthWest,    participant.Left, participant.Right)); break;
+                    case GraphicSectionTypes.CornerSouthWest: graphicSectionsList.Add(PlaceParticipants(_cornerSouthWest,    participant.Left, participant.Right, directionPreviousGraphicSectionType.ElementAt(counter))); break;
+                    case GraphicSectionTypes.CornerEastSouth: graphicSectionsList.Add(PlaceParticipants(_cornerEastSouth,    participant.Left, participant.Right, directionPreviousGraphicSectionType.ElementAt(counter))); break;
+                    case GraphicSectionTypes.CornerNorthEast: graphicSectionsList.Add(PlaceParticipants(_cornerNorthEast,    participant.Left, participant.Right, directionPreviousGraphicSectionType.ElementAt(counter))); break;
+                    case GraphicSectionTypes.CornerNorthWest: graphicSectionsList.Add(PlaceParticipants(_cornerNorthWest,    participant.Left, participant.Right, directionPreviousGraphicSectionType.ElementAt(counter))); break;
                     default: break;
                 }
                 counter++;
@@ -160,9 +162,9 @@ namespace View.Classes
             return graphicSectionsList;
         }
 
-        private static void WriteGraphicsToConsole(List<GraphicSectionTypes> graphicSectionTypesList, List<int[]> positionsList, LinkedList<Section> sections)
+        private static void WriteGraphicsToConsole(List<GraphicSectionTypes> graphicSectionTypesList, List<int[]> positionsList, LinkedList<Section> sections, List<CardinalDirections> directionPreviousGraphicSectionType)
         {
-            List<string[]> graphicSectionsList = ConvertGraphicSectionTypesToGraphicArrays(graphicSectionTypesList, sections); // Convert the Enums to actual Graphics
+            List<string[]> graphicSectionsList = ConvertGraphicSectionTypesToGraphicArrays(graphicSectionTypesList, sections, directionPreviousGraphicSectionType); // Convert the Enums to actual Graphics
             int[] tempCursorPosition = FixCursorPosition(positionsList); // Fix the cursor position if the x or y count is negative
             Console.SetCursorPosition(tempCursorPosition[0], tempCursorPosition[1]); // Set the cursor once to the corrected position
             for (int i = 0; i < graphicSectionsList.Count; i++) // Start loop at the length of graphicSectionsList (is the same as positionsList)
@@ -229,10 +231,44 @@ namespace View.Classes
         }
 
         private static string[] PlaceParticipants(string[] graphicSection, IParticipant leftParticipant, IParticipant rightParticipant)
+        { // Places the participants on the track, replacing the 1 for the leftParticipantFirstLetterName and the 2 for the rightParticipantFirstLetterName
+            char leftParticipantFirstLetterName, rightParticipantFirstLetterName;
+            CheckParticipants(graphicSection, leftParticipant, rightParticipant, out string[] outputGraphicSection, out leftParticipantFirstLetterName, out rightParticipantFirstLetterName);
+            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse("1"), leftParticipantFirstLetterName);
+            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse("1"), leftParticipantFirstLetterName);
+            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse("2"), rightParticipantFirstLetterName);
+            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse("2"), rightParticipantFirstLetterName);
+            return outputGraphicSection;
+        }
+
+        private static string[] PlaceParticipants(string[] graphicSection, IParticipant leftParticipant, IParticipant rightParticipant, CardinalDirections directionPreviousGraphicSectionType)
+        { // Places the participants on the track, replacing the 1 and 2 depending on the graphicSectionType, so it moves through nicely in the visualisation and doesn't jump around in corners
+            char leftParticipantFirstLetterName, rightParticipantFirstLetterName;
+            CheckParticipants(graphicSection, leftParticipant, rightParticipant, out string[] outputGraphicSection, out leftParticipantFirstLetterName, out rightParticipantFirstLetterName);
+            char first;
+            char second;
+            if (directionPreviousGraphicSectionType == CardinalDirections.North || directionPreviousGraphicSectionType == CardinalDirections.South)
+            {
+                first = '1';
+                second = '2';
+            }
+            else
+            {
+                first = '2';
+                second = '1';
+            }
+            outputGraphicSection[1] = outputGraphicSection[1].Replace(first, leftParticipantFirstLetterName);
+            outputGraphicSection[2] = outputGraphicSection[2].Replace(first, leftParticipantFirstLetterName);
+            outputGraphicSection[1] = outputGraphicSection[1].Replace(second, rightParticipantFirstLetterName);
+            outputGraphicSection[2] = outputGraphicSection[2].Replace(second, rightParticipantFirstLetterName);
+            return outputGraphicSection;
+        }
+
+        private static void CheckParticipants(string[] graphicSection, IParticipant leftParticipant, IParticipant rightParticipant, out string[] outputGraphicSection, out char leftParticipantFirstLetterName, out char rightParticipantFirstLetterName)
         {
-            string[] outputGraphicSection = (string[])graphicSection.Clone();
-            char leftParticipantFirstLetterName = ' ';
-            char rightParticipantFirstLetterName = ' ';
+            outputGraphicSection = (string[])graphicSection.Clone();
+            leftParticipantFirstLetterName = ' ';
+            rightParticipantFirstLetterName = ' ';
             if (leftParticipant != null)
             { // Assigns the first letter of a name to a temporary variable, or if the participant is not given, it keeps the default blank space
                 leftParticipantFirstLetterName = leftParticipant.Name[0];
@@ -241,13 +277,9 @@ namespace View.Classes
             {
                 rightParticipantFirstLetterName = rightParticipant.Name[0];
             }
-            // Replaces the 1 for the leftParticipantFirstLetterName and the 2 for the rightParticipantFirstLetterName
-            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse("1"), leftParticipantFirstLetterName);
-            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse("1"), leftParticipantFirstLetterName);
-            outputGraphicSection[1] = outputGraphicSection[1].Replace(char.Parse("2"), rightParticipantFirstLetterName);
-            outputGraphicSection[2] = outputGraphicSection[2].Replace(char.Parse("2"), rightParticipantFirstLetterName);
-            return outputGraphicSection;
         }
+
+        
 
         // Event handler methods
         public static void OnDriversChanged(object sender, DriversChangedEventArgs changedTrack)
@@ -290,16 +322,16 @@ namespace View.Classes
                                                          " 2  ",
                                                          "────" };
         private static string[] _cornerSouthWest =     {@"──\ ", // Right corner down & left corner up
-                                                        @"  2\",
-                                                         " 1 │",
+                                                        @"  1\",
+                                                         " 2 │",
                                                         @"\  │" };
         private static string[] _cornerEastSouth =     {@" /──", // Left corner down & right corner up
                                                         @"/2  ",
                                                          "│ 1 ",
                                                         @"│  /" };
         private static string[] _cornerNorthEast =     {@"│  \", // Right corner up & left corner down
-                                                         "│ 1 ",
-                                                        @"\2  ",
+                                                         "│ 2 ",
+                                                        @"\1  ",
                                                         @" \──" };
         private static string[] _cornerNorthWest =     {@"/  │", // Left corner up & right corner down
                                                          " 1 │",

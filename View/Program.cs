@@ -15,7 +15,7 @@ namespace View
         static void Main(string[] args)
         {
             Data.Initialize();
-            Data.NextRace(); //Data.NextRace(); Data.NextRace();
+            Data.NextRace(); //Data.NextRace(); //Data.NextRace();
             //Visualisation_Extra.MakeTrack();
             //Data.NextRace();
             Data.CurrentRace.DriversChanged += Visualisation.OnDriversChanged; // Subscribe

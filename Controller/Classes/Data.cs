@@ -25,11 +25,11 @@ namespace Controller.Classes
         private static void AddParticipants() // Add 3 participants to the race
         {
             GrandPrix.Participants.AddRange(new IParticipant[] { // Add the list of new Driver classes to the Participants list
-                new Driver("Mario", 0, new Kart(10, 3, false), TeamColors.Red),
-                new Driver("Waluigi", 0, new Kart(10, 3, false), TeamColors.Blue),
-                new Driver("Yoshi", 0, new Kart(10, 3, false), TeamColors.Green),
-                new Driver("Bowser", 0, new Kart(10, 3, false), TeamColors.Yellow),
-                new Driver("Dry Bones", 0, new Kart(10, 3, false), TeamColors.Grey),
+                new Driver("Mario", 0, new Kart(10, 10, false), TeamColors.Red),
+                new Driver("Waluigi", 0, new Kart(10,10, false), TeamColors.Blue),
+                new Driver("Yoshi", 0, new Kart(10, 10, false), TeamColors.Green),
+                new Driver("Bowser", 0, new Kart(10, 10, false), TeamColors.Yellow),
+                new Driver("Dry Bones", 0, new Kart(10, 10, false), TeamColors.Grey),
                 //new Driver("Peach", 0, new Kart(4, 6, 12, false), TeamColors.Blue),
                 //new Driver("Donkey Kong", 0, new Kart(4, 6, 12, false), TeamColors.Grey),
                 //new Driver("Daisy", 0, new Kart(4, 6, 12, false), TeamColors.Yellow)
@@ -40,16 +40,16 @@ namespace Controller.Classes
             // Method that adds all the tracks in the list TrackList to the queue of GrandPrix
             Track[] TrackList = // Create list of tracks
             {
-                new Track("Rainbow Road", new Section.SectionTypes[] {
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Finish
-                } ),
+                //new Track("Rainbow Road", new Section.SectionTypes[] {
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.Finish
+                //} ),
                 new Track("Yoshi Circuit", new Section.SectionTypes[] {
                     SectionTypes.StartGrid,
                     SectionTypes.StartGrid,
