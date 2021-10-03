@@ -148,8 +148,8 @@ namespace Controller.Classes
             // Iterates over the Participant list and generates random values for Quality and Performance for each driver
             foreach (IParticipant participant in Participants)
             {
-                participant.Equipment.Quality = _random.Next(1, 5);
-                participant.Equipment.Performance = _random.Next(1, 5);
+                participant.Equipment.Quality = _random.Next(1, 10);
+                participant.Equipment.Performance = _random.Next(1, 10);
             }
         }
 
@@ -201,6 +201,7 @@ namespace Controller.Classes
         private void PlaceParticipantOnNextSection(Section sectionParticipantIsOn, Placement placement, IParticipant participant)
         { // Places a participant on the next section
             bool cannotPlaceSection = true; // Begin with true and hopefully make it false within this method
+            bool executedElseIf = false; // Bugfix to not place participants at the start if section is full, check if the else if has executed
             SectionData foundSectionData = null;
             foreach (var item in _positions) // Loops through every position in _positions
             {
@@ -211,11 +212,12 @@ namespace Controller.Classes
                 else if (foundSectionData != null)
                 { // Executes on the next loop, if the loop is not at the end, once the section has been found
                     cannotPlaceSection = PlaceParticipantIfPossible(placement, participant, foundSectionData, item.Value);
+                    executedElseIf = true;
                     break; // Stop the loop from continuing further without reason
                 }
             }
             // If the loop ended prematurely, it means it should check the first section instead
-            if (cannotPlaceSection == true)
+            if (cannotPlaceSection == true && executedElseIf == false)
             { // Check if the participant couldn't be placed because the next section was full, then try to place the participant on the first section
                 cannotPlaceSection = PlaceParticipantIfPossible(placement, participant, foundSectionData, _positions.First().Value);
             }
@@ -228,42 +230,41 @@ namespace Controller.Classes
 
         private bool PlaceParticipantIfPossible(Placement placement, IParticipant participant, SectionData previousSectionData, SectionData nextSectionData)
         { // Places the participant on the next track and also fixes the distance data
-            bool cannotPlaceSection = true;
             bool leftOccupied = CheckIfPositionIsOccupied(nextSectionData, Placement.Left);
             bool rightOccupied = CheckIfPositionIsOccupied(nextSectionData, Placement.Right);
             if (placement == Placement.Left && leftOccupied == false)
             { // If the participant was on the left and the next left position is not occupied, place participant there
                 nextSectionData.Left = participant;
                 previousSectionData.Left = null; // Remove participant from old position
-                cannotPlaceSection = false; // If it placed the participant, set this to false
                 AddKartDistanceToSectionData(previousSectionData, nextSectionData, Placement.Left, Placement.Left, participant); // Finally, add the kart distance to the correct section
             }
             else if (placement == Placement.Right && rightOccupied == false)
             { // If the participant was on the right and the next right position is not occupied, place participant there
                 nextSectionData.Right = participant;
                 previousSectionData.Right = null; // Remove participant from old position
-                cannotPlaceSection = false; // If it placed the participant, set this to false
                 AddKartDistanceToSectionData(previousSectionData, nextSectionData, Placement.Right, Placement.Right, participant); // Finally, add the kart distance to the correct section
             }
             else if (placement == Placement.Left && leftOccupied == true && rightOccupied == false)
             { // If the participant was on the left and the next left position is occupied, place participant on the right
                 nextSectionData.Right = participant;
                 previousSectionData.Left = null; // Remove participant from old position
-                cannotPlaceSection = false; // If it placed the participant, set this to false
                 AddKartDistanceToSectionData(previousSectionData, nextSectionData, Placement.Left, Placement.Right, participant); // Finally, add the kart distance to the correct section
             }
             else if (placement == Placement.Right && leftOccupied == false && rightOccupied == true)
             { // If the participant was on the right and the next right position is occupied, place participant on the left
                 nextSectionData.Left = participant;
                 previousSectionData.Right = null; // Remove participant from old position
-                cannotPlaceSection = false; // If it placed the participant, set this to false
                 AddKartDistanceToSectionData(previousSectionData, nextSectionData, Placement.Right, Placement.Left, participant); // Finally, add the kart distance to the correct section
             }
-            return cannotPlaceSection; // If none of the above if's succeeded, it returns true, otherwise false
+            else
+            {
+                return true; // If none of the above if's succeeded, it returns true
+            }
+            return false; // If something succeeded, it returns false
         }
 
         private void AddKartDistanceToSectionData(SectionData previousSectionData, SectionData nextSectionData, Placement previousPlacement, Placement nextPlacement, IParticipant participant)
-        { // Adds the new distance to the correct SectionData and resets the distance from the old section
+        { // Adds the new distance to the correct SectionData
           // If the participant was placed on the next section, adds the remainder of the distance to the next section, so if the distance was 90 and 20 was to be added, the outcome is 30
             if (previousPlacement == Placement.Left)
             {
@@ -275,7 +276,6 @@ namespace Controller.Classes
                 {
                     nextSectionData.DistanceRight = (previousSectionData.DistanceLeft + (participant.Equipment.Performance * participant.Equipment.Speed)) % 100;
                 }
-                previousSectionData.DistanceLeft = 0;
             }
             else // Placement.Right
             {
@@ -287,7 +287,6 @@ namespace Controller.Classes
                 {
                     nextSectionData.DistanceRight = (previousSectionData.DistanceRight + (participant.Equipment.Performance * participant.Equipment.Speed)) % 100;
                 }
-                previousSectionData.DistanceRight = 0;
             }
         }
 
