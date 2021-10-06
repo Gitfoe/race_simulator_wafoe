@@ -34,7 +34,7 @@ namespace Controller.Classes
             Participants = participants;
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
-            _timer = new Timer(500); // 0.5 seconden
+            _timer = new Timer(300); // 0.3 seconden
             _roundsFinished = new Dictionary<IParticipant, int>();
 
             // Call methods
@@ -151,8 +151,8 @@ namespace Controller.Classes
             // Iterates over the Participant list and generates random values for Quality and Performance for each driver
             foreach (IParticipant participant in Participants)
             {
-                participant.Equipment.Quality = _random.Next(100, 100);
-                participant.Equipment.Performance = _random.Next(100, 100);
+                participant.Equipment.Quality = _random.Next(5, 10);
+                participant.Equipment.Performance = _random.Next(5, 10);
             }
         }
 
@@ -391,6 +391,7 @@ namespace Controller.Classes
             if (CheckIfEveryoneFinishedRace() == true)
             {
                 RaceFinished(this, new EventArgs());
+                CleanUp();
             }
         }
 
@@ -403,8 +404,8 @@ namespace Controller.Classes
         public void CleanUp()
         { // Cleans up old event data
             DriversChanged = null;
-            _timer.Enabled = false;
             RaceFinished = null;
+            _timer.Enabled = false;
         }
     }
     public enum Placement

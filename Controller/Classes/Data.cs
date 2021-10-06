@@ -29,7 +29,7 @@ namespace Controller.Classes
         {
             GrandPrix.Participants.AddRange(new IParticipant[] { // Add the list of new Driver classes to the Participants list
                 new Driver("Mario", 0, new Kart(10, 10, false), TeamColors.Red),
-                new Driver("Waluigi", 0, new Kart(10,10, false), TeamColors.Blue),
+                new Driver("Waluigi", 0, new Kart(10, 10, false), TeamColors.Blue),
                 new Driver("Yoshi", 0, new Kart(10, 10, false), TeamColors.Green),
                 new Driver("Bowser", 0, new Kart(10, 10, false), TeamColors.Yellow),
                 new Driver("Dry Bones", 0, new Kart(10, 10, false), TeamColors.Grey),
@@ -139,7 +139,7 @@ namespace Controller.Classes
             {
                 CurrentRace = new Race(currentTrack, GrandPrix.Participants);
                 CurrentRace.RaceFinished += OnRaceFinished;
-                NextRaceEvent(null, new NextRaceEventArgs() { Race = CurrentRace });
+                NextRaceEvent(CurrentRace, new NextRaceEventArgs() { Race = CurrentRace });
             }
             CurrentRace.Start(); // Start the timer for the race
         }

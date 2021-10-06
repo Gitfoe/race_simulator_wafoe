@@ -289,6 +289,7 @@ namespace View.Classes
         public static void OnNextRaceEvent(object sender, NextRaceEventArgs args)
         { // Link events and draw track for the first time
             args.Race.DriversChanged += OnDriversChanged;
+            Console.Clear();
             DrawTrack(args.Race.Track);
         }
 
