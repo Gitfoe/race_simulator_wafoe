@@ -38,8 +38,8 @@ namespace Controller.Classes
             _roundsFinished = new Dictionary<IParticipant, int>();
 
             // Call methods
-            PlaceParticipantsOnStartGrids(Track, Participants);
             RandomizeEquipment();
+            PlaceParticipantsOnStartGrids(Track, Participants);
 
             // Subscribe events
             _timer.Elapsed += OnTimedEvent; // Subscribe timer.Elapsed to OnTimedEvent
@@ -151,7 +151,7 @@ namespace Controller.Classes
             // Iterates over the Participant list and generates random values for Quality and Performance for each driver
             foreach (IParticipant participant in Participants)
             {
-                participant.Equipment.Quality = _random.Next(5, 10);
+                participant.Equipment.Speed = _random.Next(5, 10);
                 participant.Equipment.Performance = _random.Next(5, 10);
             }
         }
@@ -164,8 +164,8 @@ namespace Controller.Classes
             {
                 Section sectionParticipantIsOn = FindSectionOfParticipant(participant);
                 int totalSpeedOfParticipant = participant.Equipment.Performance * participant.Equipment.Speed;
-                if (sectionParticipantIsOn != null && _positions[sectionParticipantIsOn].Left == participant) // Also have a check if the participant is not null (removed after finish)
-                {
+                if (sectionParticipantIsOn != null && _positions[sectionParticipantIsOn].Left == participant && participant.Equipment.IsBroken == false)
+                { // Also have a check if the participant is not null (removed after finish) and if the kart is not broken
                     if ((_positions[sectionParticipantIsOn].DistanceLeft + totalSpeedOfParticipant) < 100)
                     { // If the new distance is lower than the maximum track distance, just add the new distance
                         _positions[sectionParticipantIsOn].DistanceLeft += totalSpeedOfParticipant;
@@ -175,8 +175,8 @@ namespace Controller.Classes
                         PlaceParticipantOnNextSection(sectionParticipantIsOn, Placement.Left, participant);
                     }
                 }
-                else if (sectionParticipantIsOn != null) // Also have a check if the participant is not null (removed after finish)
-                {
+                else if (sectionParticipantIsOn != null && participant.Equipment.IsBroken == false)
+                { // Also have a check if the participant is not null (removed after finish) and if the kart is not broken
                     if ((_positions[sectionParticipantIsOn].DistanceRight + totalSpeedOfParticipant) < 100)
                     { // If the new distance is lower than the maximum track distance, just add the new distance
                         _positions[sectionParticipantIsOn].DistanceRight += totalSpeedOfParticipant;
@@ -386,6 +386,7 @@ namespace Controller.Classes
         // Event handler methods
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
+            RandomizeBrokenKartOfParticipants(Participants);
             MoveParticipants();
             DriversChanged(this, new DriversChangedEventArgs() { Track = this.Track });
             if (CheckIfEveryoneFinishedRace() == true)
@@ -406,6 +407,40 @@ namespace Controller.Classes
             DriversChanged = null;
             RaceFinished = null;
             _timer.Enabled = false;
+        }
+
+        // Broken methods
+        public void RandomizeBrokenKartOfParticipants(List<IParticipant> participantsList)
+        {
+            foreach (IParticipant participant in participantsList)
+            { 
+                if (participant.Equipment.IsBroken == false)
+                {
+                    RandomizeKartBreakValues(participant);
+                }
+                else
+                {
+                    RandomizeKartFixValues(participant);
+                    if (participant.Equipment.IsBroken == false) // If the equipment was fixed again
+                    { // Removes 1 from performance and quality if it is not already 1
+                        participant.Equipment.Performance += participant.Equipment.Performance >= 1 ? -1 : 0;
+                        participant.Equipment.Quality += participant.Equipment.Quality >= 1 ? -1 : 0;
+                    }
+                }
+            }
+        }
+
+        public void RandomizeKartBreakValues(IParticipant participant)
+        { // The faster the kart, the better the quality should be. Faster karts have a higher chance of breaking.
+          // If the quality, performance and speed are all 10, it has a 0,9% chance of breaking
+          // If the speed and performance are 5 and the quality is 20, it has a 0,05% chance of breaking
+            participant.Equipment.IsBroken = _random.Next(1, 10000) <= participant.Equipment.Performance * participant.Equipment.Speed - participant.Equipment.Quality;
+        }
+
+        public void RandomizeKartFixValues(IParticipant participant)
+        { // If the kart is broken, attempt to fix it. Only quality is relevant.
+          // If the the quality is 10, it has a 10% chance to fix it. If the quality is 20, it has a 20% chance to fix. 
+            participant.Equipment.IsBroken = _random.Next(1, 100) >= participant.Equipment.Quality;
         }
     }
     public enum Placement

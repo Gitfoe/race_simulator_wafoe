@@ -14,11 +14,9 @@ namespace Model.Classes
         public bool IsBroken { get; set; }
 
         // Constructors
-        public Kart(int quality, int speed, bool isBroken)
+        public Kart(int quality)
         {
             Quality = quality;
-            Speed = speed;
-            IsBroken = isBroken;
         }
     }
 }

@@ -19,9 +19,11 @@ namespace View.Classes
             List<int[]> positionsList = new List<int[]>();
             List<CardinalDirections> directionPreviousGraphicSectionTypeList = new List<CardinalDirections>();
 
-            // Assign a random value for the first section
-            //Random random = new Random(DateTime.Now.Millisecond);
-            //CardinalDirections directionPreviousGraphicSectionType = (CardinalDirections)random.Next(Enum.GetNames(typeof(CardinalDirections)).Length);
+            // Assign a random value for the first section - update Level 5: this is now broken due to this method getting called often
+            // Random random = new Random(DateTime.Now.Millisecond);
+            // CardinalDirections directionPreviousGraphicSectionType = (CardinalDirections)random.Next(Enum.GetNames(typeof(CardinalDirections)).Length);
+            
+            // Used a fixed value for the first section instead (east)
             CardinalDirections directionPreviousGraphicSectionType = CardinalDirections.East;
 
             foreach (Section section in track.Sections)
@@ -187,7 +189,7 @@ namespace View.Classes
             }
         }
 
-        private static int[] FixCursorPosition(List<int[]> positionsList)
+        public static int[] FixCursorPosition(List<int[]> positionsList)
         {
             // Compensation algorithm for the console so graphics don't go out of bounds and the track always starts at x = 0 y = 0
             int xCount = 0;
@@ -272,11 +274,25 @@ namespace View.Classes
             rightParticipantFirstLetterName = ' ';
             if (leftParticipant != null)
             { // Assigns the first letter of a name to a temporary variable, or if the participant is not given, it keeps the default blank space
-                leftParticipantFirstLetterName = leftParticipant.Name[0];
+                if (leftParticipant.Equipment.IsBroken == true)
+                {
+                    leftParticipantFirstLetterName = '*'; // If the equipment is broken, set it to the broken char, which is *
+                }
+                else
+                {
+                    leftParticipantFirstLetterName = leftParticipant.Name[0];
+                }
             }
             if (rightParticipant != null)
             {
-                rightParticipantFirstLetterName = rightParticipant.Name[0];
+                if (rightParticipant.Equipment.IsBroken == true)
+                {
+                    rightParticipantFirstLetterName = '*';
+                }
+                else
+                {
+                    rightParticipantFirstLetterName = rightParticipant.Name[0];
+                }
             }
         }
 
