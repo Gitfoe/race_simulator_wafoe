@@ -43,6 +43,24 @@ namespace Controller.Classes
             // Method that adds all the tracks in the list TrackList to the queue of GrandPrix
             Track[] TrackList = // Create list of tracks
             {
+                new Track("Figure 8 Circuit", new Section.SectionTypes[] {
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Finish,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.RightCorner,
+                } ),
                 new Track("Rainbow Road", new Section.SectionTypes[] {
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
