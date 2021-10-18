@@ -14,5 +14,6 @@ namespace Model.Interfaces
         public TeamColors TeamColor { get; set; }
     }
     // Enmumerations
-    public enum TeamColors { Red, Green, Yellow, Grey, Blue };
+    // public enum TeamColors { Red, Green, Yellow, Grey, Blue }; // Original TeamColors
+    public enum TeamColors { Mario, Toad, Luigi, Koopa, Peach, DKJunior, Wafoe, Bowser }; // I hope this is accepted - I did this for fun!
 }

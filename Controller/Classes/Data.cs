@@ -28,14 +28,14 @@ namespace Controller.Classes
         private static void AddParticipants() // Add 3 participants to the race
         {
             GrandPrix.Participants.AddRange(new IParticipant[] { // Add the list of new Driver classes to the Participants list
-                new Driver("Mario", 0, new Kart(10), TeamColors.Red),
-                new Driver("Waluigi", 0, new Kart(10), TeamColors.Blue),
-                new Driver("Yoshi", 0, new Kart(10), TeamColors.Green),
-                new Driver("Bowser", 0, new Kart(10), TeamColors.Yellow),
-                new Driver("Dry Bones", 0, new Kart(10), TeamColors.Grey),
-                //new Driver("Peach", 0, new Kart(4, 6, 12, false), TeamColors.Blue),
-                //new Driver("Donkey Kong", 0, new Kart(4, 6, 12, false), TeamColors.Grey),
-                //new Driver("Daisy", 0, new Kart(4, 6, 12, false), TeamColors.Yellow)
+                new Driver("Mario", 0, new Kart(10), TeamColors.Mario),
+                new Driver("Toad", 0, new Kart(10), TeamColors.Toad),
+                new Driver("Luigi", 0, new Kart(10), TeamColors.Luigi),
+                new Driver("Koopa", 0, new Kart(10), TeamColors.Koopa),
+                new Driver("Peach", 0, new Kart(10), TeamColors.Peach),
+                new Driver("DK Junior", 0, new Kart(10), TeamColors.DKJunior),
+                new Driver("Yoshi", 0, new Kart(10), TeamColors.Wafoe),
+                new Driver("Bowser", 0, new Kart(10), TeamColors.Bowser)
             }); 
         }
         private static void AddTracks()

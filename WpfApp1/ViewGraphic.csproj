@@ -6,4 +6,64 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Graphics\Extra\_Karts.png" />
+    <None Remove="Graphics\Extra\_SampleTrack.png" />
+    <None Remove="Graphics\Extra\_StartEastWithRacers.png" />
+    <None Remove="Graphics\Extra\_Thwomp.pdn" />
+    <None Remove="Graphics\Extra\_ThwompFull.png" />
+    <None Remove="Graphics\Racers\Bowser.png" />
+    <None Remove="Graphics\Racers\DKJunior.png" />
+    <None Remove="Graphics\Racers\Koopa.png" />
+    <None Remove="Graphics\Racers\Luigi.png" />
+    <None Remove="Graphics\Racers\Mario.png" />
+    <None Remove="Graphics\Racers\Peach.png" />
+    <None Remove="Graphics\Racers\Thwomp.png" />
+    <None Remove="Graphics\Racers\Toad.png" />
+    <None Remove="Graphics\Racers\Wafoe.png" />
+    <None Remove="Graphics\Sections\CornerEastSouth.png" />
+    <None Remove="Graphics\Sections\CornerNorthEast.png" />
+    <None Remove="Graphics\Sections\CornerNorthWest.png" />
+    <None Remove="Graphics\Sections\CornerSouthWest.png" />
+    <None Remove="Graphics\Sections\FinishEast.png" />
+    <None Remove="Graphics\Sections\FinishNorth.png" />
+    <None Remove="Graphics\Sections\FinishSouth.png" />
+    <None Remove="Graphics\Sections\FinishWest.png" />
+    <None Remove="Graphics\Sections\StartGridEast.png" />
+    <None Remove="Graphics\Sections\StartGridNorth.png" />
+    <None Remove="Graphics\Sections\StartGridSouth.png" />
+    <None Remove="Graphics\Sections\StartGridWest.png" />
+    <None Remove="Graphics\Sections\Straight.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Graphics\Extra\_Karts.png" />
+    <Content Include="Graphics\Extra\_SampleTrack.png" />
+    <Content Include="Graphics\Extra\_StartEastWithRacers.png" />
+    <Content Include="Graphics\Extra\_Thwomp.pdn" />
+    <Content Include="Graphics\Extra\_ThwompFull.png" />
+    <Content Include="Graphics\Racers\Bowser.png" />
+    <Content Include="Graphics\Racers\DKJunior.png" />
+    <Content Include="Graphics\Racers\Koopa.png" />
+    <Content Include="Graphics\Racers\Luigi.png" />
+    <Content Include="Graphics\Racers\Mario.png" />
+    <Content Include="Graphics\Racers\Peach.png" />
+    <Content Include="Graphics\Racers\Thwomp.png" />
+    <Content Include="Graphics\Racers\Toad.png" />
+    <Content Include="Graphics\Racers\Wafoe.png" />
+    <Content Include="Graphics\Sections\CornerEastSouth.png" />
+    <Content Include="Graphics\Sections\CornerNorthEast.png" />
+    <Content Include="Graphics\Sections\CornerNorthWest.png" />
+    <Content Include="Graphics\Sections\CornerSouthWest.png" />
+    <Content Include="Graphics\Sections\FinishEast.png" />
+    <Content Include="Graphics\Sections\FinishNorth.png" />
+    <Content Include="Graphics\Sections\FinishSouth.png" />
+    <Content Include="Graphics\Sections\FinishWest.png" />
+    <Content Include="Graphics\Sections\StartGridEast.png" />
+    <Content Include="Graphics\Sections\StartGridNorth.png" />
+    <Content Include="Graphics\Sections\StartGridSouth.png" />
+    <Content Include="Graphics\Sections\StartGridWest.png" />
+    <Content Include="Graphics\Sections\Straight.png" />
+  </ItemGroup>
+
 </Project>
