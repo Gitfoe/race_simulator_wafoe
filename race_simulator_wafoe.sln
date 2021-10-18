@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller", "Controller\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControllerTest", "ControllerTest\ControllerTest.csproj", "{1DF3D97E-B127-4FCF-A5B3-C4A664ACE150}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{B2121C4C-5164-4560-90B9-74E945BDCD97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewGraphic", "WpfApp1\ViewGraphic.csproj", "{B2121C4C-5164-4560-90B9-74E945BDCD97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
