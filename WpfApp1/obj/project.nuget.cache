@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "z/Z56Xz+4ISqecA86IKKFfjaW0I5DVybpOdBpL29Bgk44bqXMgQ0EruijRFmLNm7Q3API+pBTEIvZPOJgf4xnw==",
+  "dgSpecHash": "bPWViGB2YCLNdbiIBDKQYuHW8FDQuRaNuYMZ1x6fH3OLw3+xRTJwO2bX2xrew4TvRvJPb1FuHOzV4k3m3Lnqvw==",
   "success": true,
   "projectFilePath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\WpfApp1\\ViewGraphic.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\wafoe\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\wafoe\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\wafoe\\.nuget\\packages\\system.drawing.common\\5.0.2\\system.drawing.common.5.0.2.nupkg.sha512"
+  ],
   "logs": []
 }
