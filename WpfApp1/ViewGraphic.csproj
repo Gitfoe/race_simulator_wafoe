@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Graphics\Extra\_Karts.png" />
-    <None Remove="Graphics\Extra\_SampleTrack.png" />
-    <None Remove="Graphics\Extra\_StartEastWithRacers.png" />
-    <None Remove="Graphics\Extra\_Thwomp.pdn" />
-    <None Remove="Graphics\Extra\_ThwompFull.png" />
     <None Remove="Graphics\Racers\Bowser.png" />
     <None Remove="Graphics\Racers\DKJunior.png" />
     <None Remove="Graphics\Racers\Koopa.png" />
@@ -37,11 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Graphics\Extra\_Karts.png" />
-    <Content Include="Graphics\Extra\_SampleTrack.png" />
-    <Content Include="Graphics\Extra\_StartEastWithRacers.png" />
-    <Content Include="Graphics\Extra\_Thwomp.pdn" />
-    <Content Include="Graphics\Extra\_ThwompFull.png" />
     <Content Include="Graphics\Racers\Bowser.png" />
     <Content Include="Graphics\Racers\DKJunior.png" />
     <Content Include="Graphics\Racers\Koopa.png" />

@@ -5,7 +5,6 @@ using Model.Interfaces;
 using Controller;
 using Controller.Classes;
 using ViewGraphic.Classes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,32 +30,38 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+            RenderOptions.SetBitmapScalingMode(TrackScreen, BitmapScalingMode.NearestNeighbor); // Set the scaling to the lowest quality for 8-bit vibes
 
             GraphicsCache.Initialize();
             Data.Initialize();
-            Data.NextRaceEvent += OnNextRaceEvent; // tell data about visualization event.
+            Data.NextRaceEvent += OnNextRaceEvent;
             Data.NextRace();
         }
 
         private void OnNextRaceEvent(object sender, NextRaceEventArgs args)
         { // Link events and draw track for the first time
-            args.Race.DriversChanged += Visualisation.OnDriversChanged;
             GraphicsCache.ClearCache();
+            args.Race.DriversChanged += OnDriversChanged;
             
             // Dispatcher priority
-            this.FirstLook.Dispatcher.BeginInvoke(
+            this.TrackScreen.Dispatcher.BeginInvoke(
                 DispatcherPriority.Render,
                 new Action(() =>
                 {
-                    this.FirstLook.Source = null;
-                    this.FirstLook.Source = Visualisation.DrawTrack(args.Race.Track); ;
+                    this.TrackScreen.Source = null;
+                    this.TrackScreen.Source = Visualisation.DrawTrack(args.Race.Track); ;
                 }));
         }
 
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        { // ?
-
+        public void OnDriversChanged(object sender, DriversChangedEventArgs args)
+        {
+            this.TrackScreen.Dispatcher.BeginInvoke(
+                DispatcherPriority.Render,
+                new Action(() =>
+                {
+                    this.TrackScreen.Source = null;
+                    this.TrackScreen.Source = Visualisation.DrawTrack(args.Track); ;
+                }));
         }
     }
 }

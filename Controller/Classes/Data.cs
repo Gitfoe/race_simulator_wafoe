@@ -31,10 +31,10 @@ namespace Controller.Classes
                 new Driver("Mario", 0, new Kart(10), TeamColors.Mario),
                 new Driver("Toad", 0, new Kart(10), TeamColors.Toad),
                 new Driver("Luigi", 0, new Kart(10), TeamColors.Luigi),
-                new Driver("Koopa", 0, new Kart(10), TeamColors.Koopa),
+                //new Driver("Koopa", 0, new Kart(10), TeamColors.Koopa),
                 new Driver("Peach", 0, new Kart(10), TeamColors.Peach),
-                new Driver("DK Junior", 0, new Kart(10), TeamColors.DKJunior),
-                new Driver("Yoshi", 0, new Kart(10), TeamColors.Wafoe),
+                //new Driver("DK Junior", 0, new Kart(10), TeamColors.DKJunior),
+                new Driver("Wafoe", 0, new Kart(10), TeamColors.Wafoe),
                 new Driver("Bowser", 0, new Kart(10), TeamColors.Bowser)
             }); 
         }

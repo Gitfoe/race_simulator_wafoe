@@ -8,11 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("graphics/extra/_karts.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("graphics/extra/_sampletrack.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("graphics/extra/_starteastwithracers.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("graphics/extra/_thwomp.pdn")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("graphics/extra/_thwompfull.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("graphics/racers/bowser.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("graphics/racers/dkjunior.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("graphics/racers/koopa.png")]

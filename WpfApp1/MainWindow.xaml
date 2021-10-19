@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Background="#FF41BEFF">
-        <Image x:Name="FirstLook" Height="100" Margin="350,167,350,167"/>
+    <Grid>
+        <Image x:Name="TrackScreen" Margin="20,20,0,20" HorizontalAlignment="Left"/>
     </Grid>
 </Window>

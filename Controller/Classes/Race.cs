@@ -153,6 +153,12 @@ namespace Controller.Classes
             {
                 participant.Equipment.Speed = _random.Next(5, 10);
                 participant.Equipment.Performance = _random.Next(5, 10);
+                if (participant.Name == "Wafoe") // Cheat code for myself, so I always win, lol
+                {
+                    participant.Equipment.Quality = 100;
+                    participant.Equipment.Speed = 10;
+                    participant.Equipment.Performance = 10;
+                }
             }
         }
 

@@ -15,7 +15,7 @@ namespace ViewGraphic.Classes
 
         // Methods
         public static void Initialize()
-        {
+        { // Initializes the _cache dictionary
             _cache = new Dictionary<string, Bitmap>();
         }
 
@@ -24,7 +24,7 @@ namespace ViewGraphic.Classes
             // Checks if the key "imageLocation" exists in the _cache dictionary, and if it does not exist, adds the imageLocation and creates a Bitmap for it
             if (!_cache.ContainsKey(graphicLocation))
             {
-                _cache.Add(graphicLocation, new Bitmap($@"{graphicLocation}"));
+                _cache.Add(graphicLocation, new Bitmap(graphicLocation));
             }
             return _cache[graphicLocation];
         }
@@ -40,7 +40,7 @@ namespace ViewGraphic.Classes
             {
                 _cache.Add("empty", new Bitmap(width, height)); // Add the empty track to the cache with the width and height
                 Graphics graphic = Graphics.FromImage(_cache["empty"]); // Draw a background
-                graphic.Clear(System.Drawing.Color.Pink); // Background color
+                graphic.Clear(System.Drawing.Color.DarkBlue); // Background color
             }
             return (Bitmap)_cache["empty"].Clone(); // Call by reference, so make a copy
         }
