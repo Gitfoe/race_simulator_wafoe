@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using ViewGraphic;
 
 namespace WpfApp1
 {
@@ -38,6 +39,7 @@ namespace WpfApp1
             Data.NextRace();
         }
 
+        // Event handlers
         private void OnNextRaceEvent(object sender, NextRaceEventArgs args)
         { // Link events and draw track for the first time
             GraphicsCache.ClearCache();
@@ -62,6 +64,25 @@ namespace WpfApp1
                     this.TrackScreen.Source = null;
                     this.TrackScreen.Source = Visualisation.DrawTrack(args.Track); ;
                 }));
+        }
+
+        // Menu items
+        private CurrentRaceStatistics currentRaceStatistics = new CurrentRaceStatistics();
+        private ParticipantStatistics participantStatistics = new ParticipantStatistics();
+
+        private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void MenuItem_CurrentRaceStatistics_Click(object sender, RoutedEventArgs e)
+        {
+            currentRaceStatistics.Show();
+        }
+
+        private void MenuItem_ParticipantStatistics_Click(object sender, RoutedEventArgs e)
+        {
+            participantStatistics.Show();
         }
     }
 }

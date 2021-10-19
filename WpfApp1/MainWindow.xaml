@@ -7,13 +7,13 @@
         mc:Ignorable="d"
         Title="Race simulator van Wafoe" Height="450" Width="800">
     <Grid>
-        <Image x:Name="TrackScreen" Margin="20,20,0,20" HorizontalAlignment="Left"/>
-        <DockPanel LastChildFill="False" Margin="0,0,0,414" Background="#FFD4D4D4">
-            <Menu Margin="0,0,718,414" Height="20" DockPanel.Dock="Top" Width="800">
+        <Image x:Name="TrackScreen" Margin="20,31,0,9" HorizontalAlignment="Left"/>
+        <DockPanel LastChildFill="False">
+            <Menu Height="20" DockPanel.Dock="Top" Width="800">
                 <MenuItem Header="Menu">
-                    <MenuItem Header="Statistieken huidige race"/>
-                    <MenuItem Header="Simulatie sluiten"/>
-                    <MenuItem Header="Statistieken deelnemers"/>
+                    <MenuItem Header="Statistics current race" Click="MenuItem_CurrentRaceStatistics_Click"/>
+                    <MenuItem Header="Statistics participants" Click="MenuItem_ParticipantStatistics_Click"/>
+                    <MenuItem Header="Close simulation" Click="MenuItem_Exit_Click"/>
                 </MenuItem>
             </Menu>
         </DockPanel>

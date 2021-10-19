@@ -13,11 +13,11 @@ using System.Windows.Shapes;
 namespace ViewGraphic
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for Window2.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class CurrentRaceStatistics : Window
     {
-        public Window1()
+        public CurrentRaceStatistics()
         {
             InitializeComponent();
         }
