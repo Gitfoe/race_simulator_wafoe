@@ -11,8 +11,8 @@ namespace Model
 
         public void OnDriversChanged(object sender, DriversChangedEventArgs args)
         {
-            //TrackName = args.Track.Name;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
+            TrackName = args.Track.Name;
+            PropertyChanged(this, new PropertyChangedEventArgs(""));
         }
     }
 }

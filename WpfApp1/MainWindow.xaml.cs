@@ -53,6 +53,11 @@ namespace WpfApp1
                     this.TrackScreen.Source = null;
                     this.TrackScreen.Source = Visualisation.DrawTrack(args.Race.Track); ;
                 }));
+
+            this.Dispatcher.Invoke(() =>
+            { // Dispatcher is needed for execution of OnDriversChanged to prevent thread exceptions
+                args.Race.DriversChanged += ((MainDataContext)this.DataContext).OnDriversChanged;
+            });
         }
 
         public void OnDriversChanged(object sender, DriversChangedEventArgs args)
