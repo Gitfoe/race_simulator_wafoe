@@ -153,7 +153,7 @@ namespace Controller.Classes
             {
                 participant.Equipment.Speed = _random.Next(5, 10);
                 participant.Equipment.Performance = _random.Next(5, 10);
-                if (participant.Name == "Wafoe") // Cheat code for myself, so I always win, lol
+                if (participant.Name == "Wafoe") // Cheat code for myself, so I basically always win, lol
                 {
                     participant.Equipment.Quality = 100;
                     participant.Equipment.Speed = 10;
@@ -412,7 +412,9 @@ namespace Controller.Classes
         { // Cleans up old event data
             DriversChanged = null;
             RaceFinished = null;
+            _timer.Stop();
             _timer.Enabled = false;
+            _timer.AutoReset = false;
         }
 
         // Broken methods

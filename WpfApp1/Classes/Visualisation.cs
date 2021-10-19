@@ -159,13 +159,11 @@ namespace ViewGraphic.Classes
                     case GraphicSectionTypes.FinishEast: graphicSectionsList.Add(GraphicsCache.GetBitmap(_finishEast)); break;
                     case GraphicSectionTypes.FinishSouth: graphicSectionsList.Add(GraphicsCache.GetBitmap(_finishSouth)); break;
                     case GraphicSectionTypes.FinishWest: graphicSectionsList.Add(GraphicsCache.GetBitmap(_finishWest)); break;
-                    case GraphicSectionTypes.StraightNorth: case GraphicSectionTypes.StraightEast: case GraphicSectionTypes.StraightSouth: case GraphicSectionTypes.StraightWest:
-                        graphicSectionsList.Add(GraphicsCache.GetBitmap(_straight)); break;
                     case GraphicSectionTypes.CornerSouthWest: graphicSectionsList.Add(GraphicsCache.GetBitmap(_cornerSouthWest)); break;
                     case GraphicSectionTypes.CornerEastSouth: graphicSectionsList.Add(GraphicsCache.GetBitmap(_cornerEastSouth)); break;
                     case GraphicSectionTypes.CornerNorthEast: graphicSectionsList.Add(GraphicsCache.GetBitmap(_cornerNorthEast)); break;
                     case GraphicSectionTypes.CornerNorthWest: graphicSectionsList.Add(GraphicsCache.GetBitmap(_cornerNorthWest)); break;
-                    default: break;
+                    default: graphicSectionsList.Add(GraphicsCache.GetBitmap(_straight)); break; // Default to a straight section
                 }
             }
             return graphicSectionsList;
@@ -227,7 +225,7 @@ namespace ViewGraphic.Classes
             }
         }
 
-        public static int[] FixCursorPosition(List<int[]> positionsList)
+        private static int[] FixCursorPosition(List<int[]> positionsList)
         {
             // Compensation algorithm for the console so graphics don't go out of bounds and the track always starts at x = 0 y = 0
             int xCount = 0;
@@ -260,7 +258,7 @@ namespace ViewGraphic.Classes
             return new int[] { newXCount, newYCount };
         }
 
-        public static int[] DetermineTrackSize(List<int[]> positionsList)
+        private static int[] DetermineTrackSize(List<int[]> positionsList)
         {
             // Determines the total size of the track and fixes the background frame for it
             int xCount = 0;
@@ -342,7 +340,7 @@ namespace ViewGraphic.Classes
                 };
         }
 
-        public static Bitmap RotateImage(this Bitmap b, float angle) // Extension method
+        private static Bitmap RotateImage(this Bitmap b, float angle) // Extension method
         {
             // Create a new empty bitmap to hold rotated image
             Bitmap returnBitmap = new Bitmap(b.Width, b.Height);

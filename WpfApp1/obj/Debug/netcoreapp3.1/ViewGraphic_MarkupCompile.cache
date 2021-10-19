@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\WpfApp1\App.xaml
-11407045341
+31130175450
 22-605697340
-5-1007802709
+72003927942
 1951616317242
-MainWindow.xaml;
+MainWindow.xaml;Window1.xaml;Window2.xaml;
 
-False
+True
 
