@@ -1,10 +1,8 @@
-﻿using Model;
-using Model.Classes;
+﻿using Model.Classes;
 using Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Timers;
 
 namespace Controller.Classes
@@ -108,7 +106,7 @@ namespace Controller.Classes
 
             if (outputParticipants.Count % 2 == 1)
             { // If the count of participants is not even, add a null value to not break the flipping in the next for loop
-                outputParticipants.Add(null); 
+                outputParticipants.Add(null);
             }
 
             for (int i = 0; i < outputParticipants.Count - 1; i++)
@@ -167,7 +165,7 @@ namespace Controller.Classes
 
         // Participant racing methods
         private void MoveParticipants()
-        {
+         {
             // Loops through the participants and adds the new total speed to the SectionData the participant is on
             foreach (IParticipant participant in Participants)
             {
@@ -368,16 +366,17 @@ namespace Controller.Classes
         public bool CountLapsOfParticipant(IParticipant participant)
         { // Gets called once a participant finishes a lap, counts the laps of participants and returns true once they finished the race (3 laps)
             if (!_roundsFinished.ContainsKey(participant))
-            {
+            { // Adds the participant and it's first lap to the dictionary
                 _roundsFinished.Add(participant, 1);
             }
             else if (_roundsFinished[participant] < _amountOfLaps)
-            {
+            { // Counts the laps if it has already finished a lap
                 _roundsFinished[participant] += 1;
             }
             else if (_roundsFinished[participant] == _amountOfLaps)
-            {
+            { // If the [articipant has finished a lap that is the same as the amount of laps, the participant has finished
                 _roundsFinished[participant] += 1;
+                AddPointsToFinishedParticipant(participant);
                 return true;
             }
             return false;
@@ -390,6 +389,19 @@ namespace Controller.Classes
                 return true;
             }
             return false;
+        }
+
+        public void AddPointsToFinishedParticipant(IParticipant finishedParticipant)
+        { // Give the points to the finished participant complying to Mario Kart Wii points
+            HashSet<int> availablePoints = new HashSet<int>() { 15, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+            foreach (IParticipant participant in Participants)
+            {
+                if (participant.Points != 0)
+                {
+                    availablePoints.Remove(participant.Points); // Remove the point amount from the HashSet if it has been received before
+                }
+            }
+            finishedParticipant.Points = availablePoints.First(); // Give the participant the first (next highest) point amount
         }
 
         // Event handler methods
@@ -407,7 +419,6 @@ namespace Controller.Classes
 
         public void Start()
         { // This method starts the timer
-            _timer.AutoReset = true; // Raise the Elapsed event repeatedly (true)
             _timer.Enabled = true;
         }
 
@@ -416,15 +427,13 @@ namespace Controller.Classes
             DriversChanged = null;
             RaceFinished = null;
             _timer.Stop();
-            _timer.Enabled = false;
-            _timer.AutoReset = false;
         }
 
         // Broken methods
         private void RandomizeBrokenKartOfParticipants(List<IParticipant> participantsList)
         {
             foreach (IParticipant participant in participantsList)
-            { 
+            {
                 if (participant.Equipment.IsBroken == false)
                 {
                     RandomizeKartBreakValues(participant);

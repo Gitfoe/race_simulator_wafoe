@@ -19,7 +19,6 @@ namespace ViewGraphic.Classes
         private const int _sectionPixels = 64; // Set the amount of width/x and height/y (they are square) for the section
         private const int _driverPixels = 28; // Set the amount of width/x and height/y (they are square) for the driver
 
-        // Methods
         public static BitmapSource DrawTrack(Track track)
         {
             // Convert sections to graphicsSectionTypes and positions and also keep track of the direction of the previous graphic section type
