@@ -1,14 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Model;
 using Model.Classes;
-using static Model.Classes.Section;
-using Model.Interfaces;
-using Controller;
-using Controller.Classes;
-using ViewGraphic;
 using ViewGraphic.Classes;
 
 namespace ControllerTest

@@ -13,7 +13,8 @@ namespace Controller.Classes
         private Random _random;
         public Dictionary<Section, SectionData> _positions;
         private Timer _timer;
-        public Dictionary<IParticipant, int> _roundsFinished; // Public for tests
+        public Dictionary<IParticipant, int> _roundsFinished;
+        
 
         // Consts
         private const int _amountOfLaps = 2;
@@ -22,6 +23,8 @@ namespace Controller.Classes
         public Track Track { get; set; }
         public List<IParticipant> Participants { get; set; }
         public DateTime StartTime { get; set; }
+        public Dictionary<IParticipant, TimeSpan[]> lapTime { get; set; }
+        public List<IParticipant> topThree { get; set; }
 
         // Events
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
@@ -30,13 +33,15 @@ namespace Controller.Classes
         // Constructors
         public Race(Track track, List<IParticipant> participants)
         {
-            // Initialize the properties of this class
+            // Initialize the properties and attributes of this class
             Track = track;
             Participants = participants;
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
             _timer = new Timer(200); // 0.2 seconden
             _roundsFinished = new Dictionary<IParticipant, int>();
+            topThree = new List<IParticipant>();
+            lapTime = new Dictionary<IParticipant, TimeSpan[]>();
 
             // Call methods
             RandomizeEquipment();
@@ -349,6 +354,7 @@ namespace Controller.Classes
             if (_positions[finish].Left == participant)
             {
                 participantFinished = CountLapsOfParticipant(participant);
+                CountLapTimeOfParticipant(participant, _roundsFinished[participant]); // Count the lap time too
                 if (participantFinished == true)
                 {
                     _positions[finish].Left = null;
@@ -357,6 +363,7 @@ namespace Controller.Classes
             else if (_positions[finish].Right == participant)
             {
                 participantFinished = CountLapsOfParticipant(participant);
+                CountLapTimeOfParticipant(participant, _roundsFinished[participant]); // Count the lap time too
                 if (participantFinished == true)
                 {
                     _positions[finish].Right = null;
@@ -365,7 +372,7 @@ namespace Controller.Classes
         }
 
         public bool CountLapsOfParticipant(IParticipant participant)
-        { // Gets called once a participant finishes a lap, counts the laps of participants and returns true once they finished the race (3 laps)
+        { // Gets called once a participant finishes a lap, counts the laps of participants and returns true once they finished the race
             if (!_roundsFinished.ContainsKey(participant))
             { // Adds the participant and it's first lap to the dictionary
                 _roundsFinished.Add(participant, 1);
@@ -375,12 +382,37 @@ namespace Controller.Classes
                 _roundsFinished[participant] += 1;
             }
             else if (_roundsFinished[participant] == _amountOfLaps)
-            { // If the [articipant has finished a lap that is the same as the amount of laps, the participant has finished
+            { // If the participant has finished a lap that is the same as the amount of laps, the participant has finished
                 _roundsFinished[participant] += 1;
                 AddPointsToFinishedParticipant(participant);
                 return true;
             }
             return false;
+        }
+
+        public void CountLapTimeOfParticipant(IParticipant participant, int lap)
+        { // Add the elapsed time to the lapTime dictionary
+            lap--; // Correction
+            if (!lapTime.ContainsKey(participant))
+            {
+                lapTime.Add(participant, new TimeSpan[_amountOfLaps + 1]); // Add one extra for the amount of laps, because we save the total time in the last array value
+            }
+            else if (lap == 1) // Start saving the laptime once they finished a lap
+            {
+                lapTime[participant][lap - 1] = DateTime.Now - StartTime;
+            }
+            else if (lap > 1) // Compare the times to the previous section times and add it to the array
+            {
+                lapTime[participant][lap - 1] = DateTime.Now - StartTime;
+                lapTime[participant][lap - 1] = lapTime[participant][lap - 1] - lapTime[participant][lap - 2];
+            }
+            if (lap == _amountOfLaps) // If it's the last lap and they finished the race, sum up the total amount of race time and add it to the end of the array
+            {
+                for (int i = 0; i < lap; i++)
+                {
+                    lapTime[participant][lap] += lapTime[participant][i];
+                }   
+            }
         }
 
         public bool CheckIfEveryoneFinishedRace()
@@ -402,7 +434,11 @@ namespace Controller.Classes
                     availablePoints.Remove(participant.Points); // Remove the point amount from the HashSet if it has been received before
                 }
             }
-            finishedParticipant.Points = availablePoints.First(); // Give the participant the first (next highest) point amount
+            if (availablePoints.First() <= 15 && availablePoints.First() >= 10)
+            { // Add the participant to the _topThree list if they got either 15, 12 or 10 points
+                topThree.Add(finishedParticipant);
+            }
+            finishedParticipant.Points += availablePoints.First(); // Add the participant to the first (next highest) point amount
         }
 
         // Event handler methods
@@ -421,6 +457,7 @@ namespace Controller.Classes
         public void Start()
         { // This method starts the timer
             _timer.Enabled = true;
+            StartTime = DateTime.Now;
         }
 
         public void CleanUp()

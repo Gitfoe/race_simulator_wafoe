@@ -9,15 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller", "Controller\Controller.csproj", "{403FAEA6-2B88-432D-BF53-1122D4B7B757}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller.Test", "ControllerTest\Controller.Test.csproj", "{1DF3D97E-B127-4FCF-A5B3-C4A664ACE150}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller.Test", "Controller.Test\Controller.Test.csproj", "{1DF3D97E-B127-4FCF-A5B3-C4A664ACE150}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewGraphic", "WpfApp1\ViewGraphic.csproj", "{B2121C4C-5164-4560-90B9-74E945BDCD97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewGraphic", "ViewGraphic\ViewGraphic.csproj", "{B2121C4C-5164-4560-90B9-74E945BDCD97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View.Test", "View.Test\View.Test.csproj", "{6A4649E5-E4CB-4F5A-AA23-90F6246CEADC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View.Test", "View.Test\View.Test.csproj", "{6A4649E5-E4CB-4F5A-AA23-90F6246CEADC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Test", "Model.Test\Model.Test.csproj", "{670E83EB-28DD-45D2-848F-A786F6A96127}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model.Test", "Model.Test\Model.Test.csproj", "{670E83EB-28DD-45D2-848F-A786F6A96127}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewGraphic.Test", "ViewGraphic.Test\ViewGraphic.Test.csproj", "{AAE76D9D-D8EE-4B58-8DC7-2FD83FD453D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewGraphic.Test", "ViewGraphic.Test\ViewGraphic.Test.csproj", "{AAE76D9D-D8EE-4B58-8DC7-2FD83FD453D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

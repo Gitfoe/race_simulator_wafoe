@@ -1,10 +1,7 @@
-﻿using Model;
-using Model.Classes;
+﻿using Model.Classes;
 using Model.Interfaces;
 using static Model.Classes.Section;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 
 namespace Controller.Classes
@@ -17,6 +14,7 @@ namespace Controller.Classes
 
         // Events
         public static event EventHandler<NextRaceEventArgs> NextRaceEvent;
+        public static event EventHandler CompetitionFinished;
 
         // Methods
         public static void Initialize() // Initialize a new competition
@@ -28,12 +26,12 @@ namespace Controller.Classes
         private static void AddParticipants() // Add 3 participants to the race
         {
             GrandPrix.Participants.AddRange(new IParticipant[] { // Add the list of new Driver classes to the Participants list
-                new Driver("Mario", 0, new Kart(10), TeamColors.Mario),
-                new Driver("Toad", 0, new Kart(10), TeamColors.Toad),
-                new Driver("Luigi", 0, new Kart(10), TeamColors.Luigi),
-                new Driver("Peach", 0, new Kart(10), TeamColors.Peach),
-                new Driver("Wafoe", 0, new Kart(10), TeamColors.Wafoe),
-                new Driver("Bowser", 0, new Kart(10), TeamColors.Bowser)
+                new Driver("Mario", new Kart(10), TeamColors.Mario),
+                new Driver("Toad", new Kart(10), TeamColors.Toad),
+                new Driver("Luigi", new Kart(10), TeamColors.Luigi),
+                new Driver("Peach", new Kart(10), TeamColors.Peach),
+                new Driver("Wafoe", new Kart(10), TeamColors.Wafoe),
+                new Driver("Bowser", new Kart(10), TeamColors.Bowser)
                 //new Driver("Koopa", 0, new Kart(10), TeamColors.Koopa),
                 //new Driver("DK Junior", 0, new Kart(10), TeamColors.DKJunior),
             }); 
@@ -159,6 +157,10 @@ namespace Controller.Classes
                 CurrentRace.RaceFinished += OnRaceFinished;
                 NextRaceEvent(CurrentRace, new NextRaceEventArgs() { Race = CurrentRace });
                 CurrentRace.Start(); // Start the timer for the race
+            }
+            else
+            {
+                CompetitionFinished(null, null);
             }
         }
         private static void OnRaceFinished(object sender, EventArgs e)

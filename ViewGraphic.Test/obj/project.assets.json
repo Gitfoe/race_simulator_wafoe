@@ -5109,8 +5109,8 @@
     },
     "ViewGraphic/1.0.0": {
       "type": "project",
-      "path": "../WpfApp1/ViewGraphic.csproj",
-      "msbuildProject": "../WpfApp1/ViewGraphic.csproj"
+      "path": "../ViewGraphic/ViewGraphic.csproj",
+      "msbuildProject": "../ViewGraphic/ViewGraphic.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -5157,8 +5157,8 @@
             "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\Model\\Model.csproj": {
               "projectPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\Model\\Model.csproj"
             },
-            "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\WpfApp1\\ViewGraphic.csproj": {
-              "projectPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\WpfApp1\\ViewGraphic.csproj"
+            "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ViewGraphic\\ViewGraphic.csproj": {
+              "projectPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ViewGraphic\\ViewGraphic.csproj"
             }
           }
         }

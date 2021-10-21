@@ -1,9 +1,4 @@
-﻿using Model.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Model.Classes
+﻿namespace Model.Classes
 {
     public class Section // Sectie
     {
