@@ -213,15 +213,16 @@ namespace Controller.Classes
             bool cannotPlaceSection = true; // Begin with true and hopefully make it false within this method
             bool executedElseIf = false; // Bugfix to not place participants at the start if section is full, check if the else if has executed
             SectionData foundSectionData = null;
-            foreach (var item in _positions) // Loops through every position in _positions
+
+            foreach (var item in Track.Sections) // Loops through every position in _positions
             {
-                if (item.Key == sectionParticipantIsOn)
+                if (item == sectionParticipantIsOn)
                 { // Searches the section in _positions and saves the Section (key) and SectionData (value) if the participant on the section is found
-                    foundSectionData = item.Value;
+                    foundSectionData = _positions[item];
                 }
                 else if (foundSectionData != null)
                 { // Executes on the next loop, if the loop is not at the end, once the section has been found
-                    cannotPlaceSection = PlaceParticipantIfPossible(placement, participant, foundSectionData, item.Value);
+                    cannotPlaceSection = PlaceParticipantIfPossible(placement, participant, foundSectionData, _positions[item]);
                     executedElseIf = true;
                     break; // Stop the loop from continuing further without reason
                 }

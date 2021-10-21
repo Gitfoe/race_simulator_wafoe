@@ -158,8 +158,8 @@ namespace Controller.Classes
                 CurrentRace = new Race(currentTrack, GrandPrix.Participants);
                 CurrentRace.RaceFinished += OnRaceFinished;
                 NextRaceEvent(CurrentRace, new NextRaceEventArgs() { Race = CurrentRace });
+                CurrentRace.Start(); // Start the timer for the race
             }
-            CurrentRace.Start(); // Start the timer for the race
         }
         private static void OnRaceFinished(object sender, EventArgs e)
         {
