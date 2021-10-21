@@ -5013,9 +5013,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ControllerTest\\ControllerTest.csproj",
-      "projectName": "ControllerTest",
-      "projectPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ControllerTest\\ControllerTest.csproj",
+      "projectUniqueName": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ControllerTest\\Controller.Test.csproj",
+      "projectName": "Controller.Test",
+      "projectPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ControllerTest\\Controller.Test.csproj",
       "packagesPath": "C:\\Users\\wafoe\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ControllerTest\\obj\\",
       "projectStyle": "PackageReference",

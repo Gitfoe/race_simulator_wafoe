@@ -13,9 +13,12 @@ namespace Controller.Classes
     {
         // Attributes
         private Random _random;
-        private Dictionary<Section, SectionData> _positions;
+        public Dictionary<Section, SectionData> _positions;
         private Timer _timer;
-        private Dictionary<IParticipant, int> _roundsFinished;
+        public Dictionary<IParticipant, int> _roundsFinished; // Public for tests
+
+        // Consts
+        private const int _amountOfLaps = 2;
 
         // Properties
         public Track Track { get; set; }
@@ -34,7 +37,7 @@ namespace Controller.Classes
             Participants = participants;
             _random = new Random(DateTime.Now.Millisecond);
             _positions = new Dictionary<Section, SectionData>();
-            _timer = new Timer(300); // 0.3 seconden
+            _timer = new Timer(200); // 0.2 seconden
             _roundsFinished = new Dictionary<IParticipant, int>();
 
             // Call methods
@@ -56,7 +59,7 @@ namespace Controller.Classes
             return _positions[section];
         }
 
-        private void PlaceParticipantsOnStartGrids(Track track, List<IParticipant> participants)
+        public void PlaceParticipantsOnStartGrids(Track track, List<IParticipant> participants)
         {
             List<IParticipant> tempParticipants = FixParticipentOrder(participants, track); // Make fixed copy of participants list
 
@@ -79,7 +82,7 @@ namespace Controller.Classes
             }
         }
 
-        private int CountCertainSectionTypes(LinkedList<Section> sectionList, Section.SectionTypes toCount)
+        public int CountCertainSectionTypes(LinkedList<Section> sectionList, Section.SectionTypes toCount)
         { // Counts a given SectionType from a (linked)list of Section objects
             int counter = 0;
             foreach (Section section in sectionList)
@@ -153,12 +156,12 @@ namespace Controller.Classes
             {
                 participant.Equipment.Speed = _random.Next(5, 10);
                 participant.Equipment.Performance = _random.Next(5, 10);
-                if (participant.Name == "Wafoe") // Cheat code for myself, so I basically always win, lol
-                {
-                    participant.Equipment.Quality = 100;
-                    participant.Equipment.Speed = 10;
-                    participant.Equipment.Performance = 10;
-                }
+                //if (participant.Name == "Wafoe") // Cheat code for myself, so I basically always win, lol
+                //{
+                //    participant.Equipment.Quality = 100;
+                //    participant.Equipment.Speed = 10;
+                //    participant.Equipment.Performance = 10;
+                //}
             }
         }
 
@@ -346,7 +349,7 @@ namespace Controller.Classes
             bool participantFinished = false;
             if (_positions[finish].Left == participant)
             {
-                participantFinished = CountLapsOfParticipants(participant);
+                participantFinished = CountLapsOfParticipant(participant);
                 if (participantFinished == true)
                 {
                     _positions[finish].Left = null;
@@ -354,7 +357,7 @@ namespace Controller.Classes
             }
             else if (_positions[finish].Right == participant)
             {
-                participantFinished = CountLapsOfParticipants(participant);
+                participantFinished = CountLapsOfParticipant(participant);
                 if (participantFinished == true)
                 {
                     _positions[finish].Right = null;
@@ -362,17 +365,17 @@ namespace Controller.Classes
             }
         }
 
-        private bool CountLapsOfParticipants(IParticipant participant)
+        public bool CountLapsOfParticipant(IParticipant participant)
         { // Gets called once a participant finishes a lap, counts the laps of participants and returns true once they finished the race (3 laps)
             if (!_roundsFinished.ContainsKey(participant))
             {
                 _roundsFinished.Add(participant, 1);
             }
-            else if (_roundsFinished[participant] < 2) // Change 3 here if you want to change the amount of laps
+            else if (_roundsFinished[participant] < _amountOfLaps)
             {
                 _roundsFinished[participant] += 1;
             }
-            else if (_roundsFinished[participant] == 2) // Change 3 here if you want to change the amount of laps
+            else if (_roundsFinished[participant] == _amountOfLaps)
             {
                 _roundsFinished[participant] += 1;
                 return true;
@@ -380,9 +383,9 @@ namespace Controller.Classes
             return false;
         }
 
-        private bool CheckIfEveryoneFinishedRace()
-        {
-            if (_roundsFinished.Values.Distinct().Count() == 1 && _roundsFinished.Count > 0 && _roundsFinished.First().Value == 3) // Change 4 here (3 + 1 = 4) to change the amount of laps
+        public bool CheckIfEveryoneFinishedRace()
+        { // Returns true if everyone has finished the race
+            if (_roundsFinished.Values.Distinct().Count() == 1 && _roundsFinished.Count > 0 && _roundsFinished.First().Value == _amountOfLaps + 1)
             {
                 return true;
             }
@@ -418,7 +421,7 @@ namespace Controller.Classes
         }
 
         // Broken methods
-        public void RandomizeBrokenKartOfParticipants(List<IParticipant> participantsList)
+        private void RandomizeBrokenKartOfParticipants(List<IParticipant> participantsList)
         {
             foreach (IParticipant participant in participantsList)
             { 

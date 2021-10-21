@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static Model.Classes.Section;
+using static ViewGraphic.Classes.ExtensionMethods;
 
 namespace ViewGraphic.Classes
 {
@@ -21,15 +22,12 @@ namespace ViewGraphic.Classes
         // Methods
         public static BitmapSource DrawTrack(Track track)
         {
-            //Bitmap test = GraphicsCache.GetBitmap(_finishEast);
-            //graphics.DrawImage(test, 0, 0, 64, 64); // draw the image
-
             // Convert sections to graphicsSectionTypes and positions and also keep track of the direction of the previous graphic section type
             List<GraphicSectionTypes> graphicSectionTypesList = new List<GraphicSectionTypes>();
             List<int[]> positionsList = new List<int[]>();
             List<CardinalDirections> directionPreviousGraphicSectionTypeList = new List<CardinalDirections>();
 
-            // Used a fixed value for the first section instead (east)
+            // Used a fixed value for the first section (east)
             CardinalDirections directionPreviousGraphicSectionType = CardinalDirections.East;
 
             foreach (Section section in track.Sections)
@@ -190,7 +188,7 @@ namespace ViewGraphic.Classes
         }
 
         private static void WriteDriversToWPF(List<int[]> positionsList, Graphics graphics, int[] tempCursorPosition, LinkedList<Section> sectionList, List<CardinalDirections> directionPreviousGraphicSectionType)
-        { // Only write the sections to the WPF
+        { // Only write the drivers to the WPF
             int[] tempCursorPosition2 = (int[])tempCursorPosition.Clone(); // Make clone of the temporary cursor position
             SectionData sectionData;
             Bitmap tempBitmap;
@@ -225,7 +223,7 @@ namespace ViewGraphic.Classes
             }
         }
 
-        private static int[] FixCursorPosition(List<int[]> positionsList)
+        public static int[] FixCursorPosition(List<int[]> positionsList)
         {
             // Compensation algorithm for the console so graphics don't go out of bounds and the track always starts at x = 0 y = 0
             int xCount = 0;
@@ -258,7 +256,7 @@ namespace ViewGraphic.Classes
             return new int[] { newXCount, newYCount };
         }
 
-        private static int[] DetermineTrackSize(List<int[]> positionsList)
+        public static int[] DetermineTrackSize(List<int[]> positionsList)
         {
             // Determines the total size of the track and fixes the background frame for it
             int xCount = 0;
@@ -308,16 +306,13 @@ namespace ViewGraphic.Classes
             };
         }
 
-        private static Bitmap RotateBitmapOfDriver(Bitmap bitmap, CardinalDirections directionPreviousGraphicSectionType)
-        { // Rotates the bitmap of the driver using the previous section type information
-            return directionPreviousGraphicSectionType switch
-            {
-                CardinalDirections.East => bitmap.RotateImage(90),
-                CardinalDirections.South => bitmap.RotateImage(180),
-                CardinalDirections.West => bitmap.RotateImage(270),
-                _ => bitmap, // Don't rotate for north, because the driver bitmap defautly faces north
-            };
-        }
+        private static Bitmap RotateBitmapOfDriver(Bitmap bitmap, CardinalDirections directionPreviousGraphicSectionType) => directionPreviousGraphicSectionType switch
+        { // Rotates the bitmap of the driver according to the directionPreviousGraphicSectionType
+            CardinalDirections.East => bitmap.RotateImage(90),
+            CardinalDirections.South => bitmap.RotateImage(180),
+            CardinalDirections.West => bitmap.RotateImage(270),
+            _ => bitmap, // Don't rotate for north, because the driver bitmap defautly faces north
+        };
 
         private static int[] ReturnXYOffsetOfSection(CardinalDirections directionPreviousGraphicSectionType, bool left)
         { // Returns the offset values for the drivers on the track
@@ -338,54 +333,6 @@ namespace ViewGraphic.Classes
                     CardinalDirections.West => new int[] { 4, 2 },
                     _ => default,
                 };
-        }
-
-        private static Bitmap RotateImage(this Bitmap b, float angle) // Extension method
-        {
-            // Create a new empty bitmap to hold rotated image
-            Bitmap returnBitmap = new Bitmap(b.Width, b.Height);
-            // Make a graphics object from the empty bitmap
-            using (Graphics g = Graphics.FromImage(returnBitmap))
-            {
-                // Move rotation point to center of image
-                g.TranslateTransform((float)b.Width / 2, (float)b.Height / 2);
-                // Rotate
-                g.RotateTransform(angle);
-                // Move image back
-                g.TranslateTransform(-(float)b.Width / 2, -(float)b.Height / 2);
-                // Draw passed in image onto graphics object
-                g.DrawImage(b, new Point(0, 0));
-            }
-            return returnBitmap;
-        }
-
-        private static void CheckParticipants(string[] graphicSection, IParticipant leftParticipant, IParticipant rightParticipant, out string[] outputGraphicSection, out char leftParticipantFirstLetterName, out char rightParticipantFirstLetterName)
-        {
-            outputGraphicSection = (string[])graphicSection.Clone();
-            leftParticipantFirstLetterName = ' ';
-            rightParticipantFirstLetterName = ' ';
-            if (leftParticipant != null)
-            { // Assigns the first letter of a name to a temporary variable, or if the participant is not given, it keeps the default blank space
-                if (leftParticipant.Equipment.IsBroken == true)
-                {
-                    leftParticipantFirstLetterName = '*'; // If the equipment is broken, set it to the broken char, which is *
-                }
-                else
-                {
-                    leftParticipantFirstLetterName = leftParticipant.Name[0];
-                }
-            }
-            if (rightParticipant != null)
-            {
-                if (rightParticipant.Equipment.IsBroken == true)
-                {
-                    rightParticipantFirstLetterName = '*';
-                }
-                else
-                {
-                    rightParticipantFirstLetterName = rightParticipant.Name[0];
-                }
-            }
         }
 
         #region graphics

@@ -4,7 +4,5 @@
   &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e8cdff9a_002D6a9e_002D43a9_002Db15b_002Dd4baca7afc21/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;View&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::1DF3D97E-B127-4FCF-A5B3-C4A664ACE150::.NETCoreApp,Version=v3.1::ControllerTest.Model_Competition_NextTrackShould&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

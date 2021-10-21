@@ -24,12 +24,13 @@ namespace ControllerTest
         public void SetUp()
         {
             _competition = new Competition();
-            _competition.Participants.Add(new Driver("Mario", 0, new Kart(10), TeamColors.Red));
+            _competition.Participants.Add(new Driver("Mario", 0, new Kart(10), TeamColors.Mario));
         }
 
         [Test]
         public void RandomizeKartBreakValues_RandomValuesShould()
         { // The average of the true and false bools should fall within the range of the wanted odds (0,9% chance)
+          // This test will still fail sometime!
             Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] {
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
@@ -46,7 +47,7 @@ namespace ControllerTest
             _competition.Participants[0].Equipment.Performance = 10;
             _competition.Participants[0].Equipment.Speed = 10;
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 race.RandomizeKartBreakValues(_competition.Participants[0]);
                 if (_competition.Participants[0].Equipment.IsBroken == true)
@@ -60,8 +61,8 @@ namespace ControllerTest
             }
 
             bool success;
-            if ((trueCount / falseCount) * 100 > 0.7 && (trueCount / falseCount) * 100 < 1.1)
-            { // Checks if the value is somewhere between 0.7 and 1.1% (because it's random and not always precise)
+            if ((trueCount / falseCount) * 100 > 0.7 && (trueCount / falseCount) * 100 < 1.2)
+            { // Checks if the value is somewhere between 0.7 and 1.2% (because it's random and not always precise)
                 success = true;
             }
             else
@@ -75,6 +76,7 @@ namespace ControllerTest
         [Test]
         public void RandomizeKartFixValues_RandomValuesShould()
         { // The average of the true and false bools should fall within the range of the wanted odds (10% chance)
+          // This test will still fail sometime!
             Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] {
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
@@ -91,7 +93,7 @@ namespace ControllerTest
             _competition.Participants[0].Equipment.Performance = 10;
             _competition.Participants[0].Equipment.Speed = 10;
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 race.RandomizeKartFixValues(_competition.Participants[0]);
                 if (_competition.Participants[0].Equipment.IsBroken == true)

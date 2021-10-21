@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rVg3/W+K6BCVAvjWmCsAq8ojOoidBay0y1+TI5yWCOWmlRptDfQmHmqPyzv+RJw3EjH3RMDLbA6QcwSPb6l7iw==",
+  "dgSpecHash": "V6Uy7s3i4h55AsRyxBrmfD2b9XEmX6BZiWsIJPzsBIN9e17YS+BO1Z6zT/L4pWv+EVrulyuL161XAc5HVpvv6w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ControllerTest\\ControllerTest.csproj",
+  "projectFilePath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ControllerTest\\Controller.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\wafoe\\.nuget\\packages\\coverlet.collector\\3.0.2\\coverlet.collector.3.0.2.nupkg.sha512",
     "C:\\Users\\wafoe\\.nuget\\packages\\microsoft.codecoverage\\16.9.4\\microsoft.codecoverage.16.9.4.nupkg.sha512",
