@@ -11,20 +11,21 @@ namespace Controller.Classes
         // Properties
         public static Competition GrandPrix { get; set; }
         public static Race CurrentRace { get; set; }
+        public static CompetitionInfo CompetitionInfo { get; set; }
 
         // Events
         public static event EventHandler<NextRaceEventArgs> NextRaceEvent;
         public static event EventHandler CompetitionFinished;
 
         // Methods
-        public static void Initialize() // Initialize a new competition
-        {
+        public static void Initialize()
+        { // Initialize a new competition
             GrandPrix = new Competition();
             AddParticipants(); // Call the AddParticipant method to add partiticpants to the Grand Prix
             AddTracks(); // Call the AddTracks method to add tracks to the Grand Prix
         }
-        private static void AddParticipants() // Add 3 participants to the race
-        {
+        private static void AddParticipants()
+        { // Add some participants to the race
             GrandPrix.Participants.AddRange(new IParticipant[] { // Add the list of new Driver classes to the Participants list
                 new Driver("Mario", new Kart(10), TeamColors.Mario),
                 new Driver("Toad", new Kart(10), TeamColors.Toad),
@@ -37,11 +38,10 @@ namespace Controller.Classes
             }); 
         }
         private static void AddTracks()
-        {
-            // Method that adds all the tracks in the list TrackList to the queue of GrandPrix
+        { // Method that adds all the tracks in the list TrackList to the queue of GrandPrix
             Track[] TrackList = // Create list of tracks
             {
-                new Track("Yoshi Circuit", new Section.SectionTypes[] {
+                new Track("Yoshi Circuit", 2, new Section.SectionTypes[] {
                     SectionTypes.StartGrid,
                     SectionTypes.StartGrid,
                     SectionTypes.StartGrid,
@@ -69,7 +69,7 @@ namespace Controller.Classes
                     SectionTypes.Straight,
                     SectionTypes.RightCorner,
                 } ),
-                new Track("Figure 8 Circuit", new Section.SectionTypes[] {
+                new Track("Figure 8 Circuit", 3, new Section.SectionTypes[] {
                     SectionTypes.Straight,
                     SectionTypes.Straight,
                     SectionTypes.Straight,
@@ -87,7 +87,7 @@ namespace Controller.Classes
                     SectionTypes.Straight,
                     SectionTypes.RightCorner,
                 } ),
-                new Track("Rainbow Road", new Section.SectionTypes[] {
+                new Track("Rainbow Road", 4, new Section.SectionTypes[] {
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
@@ -97,7 +97,7 @@ namespace Controller.Classes
                     SectionTypes.LeftCorner,
                     SectionTypes.Finish
                 } ),
-                //new Track("Coconut Mall", new Section.SectionTypes[] {
+                //new Track("Coconut Mall", 1, new Section.SectionTypes[] {
                 //    SectionTypes.StartGrid,
                 //    SectionTypes.StartGrid,
                 //    SectionTypes.StartGrid,
@@ -149,13 +149,14 @@ namespace Controller.Classes
         }
         public static void NextRace()
         {
-            CurrentRace?.CleanUp(); // Cleans up the current race, the question mark notes it checks if there is a current race
+            CurrentRace?.CleanUp(); // Cleans up the current race, the question mark checks if there is a current race
             Track currentTrack = GrandPrix.NextTrack();
             if (currentTrack != null)
             {
                 CurrentRace = new Race(currentTrack, GrandPrix.Participants);
+                CompetitionInfo = new CompetitionInfo();
                 CurrentRace.RaceFinished += OnRaceFinished;
-                NextRaceEvent(CurrentRace, new NextRaceEventArgs() { Race = CurrentRace });
+                NextRaceEvent(CurrentRace, new NextRaceEventArgs() { Race = CurrentRace }); // Throw event that the next race is happening
                 CurrentRace.Start(); // Start the timer for the race
             }
             else
@@ -164,7 +165,7 @@ namespace Controller.Classes
             }
         }
         private static void OnRaceFinished(object sender, EventArgs e)
-        {
+        { // Event catcher that calls NextRace once a race is finished
             NextRace();
         }
     }

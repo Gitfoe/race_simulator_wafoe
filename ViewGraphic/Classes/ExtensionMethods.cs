@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 
 namespace ViewGraphic.Classes
 {
@@ -22,6 +24,12 @@ namespace ViewGraphic.Classes
                 g.DrawImage(b, new Point(0, 0));
             }
             return returnBitmap;
+        }
+        public static TimeSpan RoundSeconds(this TimeSpan span, int nDigits)
+        {
+            // TimeSpan.FromSeconds rounds to nearest millisecond, so nDigits should be 3 or less - won't get good answer beyond 3 digits.
+            Debug.Assert(nDigits <= 3);
+            return TimeSpan.FromSeconds(Math.Round(span.TotalSeconds, nDigits));
         }
     }
 }

@@ -15,9 +15,9 @@ namespace ViewGraphic
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class ParticipantStatistics : Window
+    public partial class CompetitionStatistics : Window
     {
-        public ParticipantStatistics()
+        public CompetitionStatistics()
         {
             InitializeComponent();
         }

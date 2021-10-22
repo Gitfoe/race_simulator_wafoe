@@ -7,7 +7,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="ParticipantStatistics.xaml.cs">
+    <Compile Update="CompetitionStatistics.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="CurrentRaceStatistics.xaml.cs">
@@ -18,7 +18,7 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="ParticipantStatistics.xaml">
+    <Page Update="CompetitionStatistics.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="CurrentRaceStatistics.xaml">

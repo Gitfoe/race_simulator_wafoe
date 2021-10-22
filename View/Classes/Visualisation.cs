@@ -297,7 +297,7 @@ namespace View.Classes
         }
 
         // Event handler methods
-        public static void OnDriversChanged(object sender, DriversChangedEventArgs args)
+        public static void OnDriversChanged(object sender, RaceInfo args)
         {
             DrawTrack(args.Track);
         }

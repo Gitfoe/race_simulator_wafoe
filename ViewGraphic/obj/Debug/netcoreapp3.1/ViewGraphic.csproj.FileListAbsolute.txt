@@ -51,14 +51,12 @@ C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren 
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic.csproj.AssemblyReference.cache
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\CurrentRaceStatistics.g.cs
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\MainWindow.g.cs
-C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ParticipantStatistics.g.cs
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\App.g.cs
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic_Content.g.cs
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic_MarkupCompile.cache
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic_MarkupCompile.lref
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\CurrentRaceStatistics.baml
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\MainWindow.baml
-C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ParticipantStatistics.baml
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic.g.resources
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic.AssemblyInfoInputs.cache
@@ -68,3 +66,6 @@ C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren 
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic.dll
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic.pdb
 C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\ViewGraphic.genruntimeconfig.cache
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\CompetitionStatistics.g.cs
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\ViewGraphic\obj\Debug\netcoreapp3.1\CompetitionStatistics.baml

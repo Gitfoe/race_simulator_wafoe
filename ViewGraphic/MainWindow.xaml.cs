@@ -16,10 +16,14 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Menu items
+        private CurrentRaceStatistics _currentRaceStatistics = new CurrentRaceStatistics();
+        private CompetitionStatistics _competitionStatistics = new CompetitionStatistics();
+
         public MainWindow()
         {
             InitializeComponent();
-            RenderOptions.SetBitmapScalingMode(TrackScreen, BitmapScalingMode.NearestNeighbor); // Set the scaling to the lowest quality for 8-bit vibes
+            RenderOptions.SetBitmapScalingMode(TrackScreen, BitmapScalingMode.NearestNeighbor); // Set the scaling to the lowest quality for SNES vibes
 
             GraphicsCache.Initialize();
             Data.Initialize();
@@ -56,10 +60,6 @@ namespace WpfApp1
             GraphicsCache.ClearCache();
         }
 
-        // Menu items
-        private CurrentRaceStatistics currentRaceStatistics = new CurrentRaceStatistics();
-        private ParticipantStatistics participantStatistics = new ParticipantStatistics();
-
         private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -67,12 +67,18 @@ namespace WpfApp1
 
         private void MenuItem_CurrentRaceStatistics_Click(object sender, RoutedEventArgs e)
         {
-            currentRaceStatistics.Show();
+            Data.NextRaceEvent += ((RaceInfoDataContext)_currentRaceStatistics.DataContext).OnNextRaceEvent;
+            ((RaceInfoDataContext)_currentRaceStatistics.DataContext).OnNextRaceEvent(null, new NextRaceEventArgs() { Race = Data.CurrentRace }); // Fix to update every time
+
+            _currentRaceStatistics.Show();
         }
 
         private void MenuItem_ParticipantStatistics_Click(object sender, RoutedEventArgs e)
         {
-            participantStatistics.Show();
+            Data.NextRaceEvent += ((CompetitionInfoDataContext)_competitionStatistics.DataContext).OnNextRaceEvent;
+            ((CompetitionInfoDataContext)_competitionStatistics.DataContext).OnNextRaceEvent(null, new NextRaceEventArgs() { Race = Data.CurrentRace }); // Fix to update every time
+
+            _competitionStatistics.Show();
         }
     }
 }

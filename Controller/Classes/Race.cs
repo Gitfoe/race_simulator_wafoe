@@ -14,17 +14,13 @@ namespace Controller.Classes
         public Dictionary<Section, SectionData> _positions;
         private Timer _timer;
         public Dictionary<IParticipant, int> _roundsFinished;
-        
-
-        // Consts
-        private const int _amountOfLaps = 2;
+        private int _amountOfLaps;
+        public Dictionary<IParticipant, TimeSpan[]> _lapTime;
 
         // Properties
         public Track Track { get; set; }
         public List<IParticipant> Participants { get; set; }
-        public DateTime StartTime { get; set; }
-        public Dictionary<IParticipant, TimeSpan[]> lapTime { get; set; }
-        public List<IParticipant> topThree { get; set; }
+        public RaceInfo RaceInfo { get; set; }
 
         // Events
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
@@ -40,14 +36,20 @@ namespace Controller.Classes
             _positions = new Dictionary<Section, SectionData>();
             _timer = new Timer(200); // 0.2 seconden
             _roundsFinished = new Dictionary<IParticipant, int>();
-            topThree = new List<IParticipant>();
-            lapTime = new Dictionary<IParticipant, TimeSpan[]>();
+            _amountOfLaps = track.AmountOfLaps;
+            _lapTime = new Dictionary<IParticipant, TimeSpan[]>();
+
+            // Initialize RaceInfo properties in Model
+            RaceInfo = new RaceInfo(Participants);
+            RaceInfo.TopThree = new List<IParticipant>();
+            RaceInfo.AmountOfLaps = _amountOfLaps;
+            RaceInfo.AmountOfSections = Track.Sections.Count;
 
             // Call methods
             RandomizeEquipment();
             PlaceParticipantsOnStartGrids(Track, Participants);
 
-            // Subscribe events
+            // Subscribe event
             _timer.Elapsed += OnTimedEvent; // Subscribe timer.Elapsed to OnTimedEvent
         }
 
@@ -203,7 +205,7 @@ namespace Controller.Classes
 
         public Section FindSectionOfParticipant(IParticipant participant)
         { // Returns the section a participant is on
-            foreach (var item in _positions)
+            foreach (KeyValuePair<Section, SectionData> item in _positions)
             {
                 if (participant == item.Value.Left || participant == item.Value.Right) // Participant can be on left or right section
                 {
@@ -250,7 +252,7 @@ namespace Controller.Classes
 
         private Section FindFirstFinishOnTrack()
         { // Returns the first finish in a track (ignores the others if there are more finish sections)
-            foreach (var item in _positions)
+            foreach (KeyValuePair<Section, SectionData> item in _positions)
             {
                 if (item.Key.SectionType == Section.SectionTypes.Finish)
                 {
@@ -324,28 +326,7 @@ namespace Controller.Classes
 
         private bool CheckIfPositionIsOccupied(SectionData sectionData, Placement placement)
         { // Checks if a placement in SectionData is already occupied (returns true) or not (returns false)
-            if (placement == Placement.Left)
-            {
-                if (sectionData.Left == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                if (sectionData.Right == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
+            return placement == Placement.Left ? sectionData.Left != null : sectionData.Right != null;
         }
 
         private void CheckIfParticipantReachedFinish(IParticipant participant, Section finish)
@@ -393,24 +374,26 @@ namespace Controller.Classes
         public void CountLapTimeOfParticipant(IParticipant participant, int lap)
         { // Add the elapsed time to the lapTime dictionary
             lap--; // Correction
-            if (!lapTime.ContainsKey(participant))
+            if (!_lapTime.ContainsKey(participant))
             {
-                lapTime.Add(participant, new TimeSpan[_amountOfLaps + 1]); // Add one extra for the amount of laps, because we save the total time in the last array value
+                _lapTime.Add(participant, new TimeSpan[_amountOfLaps + 1]); // Add one extra for the amount of laps, because we save the total time in the last array value
             }
             else if (lap == 1) // Start saving the laptime once they finished a lap
             {
-                lapTime[participant][lap - 1] = DateTime.Now - StartTime;
+                _lapTime[participant][lap - 1] = DateTime.Now - RaceInfo.StartTime;
+                RaceInfo.ParticipantLapTimes.Add(new ParticipantLapTime(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
             }
             else if (lap > 1) // Compare the times to the previous section times and add it to the array
             {
-                lapTime[participant][lap - 1] = DateTime.Now - StartTime;
-                lapTime[participant][lap - 1] = lapTime[participant][lap - 1] - lapTime[participant][lap - 2];
+                _lapTime[participant][lap - 1] = DateTime.Now - RaceInfo.StartTime;
+                _lapTime[participant][lap - 1] = _lapTime[participant][lap - 1] - _lapTime[participant][lap - 2];
+                RaceInfo.ParticipantLapTimes.Add(new ParticipantLapTime(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
             }
             if (lap == _amountOfLaps) // If it's the last lap and they finished the race, sum up the total amount of race time and add it to the end of the array
             {
                 for (int i = 0; i < lap; i++)
                 {
-                    lapTime[participant][lap] += lapTime[participant][i];
+                    _lapTime[participant][lap] += _lapTime[participant][i];
                 }   
             }
         }
@@ -436,16 +419,19 @@ namespace Controller.Classes
             }
             if (availablePoints.First() <= 15 && availablePoints.First() >= 10)
             { // Add the participant to the _topThree list if they got either 15, 12 or 10 points
-                topThree.Add(finishedParticipant);
+                RaceInfo.TopThree.Add(finishedParticipant);
             }
             finishedParticipant.Points += availablePoints.First(); // Add the participant to the first (next highest) point amount
         }
+
+        public TimeSpan IncrementRaceTimer() => DateTime.Now - RaceInfo.StartTime;
 
         // Event handler methods
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             RandomizeBrokenKartOfParticipants(Participants);
             MoveParticipants();
+            RaceInfo.RaceTimer = IncrementRaceTimer();
             DriversChanged(this, new DriversChangedEventArgs() { Track = this.Track });
             if (CheckIfEveryoneFinishedRace() == true)
             {
@@ -457,7 +443,7 @@ namespace Controller.Classes
         public void Start()
         { // This method starts the timer
             _timer.Enabled = true;
-            StartTime = DateTime.Now;
+            RaceInfo.StartTime = DateTime.Now;
         }
 
         public void CleanUp()

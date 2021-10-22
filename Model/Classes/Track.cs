@@ -6,12 +6,14 @@ namespace Model.Classes
     {
         // Properties
         public string Name { get; set; }
+        public int AmountOfLaps { get; set; }
         public LinkedList<Section> Sections { get; set; }
-        
+
         // Constructors
-        public Track(string name, Section.SectionTypes[] sections)
+        public Track(string name, int amountOfLaps, Section.SectionTypes[] sections)
         {
             Name = name;
+            AmountOfLaps = amountOfLaps;
             Sections = SectionTypesToLinkedListOfSections(sections);
         }
 
