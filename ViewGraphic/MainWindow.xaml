@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
-        xmlns:Model="clr-namespace:Model;assembly=Model" x:Class="WpfApp1.MainWindow"
+        xmlns:Model="clr-namespace:Model;assembly=Model" xmlns:Model1="clr-namespace:Model" x:Class="WpfApp1.MainWindow"
         mc:Ignorable="d"
         Title="Race simulator van Wafoe" Height="450" Width="800">
     <Window.DataContext>
-        <Model:MainDataContext/>
+        <Model1:MainDataContext/>
     </Window.DataContext>
     <Grid>
         <Image x:Name="TrackScreen" Margin="20,48,0,0" HorizontalAlignment="Left"/>

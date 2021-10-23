@@ -28,6 +28,11 @@ namespace ViewGraphic
             //Data.NextRaceEvent += OnNextRaceEvent;
         }
 
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
         //private void OnNextRaceEvent(object sender, NextRaceEventArgs args)
         //{ // Link events and draw track for the first time
         //    //args.Race.DriversChanged += OnDriversChanged;

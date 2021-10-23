@@ -18,6 +18,7 @@ namespace Model
         // Properties
         public Race CurrentRace { get; set; }
         public List<IParticipant> Participants { get; set; }
+        public List<IParticipant> ParticipantsDescendingByPosition { get; set; }
         public int AmountOfLaps { get; set; }
         public int AmountOfSections { get; set; }
         public int AmountOfRacers { get; set; }
@@ -33,7 +34,8 @@ namespace Model
         }
         private void OnDriversChanged(object sender, DriversChangedEventArgs args)
         {
-            Participants = CurrentRace.Participants.ToList(); // I don't know why, but to make it work in the ListView I have to use .ToList() even though it's already a list
+            Participants = CurrentRace.Participants.ToList();
+            ParticipantsDescendingByPosition = Participants.OrderBy(s => s.GetType().GetProperty("PositionOnTrack").GetValue(s)).ToList();
             AmountOfLaps = CurrentRace.RaceInfo.AmountOfLaps;
             AmountOfSections = CurrentRace.RaceInfo.AmountOfSections;
             AmountOfRacers = CurrentRace.RaceInfo.AmountOfRacers;

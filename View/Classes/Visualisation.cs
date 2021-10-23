@@ -309,6 +309,11 @@ namespace View.Classes
             DrawTrack(args.Race.Track);
         }
 
+        public static void OnCompetitionFinished(object sender, EventArgs args)
+        {
+            // Do nothing at all - only the WPF version needs this event
+        }
+
         #region graphics
         // Draw the graphics per line horizontally
         private static string[] _startGridNorth =      { "│^ │",

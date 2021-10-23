@@ -55,6 +55,7 @@ namespace Controller.Classes
         }
 
         // Methods
+        #region PlacementMethods
         public SectionData GetSectionData(Section section)
         {
             // Checks if the key "section" exists in the _positions dictionary, and if it does not exist, adds the position and creates a SectionData for it
@@ -175,8 +176,9 @@ namespace Controller.Classes
             participant.Equipment.Speed = 10;
             participant.Equipment.Performance = 10;
         }
+        #endregion
 
-        // Participant racing methods
+        #region MovingMethods
         private void MoveParticipants()
          {
             // Loops through the participants and adds the new total speed to the SectionData the participant is on
@@ -227,15 +229,15 @@ namespace Controller.Classes
             bool executedElseIf = false; // Bugfix to not place participants at the start if section is full, check if the else if has executed
             SectionData foundSectionData = null;
 
-            foreach (var item in Track.Sections) // Loops through every position in _positions
+            foreach (Section section in Track.Sections) // Loops through every position in _positions
             {
-                if (item == sectionParticipantIsOn)
+                if (section == sectionParticipantIsOn)
                 { // Searches the section in _positions and saves the Section (key) and SectionData (value) if the participant on the section is found
-                    foundSectionData = _positions[item];
+                    foundSectionData = _positions[section];
                 }
                 else if (foundSectionData != null)
                 { // Executes on the next loop, if the loop is not at the end, once the section has been found
-                    cannotPlaceSection = PlaceParticipantIfPossible(placement, participant, foundSectionData, _positions[item]);
+                    cannotPlaceSection = PlaceParticipantIfPossible(placement, participant, foundSectionData, _positions[section]);
                     executedElseIf = true;
                     break; // Stop the loop from continuing further without reason
                 }
@@ -265,7 +267,7 @@ namespace Controller.Classes
                     return item.Key;
                 }
             }
-            throw new IndexOutOfRangeException(); // Throw an exception if it can't find a finish
+            throw new Exception(); // Throw an exception if it can't find a finish
         }
 
         private bool PlaceParticipantIfPossible(Placement placement, IParticipant participant, SectionData previousSectionData, SectionData nextSectionData)
@@ -354,7 +356,9 @@ namespace Controller.Classes
                 }
             }
         }
+        #endregion
 
+        #region LapMethods
         public bool CountLapsOfParticipant(IParticipant participant) // Public for tests
         { // Gets called once a participant finishes a lap, counts the laps of participants and returns true once they finished the race
             if (!_roundsFinished.ContainsKey(participant))
@@ -373,6 +377,7 @@ namespace Controller.Classes
             }
             return false;
         }
+
         private void CountLapTimeOfParticipant(IParticipant participant, int lap)
         { // Add the elapsed time to the lapTime dictionary
             lap--; // Correction
@@ -407,9 +412,13 @@ namespace Controller.Classes
 
         public bool CheckIfEveryoneFinishedRace() => _roundsFinished.Values.Distinct().Count() == 1 && _roundsFinished.Count > 0 && _roundsFinished.First().Value == _amountOfLaps + 1; // Returns true if everyone has finished the race && Public for tests
 
+        private TimeSpan IncrementRaceTimer() => DateTime.Now - RaceInfo.StartTime;
+        #endregion
+
+        #region PointMethods
         public void DeterminePointsForFinishedParticipant(IParticipant finishedParticipant) // Public for tests
         { // Give the points to the finished participant complying to Mario Kart Wii points
-            HashSet<int> availablePoints = new HashSet<int>() { 15, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+            HashSet<int> availablePoints = new HashSet<int>() { 15, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
             foreach (IParticipant participant in Participants)
             {
                 if (_raceParticipantPoints.ContainsKey(participant))
@@ -422,24 +431,75 @@ namespace Controller.Classes
 
         public void AddPointsToAllParticipants() // Public for tests
         { // Adds the points from the temporary list to the IParticipant Points property
-            foreach (var item in _raceParticipantPoints)
+            foreach (KeyValuePair<IParticipant, int> item in _raceParticipantPoints)
             {
                 item.Key.Points += item.Value;
             }
         }
 
-        private TimeSpan IncrementRaceTimer() => DateTime.Now - RaceInfo.StartTime;
+        public void AddPositionToAllParticipants()
+        { // Adds the positions to the participants for the total amount of points
+            List<IParticipant> copyParticipants = new List<IParticipant>(Participants);
+            copyParticipants = copyParticipants.OrderByDescending(x => x.Points).ToList();
+            Queue<string> placements = new Queue<string>(new List<string> { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th" });
+            foreach (IParticipant participant in copyParticipants)
+            {
+                participant.PositionInCompetition = placements.Dequeue();
+            }
+        }
 
-        // Event handler methods
+        public void DeterminePositionsOnTrack()
+        { // Determines the current position the racer is on and gives the participant the right PositionOnTrack value
+            if (_roundsFinished.Count == Participants.Count) // Makes sure the method only starts once every racer has past the finish line once (at the start of the race)
+            {
+                Queue<string> placements = new Queue<string>(new List<string> { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th" }); // Positions queue
+                int maxLapAchieved = _roundsFinished.Values.Max(); // Declare max lap currently achieved
+                int minLapAchieved = _roundsFinished.Values.Min(); // Declare min lap currently achieved
+                if (_roundsFinished.Values.Max() > _amountOfLaps) // If the max lap is greater than the amount of laps, decrease the max lap value so the loop doesn't run for no reason
+                {
+                    maxLapAchieved--;
+                }
+
+                List<IParticipant> finishedParticipants = (from participant in _roundsFinished // Find how many participants have finished and remove those positions from the queue
+                                                           where participant.Value == _amountOfLaps + 1
+                                                           select participant.Key).ToList();
+                finishedParticipants.ForEach(x => placements.Dequeue());
+
+                for (int i = maxLapAchieved; i >= minLapAchieved; i--) // Loop through the difference between max and min laps
+                {
+                    List<IParticipant> participantsOnOneLap = (from participant in _roundsFinished // Find the participants that are on a certain lap and start at the biggest laps
+                                                               where participant.Value == i
+                                                               select participant.Key).ToList();
+
+                    for (LinkedListNode<Section> node = Track.Sections.Last; node != null; node = node.Previous) // Enhanced for loop that starts at the end of the section and then goes back
+                    {
+                        SectionData sectionData = GetSectionData(node.Value);
+                        if (sectionData.Right != null && participantsOnOneLap.Contains(sectionData.Right)) // Make sure the section isn't empty and make sure the participant is on the lap
+                        {
+                            sectionData.Right.PositionOnTrack = placements.Dequeue(); // Give the participant the next placement position
+                        }
+                        if (sectionData.Left != null && participantsOnOneLap.Contains(sectionData.Left))
+                        {
+                            sectionData.Left.PositionOnTrack = placements.Dequeue();
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region EventHandlerMethods
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             RandomizeBrokenKartOfParticipants(Participants);
             MoveParticipants();
+            DeterminePositionsOnTrack();
             RaceInfo.RaceTimer = IncrementRaceTimer();
             DriversChanged(this, new DriversChangedEventArgs() { Track = this.Track });
             if (CheckIfEveryoneFinishedRace() == true)
             {
                 AddPointsToAllParticipants();
+                AddPositionToAllParticipants();
                 RaceFinished(this, new EventArgs());
                 CleanUp();
             }
@@ -457,8 +517,9 @@ namespace Controller.Classes
             RaceFinished = null;
             _timer.Stop();
         }
+        #endregion
 
-        // Broken methods
+        #region BrokenMethods
         public void RandomizeBrokenKartOfParticipants(List<IParticipant> participantsList) // Public for tests
         {
             foreach (IParticipant participant in participantsList)
@@ -494,6 +555,7 @@ namespace Controller.Classes
           // If the the quality is 10, it has a 10% chance to fix it. If the quality is 20, it has a 20% chance to fix. 
             participant.Equipment.IsBroken = _random.Next(1, 100) >= participant.Equipment.Quality;
         }
+        #endregion
     }
     public enum Placement
     {

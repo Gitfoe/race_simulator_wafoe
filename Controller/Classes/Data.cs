@@ -21,8 +21,8 @@ namespace Controller.Classes
         public static void Initialize()
         { // Initialize a new competition
             GrandPrix = new Competition();
-            AddParticipants(); // Call the AddParticipant method to add partiticpants to the Grand Prix
-            AddTracks(); // Call the AddTracks method to add tracks to the Grand Prix
+            AddParticipants(); // Call the AddParticipant method to add partiticpants to the GrandPrix
+            AddTracks(); // Call the AddTracks method to add tracks to the GrandPrix
             CompetitionInfo = new CompetitionInfo();
         }
         private static void AddParticipants()
@@ -33,19 +33,16 @@ namespace Controller.Classes
                 new Driver("Luigi", new Kart(10), TeamColors.Luigi),
                 new Driver("Peach", new Kart(10), TeamColors.Peach),
                 new Driver("Wafoe", new Kart(10), TeamColors.Wafoe),
-                new Driver("Bowser", new Kart(10), TeamColors.Bowser)
-                //new Driver("Koopa", 0, new Kart(10), TeamColors.Koopa),
-                //new Driver("DK Junior", 0, new Kart(10), TeamColors.DKJunior),
+                new Driver("Bowser", new Kart(10), TeamColors.Bowser),
+                //new Driver("Koopa", new Kart(10), TeamColors.Koopa),
+                //new Driver("DK Junior", new Kart(10), TeamColors.DKJunior)
             }); 
         }
         private static void AddTracks()
         { // Method that adds all the tracks in the list TrackList to the queue of GrandPrix
             Track[] TrackList = // Create list of tracks
             {
-                new Track("Yoshi Circuit", 2, new Section.SectionTypes[] {
-                    SectionTypes.StartGrid,
-                    SectionTypes.StartGrid,
-                    SectionTypes.StartGrid,
+                new Track("Yoshi Circuit", 2, new SectionTypes[] {
                     SectionTypes.Finish,
                     SectionTypes.RightCorner,
                     SectionTypes.Straight,
@@ -69,79 +66,82 @@ namespace Controller.Classes
                     SectionTypes.Straight,
                     SectionTypes.Straight,
                     SectionTypes.RightCorner,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid
                 } ),
-                new Track("Figure 8 Circuit", 3, new Section.SectionTypes[] {
-                    SectionTypes.Straight,
-                    SectionTypes.Straight,
-                    SectionTypes.Straight,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.StartGrid,
-                    SectionTypes.StartGrid,
-                    SectionTypes.RightCorner,
+                new Track("Figure 8 Circuit", 3, new SectionTypes[] {
                     SectionTypes.Finish,
                     SectionTypes.RightCorner,
                     SectionTypes.Straight,
                     SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid,
+                    SectionTypes.RightCorner
                 } ),
-                new Track("Rainbow Road", 4, new Section.SectionTypes[] {
+                new Track("Rainbow Road", 4, new SectionTypes[] {
+                    SectionTypes.Finish,
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Finish
+                    SectionTypes.LeftCorner
                 } ),
-                //new Track("Coconut Mall", 1, new Section.SectionTypes[] {
-                //    SectionTypes.StartGrid,
-                //    SectionTypes.StartGrid,
-                //    SectionTypes.StartGrid,
-                //    SectionTypes.Finish,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.Straight,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.Straight,
-                //    SectionTypes.Straight,
-                //    SectionTypes.Straight,
-                //    SectionTypes.Straight,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.Straight,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.Straight,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.Straight,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.Straight,
-                //    SectionTypes.Straight,
-                //    SectionTypes.Straight,
-                //    SectionTypes.Straight,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.Straight,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.RightCorner,
-                //    SectionTypes.LeftCorner,
-                //    SectionTypes.Straight
-                //} )
+                new Track("Coconut Mall", 1, new SectionTypes[] {
+                    SectionTypes.Finish,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.RightCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid
+                } )
             };
             foreach (Track track in TrackList) // Enqueue all the tracks
             {

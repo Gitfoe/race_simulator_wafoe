@@ -10,6 +10,8 @@ namespace Model.Interfaces
         // Properties
         public string Name { get; set; }
         public int Points { get; set; }
+        public string PositionOnTrack { get; set; }
+        public string PositionInCompetition { get; set; }
         public IEquipment Equipment { get; set; }
         public TeamColors TeamColor { get; set; }
     }

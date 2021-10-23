@@ -27,6 +27,17 @@
             </ListView>
         </Grid>
         <Grid Margin="400,0,0,217">
+            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Positions on track:"/>
+            <ListView Margin="0,22,0,0" ItemsSource="{Binding ParticipantsDescendingByPosition}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Position" DisplayMemberBinding="{Binding PositionOnTrack}"/>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid Margin="400,217,0,0">
             <Label Content="Name of track:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Margin="0,00,0,0"/>
             <Label Content="{Binding CurrentRace.Track.Name}" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Margin="120,0,0,0"/>
             <Label Content="Amount of laps:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Margin="0,20,0,0"/>

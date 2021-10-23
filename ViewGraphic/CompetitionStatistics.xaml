@@ -16,6 +16,7 @@
             <ListView Margin="0,22,0,0" ItemsSource="{Binding Participants}">
                 <ListView.View>
                     <GridView>
+                        <GridViewColumn Header="Position" DisplayMemberBinding="{Binding PositionInCompetition}"/>
                         <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
                         <GridViewColumn Header="Points" DisplayMemberBinding="{Binding Points}" />
                     </GridView>

@@ -17,6 +17,7 @@ namespace View
             Data.Initialize();
             //Visualisation_Extra.MakeTrack();
             Data.NextRaceEvent += Visualisation.OnNextRaceEvent;
+            Data.CompetitionFinished += Visualisation.OnCompetitionFinished;
             Data.NextRace();
 
             for (; ; ) // Unlimited loop to not immediately close the races
