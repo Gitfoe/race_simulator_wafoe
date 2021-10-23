@@ -11,11 +11,12 @@ namespace Controller.Classes
     {
         // Attributes
         private Random _random;
-        public Dictionary<Section, SectionData> _positions;
+        public Dictionary<Section, SectionData> _positions; // Public for tests
         private Timer _timer;
-        public Dictionary<IParticipant, int> _roundsFinished;
+        public Dictionary<IParticipant, int> _roundsFinished; // Public for tests
+        public Dictionary<IParticipant, int> _raceParticipantPoints; // Public for tests
         private int _amountOfLaps;
-        public Dictionary<IParticipant, TimeSpan[]> _lapTime;
+        private Dictionary<IParticipant, TimeSpan[]> _lapTime;
 
         // Properties
         public Track Track { get; set; }
@@ -36,12 +37,12 @@ namespace Controller.Classes
             _positions = new Dictionary<Section, SectionData>();
             _timer = new Timer(200); // 0.2 seconden
             _roundsFinished = new Dictionary<IParticipant, int>();
+            _raceParticipantPoints = new Dictionary<IParticipant, int>();
             _amountOfLaps = track.AmountOfLaps;
             _lapTime = new Dictionary<IParticipant, TimeSpan[]>();
 
             // Initialize RaceInfo properties in Model
             RaceInfo = new RaceInfo(Participants);
-            RaceInfo.TopThree = new List<IParticipant>();
             RaceInfo.AmountOfLaps = _amountOfLaps;
             RaceInfo.AmountOfSections = Track.Sections.Count;
 
@@ -64,7 +65,7 @@ namespace Controller.Classes
             return _positions[section];
         }
 
-        public void PlaceParticipantsOnStartGrids(Track track, List<IParticipant> participants)
+        public void PlaceParticipantsOnStartGrids(Track track, List<IParticipant> participants) // Public for tests
         {
             List<IParticipant> tempParticipants = FixParticipentOrder(participants, track); // Make fixed copy of participants list
 
@@ -87,7 +88,7 @@ namespace Controller.Classes
             }
         }
 
-        public int CountCertainSectionTypes(LinkedList<Section> sectionList, Section.SectionTypes toCount)
+        public int CountCertainSectionTypes(LinkedList<Section> sectionList, Section.SectionTypes toCount) // Public for tests
         { // Counts a given SectionType from a (linked)list of Section objects
             int counter = 0;
             foreach (Section section in sectionList)
@@ -154,20 +155,25 @@ namespace Controller.Classes
             return currentSectionData;
         }
 
-        public void RandomizeEquipment()
+        private void RandomizeEquipment()
         {
             // Iterates over the Participant list and generates random values for Quality and Performance for each driver
             foreach (IParticipant participant in Participants)
             {
                 participant.Equipment.Speed = _random.Next(5, 10);
                 participant.Equipment.Performance = _random.Next(5, 10);
-                //if (participant.Name == "Wafoe") // Cheat code for myself, so I basically always win, lol
+                //if (participant.Name == "Wafoe") // Optional heat code for myself, so I basically always win, lol
                 //{
-                //    participant.Equipment.Quality = 100;
-                //    participant.Equipment.Speed = 10;
-                //    participant.Equipment.Performance = 10;
+                //    CheatCodeForRandomizeEquipment(participant);
                 //}
             }
+        }
+
+        private void CheatCodeForRandomizeEquipment(IParticipant participant)
+        { // Maxes out all the stats of a certain participant so it most likely always wins the race
+            participant.Equipment.Quality = 100;
+            participant.Equipment.Speed = 10;
+            participant.Equipment.Performance = 10;
         }
 
         // Participant racing methods
@@ -203,7 +209,7 @@ namespace Controller.Classes
             }
         }
 
-        public Section FindSectionOfParticipant(IParticipant participant)
+        private Section FindSectionOfParticipant(IParticipant participant)
         { // Returns the section a participant is on
             foreach (KeyValuePair<Section, SectionData> item in _positions)
             {
@@ -324,10 +330,7 @@ namespace Controller.Classes
             }
         }
 
-        private bool CheckIfPositionIsOccupied(SectionData sectionData, Placement placement)
-        { // Checks if a placement in SectionData is already occupied (returns true) or not (returns false)
-            return placement == Placement.Left ? sectionData.Left != null : sectionData.Right != null;
-        }
+        private bool CheckIfPositionIsOccupied(SectionData sectionData, Placement placement) => placement == Placement.Left ? sectionData.Left != null : sectionData.Right != null; // Checks if a placement in SectionData is already occupied (returns true) or not (returns false)
 
         private void CheckIfParticipantReachedFinish(IParticipant participant, Section finish)
         { // Calls the CountLapsOfParticipants method and removes the participant from the track once the participant is finished and returns true if it finished
@@ -352,7 +355,7 @@ namespace Controller.Classes
             }
         }
 
-        public bool CountLapsOfParticipant(IParticipant participant)
+        public bool CountLapsOfParticipant(IParticipant participant) // Public for tests
         { // Gets called once a participant finishes a lap, counts the laps of participants and returns true once they finished the race
             if (!_roundsFinished.ContainsKey(participant))
             { // Adds the participant and it's first lap to the dictionary
@@ -365,67 +368,67 @@ namespace Controller.Classes
             else if (_roundsFinished[participant] == _amountOfLaps)
             { // If the participant has finished a lap that is the same as the amount of laps, the participant has finished
                 _roundsFinished[participant] += 1;
-                AddPointsToFinishedParticipant(participant);
+                DeterminePointsForFinishedParticipant(participant);
                 return true;
             }
             return false;
         }
-
-        public void CountLapTimeOfParticipant(IParticipant participant, int lap)
+        private void CountLapTimeOfParticipant(IParticipant participant, int lap)
         { // Add the elapsed time to the lapTime dictionary
             lap--; // Correction
+            TimeSpan raceTime = new TimeSpan();
             if (!_lapTime.ContainsKey(participant))
             {
-                _lapTime.Add(participant, new TimeSpan[_amountOfLaps + 1]); // Add one extra for the amount of laps, because we save the total time in the last array value
+                _lapTime.Add(participant, new TimeSpan[_amountOfLaps]);
             }
             else if (lap == 1) // Start saving the laptime once they finished a lap
             {
                 _lapTime[participant][lap - 1] = DateTime.Now - RaceInfo.StartTime;
                 RaceInfo.ParticipantLapTimes.Add(new ParticipantTimes(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
             }
-            else if (lap > 1) // Compare the times to the previous section times and add it to the array
+            else if (lap > 1) // Compare the times to all previous section times combined and add it to the array
             {
                 _lapTime[participant][lap - 1] = DateTime.Now - RaceInfo.StartTime;
-                _lapTime[participant][lap - 1] = _lapTime[participant][lap - 1] - _lapTime[participant][lap - 2];
+                for (int i = 2; i < lap + 1; i++)
+                {
+                    _lapTime[participant][lap - 1] = _lapTime[participant][lap - 1] - _lapTime[participant][lap - i];
+                }
                 RaceInfo.ParticipantLapTimes.Add(new ParticipantTimes(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
             }
             if (lap == _amountOfLaps) // If it's the last lap and they finished the race, sum up the total amount of race time and add it to the end of the array
             {
                 for (int i = 0; i < lap; i++)
                 {
-                    _lapTime[participant][lap] += _lapTime[participant][i];
+                    raceTime += _lapTime[participant][i];
                 }
-                Data.CompetitionInfo.ParticipantRaceTimes.Add(new ParticipantTimes(participant.Name, Track, _lapTime[participant][lap])); // Add the internal data to the ParticipantRaceTimes list
+                Data.CompetitionInfo.ParticipantRaceTimes.Add(new ParticipantTimes(participant.Name, Track, raceTime)); // Add the internal data to the ParticipantRaceTimes list
             }
         }
 
-        public bool CheckIfEveryoneFinishedRace()
-        { // Returns true if everyone has finished the race
-            if (_roundsFinished.Values.Distinct().Count() == 1 && _roundsFinished.Count > 0 && _roundsFinished.First().Value == _amountOfLaps + 1)
-            {
-                return true;
-            }
-            return false;
-        }
+        public bool CheckIfEveryoneFinishedRace() => _roundsFinished.Values.Distinct().Count() == 1 && _roundsFinished.Count > 0 && _roundsFinished.First().Value == _amountOfLaps + 1; // Returns true if everyone has finished the race && Public for tests
 
-        public void AddPointsToFinishedParticipant(IParticipant finishedParticipant) // !!!!!! needs fixing !!!!!!!!!
+        public void DeterminePointsForFinishedParticipant(IParticipant finishedParticipant) // Public for tests
         { // Give the points to the finished participant complying to Mario Kart Wii points
             HashSet<int> availablePoints = new HashSet<int>() { 15, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1, 0};
             foreach (IParticipant participant in Participants)
             {
-                if (participant.Points != 0)
+                if (_raceParticipantPoints.ContainsKey(participant))
                 {
-                    availablePoints.Remove(participant.Points); // Remove the point amount from the HashSet if it has been received before
+                    availablePoints.Remove(_raceParticipantPoints[participant]); // Remove the point amount from the HashSet if it has been received before
                 }
             }
-            if (availablePoints.First() <= 15 && availablePoints.First() >= 10)
-            { // Add the participant to the _topThree list if they got either 15, 12 or 10 points
-                RaceInfo.TopThree.Add(finishedParticipant);
-            }
-            finishedParticipant.Points += availablePoints.First(); // Add the participant to the first (next highest) point amount
+            _raceParticipantPoints.Add(finishedParticipant, availablePoints.First()); // Add the participant to the first (next highest) point amount in a temporary list
         }
 
-        public TimeSpan IncrementRaceTimer() => DateTime.Now - RaceInfo.StartTime;
+        public void AddPointsToAllParticipants() // Public for tests
+        { // Adds the points from the temporary list to the IParticipant Points property
+            foreach (var item in _raceParticipantPoints)
+            {
+                item.Key.Points += item.Value;
+            }
+        }
+
+        private TimeSpan IncrementRaceTimer() => DateTime.Now - RaceInfo.StartTime;
 
         // Event handler methods
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
@@ -436,6 +439,7 @@ namespace Controller.Classes
             DriversChanged(this, new DriversChangedEventArgs() { Track = this.Track });
             if (CheckIfEveryoneFinishedRace() == true)
             {
+                AddPointsToAllParticipants();
                 RaceFinished(this, new EventArgs());
                 CleanUp();
             }
@@ -455,34 +459,37 @@ namespace Controller.Classes
         }
 
         // Broken methods
-        private void RandomizeBrokenKartOfParticipants(List<IParticipant> participantsList)
+        public void RandomizeBrokenKartOfParticipants(List<IParticipant> participantsList) // Public for tests
         {
             foreach (IParticipant participant in participantsList)
             {
-                if (participant.Equipment.IsBroken == false)
+                if (!_roundsFinished.ContainsKey(participant) || _roundsFinished[participant] != _amountOfLaps + 1) // Add this check, so it doesn't keep randomizing if the participant already finished the race
                 {
-                    RandomizeKartBreakValues(participant);
-                }
-                else
-                {
-                    RandomizeKartFixValues(participant);
-                    if (participant.Equipment.IsBroken == false) // If the equipment was fixed again
-                    { // Removes 1 from performance and quality if it is not already 1
-                        participant.Equipment.Performance += participant.Equipment.Performance >= 1 ? -1 : 0;
-                        participant.Equipment.Quality += participant.Equipment.Quality >= 1 ? -1 : 0;
+                    if (participant.Equipment.IsBroken == false)
+                    {
+                        RandomizeKartBreakValues(participant);
+                    }
+                    else
+                    {
+                        RandomizeKartFixValues(participant);
+                        if (participant.Equipment.IsBroken == false) // If the equipment was fixed again
+                        { // Removes 1 from performance and quality if it is not already 1
+                            participant.Equipment.Performance += participant.Equipment.Performance >= 1 ? -1 : 0;
+                            participant.Equipment.Quality += participant.Equipment.Quality >= 1 ? -1 : 0;
+                        }
                     }
                 }
             }
         }
 
-        public void RandomizeKartBreakValues(IParticipant participant)
+        public void RandomizeKartBreakValues(IParticipant participant) // Public for tests
         { // The faster the kart, the better the quality should be. Faster karts have a higher chance of breaking.
           // If the quality, performance and speed are all 10, it has a 0,9% chance of breaking
           // If the speed and performance are 5 and the quality is 20, it has a 0,05% chance of breaking
             participant.Equipment.IsBroken = _random.Next(1, 10000) <= participant.Equipment.Performance * participant.Equipment.Speed - participant.Equipment.Quality;
         }
 
-        public void RandomizeKartFixValues(IParticipant participant)
+        public void RandomizeKartFixValues(IParticipant participant) // Public for tests
         { // If the kart is broken, attempt to fix it. Only quality is relevant.
           // If the the quality is 10, it has a 10% chance to fix it. If the quality is 20, it has a 20% chance to fix. 
             participant.Equipment.IsBroken = _random.Next(1, 100) >= participant.Equipment.Quality;

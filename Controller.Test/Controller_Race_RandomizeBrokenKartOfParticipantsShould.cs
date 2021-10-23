@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using Model.Classes;
-using static Model.Classes.Section;
 using Model.Interfaces;
 using Controller.Classes;
 
@@ -18,21 +17,34 @@ namespace ControllerTest
         {
             _competition = new Competition();
             _competition.Participants.Add(new Driver("Mario", new Kart(10), TeamColors.Mario));
+            _competition.Participants.Add(new Driver("Luigi", new Kart(10), TeamColors.Luigi));
+        }
+
+        [Test]
+        public void RandomizeBrokenKartOfParticipants_DoesNotExecuteIfParticipantFinishedRace()
+        { 
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { }), _competition.Participants); // Setup faux 
+
+            foreach (IParticipant participant in _competition.Participants)
+            { // Set attributes for all racers to 1000 and quality to 0 so it immediately breaks following the RandomizeKartBreakValues algorithm
+                participant.Equipment.Performance = 1000;
+                participant.Equipment.Speed = 1000;
+                participant.Equipment.Quality = 0;
+            }
+
+            race._roundsFinished.Add(_competition.Participants[0], 5); // Make the first driver finish the race
+
+            race.RandomizeBrokenKartOfParticipants(_competition.Participants); // Execute the randomizing
+
+            Assert.IsFalse(_competition.Participants[0].Equipment.IsBroken); // If all went well, this should still be false
+            Assert.IsTrue(_competition.Participants[1].Equipment.IsBroken); // ...and the next participant should be true
         }
 
         [Test]
         public void RandomizeKartBreakValues_RandomValuesShould()
         { // The average of the true and false bools should fall within the range of the wanted odds (0,9% chance)
-          // This test will still fail sometime!
-            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] {
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Finish, }), _competition.Participants); // Setup faux race
+          // This test will still fail sometimes!
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { }), _competition.Participants); // Setup faux race
 
             double trueCount = 0;
             double falseCount = 0;
@@ -69,16 +81,8 @@ namespace ControllerTest
         [Test]
         public void RandomizeKartFixValues_RandomValuesShould()
         { // The average of the true and false bools should fall within the range of the wanted odds (10% chance)
-          // This test will still fail sometime!
-            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] {
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Finish, }), _competition.Participants); // Setup faux race
+          // This test will still fail sometimes!
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { }), _competition.Participants); // Setup faux race
 
             double trueCount = 0;
             double falseCount = 0;

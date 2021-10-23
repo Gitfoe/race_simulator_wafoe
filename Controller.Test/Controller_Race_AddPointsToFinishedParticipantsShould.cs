@@ -3,6 +3,7 @@ using Model.Classes;
 using Model.Interfaces;
 using Controller.Classes;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ControllerTest
 {
@@ -40,18 +41,31 @@ namespace ControllerTest
         public void AddPointsToFinishedParticipant_CheckForCorrectOutput(int toAchievePoints, int[] achievedPointsByOtherRacers)
         { // This test case always uses the first participant (in this case, Mario)
             Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { }), _competition.Participants); // Setup faux race
+            
+            List<IParticipant> copyParticipants = new List<IParticipant>();
+            foreach (var item in _competition.Participants) // Make copy without reference type of the Participants list
+            {
+                copyParticipants.Add(new Driver(item.Name, item.Equipment, item.TeamColor));
+            }
 
-            for (int i = 0; i < _competition.Participants.Count; i++)
-            { // First add the points to all participants in the list order (check Setup) but skip the participant
-                if (_competition.Participants[i] != _competition.Participants[0])
+            for (int i = 0; i < copyParticipants.Count; i++)
+            { // First add the points to all cloned participants in the list order (check Setup)
+                copyParticipants[i].Points = copyParticipants[i] != copyParticipants[0] ? achievedPointsByOtherRacers[i] : toAchievePoints;
+            }
+
+            for (int i = 0; i < copyParticipants.Count; i++)
+            { // Then add the points to all participants in the list order (check Setup) but skip the participant
+                if (i >= 1 && copyParticipants[i].Points != 0)
                 {
-                    _competition.Participants[i].Points = achievedPointsByOtherRacers[i];
+                    race._raceParticipantPoints.Add(_competition.Participants[i], copyParticipants[i].Points);
                 }
             }
-            // Calculate the needed points for the participant with the method
-            race.AddPointsToFinishedParticipant(_competition.Participants[0]);
 
-            Assert.AreEqual(true, _competition.Participants[0].Points == toAchievePoints);
+            // Calculate the needed points for the participant with the method
+            race.DeterminePointsForFinishedParticipant(_competition.Participants[0]);
+            race.AddPointsToAllParticipants();
+
+            Assert.AreEqual(true, _competition.Participants[0].Points == copyParticipants[0].Points);
         }
 
         [Test]

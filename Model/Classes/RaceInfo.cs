@@ -12,7 +12,6 @@ namespace Model.Classes
         public int AmountOfSections { get; set; }
         public int AmountOfRacers { get; set; }
         public List<ParticipantTimes> ParticipantLapTimes { get; set; }
-        public List<IParticipant> TopThree { get; set; }
         public DateTime StartTime { get; set; }
         public TimeSpan RaceTimer { get; set; }
 

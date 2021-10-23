@@ -38,8 +38,21 @@ namespace Model
             AmountOfSections = CurrentRace.RaceInfo.AmountOfSections;
             AmountOfRacers = CurrentRace.RaceInfo.AmountOfRacers;
             ParticipantLapTimes = CurrentRace.RaceInfo.ParticipantLapTimes.ToList();
-            RaceTimer = CurrentRace.RaceInfo.RaceTimer.RoundSeconds(3).ToString(); RaceTimer = RaceTimer.Remove(RaceTimer.Length - 4); // Round to 3 milliseconds and remove useless values from the string
+            RaceTimer = FixRaceTimer(CurrentRace.RaceInfo.RaceTimer);
             PropertyChanged(this, new PropertyChangedEventArgs(""));
+        }
+
+        private string FixRaceTimer(TimeSpan raceTimer)
+        { // Round to 3 milliseconds and remove useless values from the string, depening on the outcome of the string length
+            string returnRaceTimer = raceTimer.RoundSeconds(3).ToString();
+            if (returnRaceTimer.Length == 16)
+            {
+                return returnRaceTimer.Remove((returnRaceTimer.Length - 4)).Remove(0, 3);
+            }
+            else
+            {
+                return returnRaceTimer.Remove(0, 3) + ".000";
+            }
         }
     }
 }
