@@ -11,6 +11,18 @@
         <Model:CompetitionInfoDataContext/>
     </Window.DataContext>
     <Grid>
+        <Grid Margin="0,0,400,0">
+            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Total race times:"/>
+            <ListView Margin="0,22,0,0" ItemsSource="{Binding ParticipantRaceTimes}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Track" DisplayMemberBinding="{Binding Track.Name}" />
+                        <GridViewColumn Header="Time" DisplayMemberBinding="{Binding RaceTime}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
         <Grid Margin="400,0,0,217">
             <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Total points achieved by racers as of now:"/>
             <ListView Margin="0,22,0,0" ItemsSource="{Binding Participants}">
@@ -23,14 +35,14 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <Grid Margin="0,0,400,0">
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Total times per track per participant:"/>
-            <ListView Margin="0,22,0,0" ItemsSource="{Binding ParticipantRaceTimes}">
+        <Grid Margin="400,217,0,0">
+            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Tracks in queue:"/>
+            <ListView Margin="0,22,0,0" ItemsSource="{Binding Tracks}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn Header="Track" DisplayMemberBinding="{Binding Track.Name}" />
-                        <GridViewColumn Header="Time" DisplayMemberBinding="{Binding RaceTime}" />
+                        <GridViewColumn Header="Laps" DisplayMemberBinding="{Binding AmountOfLaps}"/>
+                        <GridViewColumn Header="Sections" DisplayMemberBinding="{Binding Sections.Count}" />
                     </GridView>
                 </ListView.View>
             </ListView>

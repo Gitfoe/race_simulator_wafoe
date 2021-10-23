@@ -47,14 +47,9 @@ namespace Model
         private string FixRaceTimer(TimeSpan raceTimer)
         { // Round to 3 milliseconds and remove useless values from the string, depening on the outcome of the string length
             string returnRaceTimer = raceTimer.RoundSeconds(3).ToString();
-            if (returnRaceTimer.Length == 16)
-            {
-                return returnRaceTimer.Remove((returnRaceTimer.Length - 4)).Remove(0, 3);
-            }
-            else
-            {
-                return returnRaceTimer.Remove(0, 3) + ".000";
-            }
+            return returnRaceTimer.Length == 16
+                ? returnRaceTimer.Remove((returnRaceTimer.Length - 4)).Remove(0, 3)
+                : returnRaceTimer.Remove(0, 3) + ".000";
         }
     }
 }

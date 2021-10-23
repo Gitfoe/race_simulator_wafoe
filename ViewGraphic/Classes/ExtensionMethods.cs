@@ -27,7 +27,7 @@ namespace ViewGraphic.Classes
         }
         public static TimeSpan RoundSeconds(this TimeSpan span, int nDigits)
         {
-            // TimeSpan.FromSeconds rounds to nearest millisecond, so nDigits should be 3 or less - won't get good answer beyond 3 digits.
+            // TimeSpan.FromSeconds rounds to nearest millisecond, so nDigits should be 3 or less - won't get good answer beyond 3 digits
             Debug.Assert(nDigits <= 3);
             return TimeSpan.FromSeconds(Math.Round(span.TotalSeconds, nDigits));
         }

@@ -34,7 +34,7 @@ namespace WpfApp1
 
         // Event handlers
         private void OnNextRaceEvent(object sender, NextRaceEventArgs args)
-        { // Link events and draw track for the first time
+        { // Link events and clear cache
             GraphicsCache.ClearCache();
             args.Race.DriversChanged += OnDriversChanged;
 
@@ -55,9 +55,17 @@ namespace WpfApp1
                 }));
         }
 
-        public void OnCompetitionFinished(object sender, EventArgs args)
+        public void OnCompetitionFinished(object sender, NextRaceEventArgs args)
         {
             GraphicsCache.ClearCache();
+            this.TrackScreen.Dispatcher.BeginInvoke(
+                DispatcherPriority.Render,
+                new Action(() =>
+                {
+                    this.TrackScreen.Source = null;
+                    this.TrackScreen.Source = Visualisation.DrawCelebration(args.Race.Participants); ;
+                }));
+
         }
 
         private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)

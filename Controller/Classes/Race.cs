@@ -386,17 +386,15 @@ namespace Controller.Classes
             {
                 _lapTime.Add(participant, new TimeSpan[_amountOfLaps]);
             }
-            else if (lap == 1) // Start saving the laptime once they finished a lap
+            else if (lap >= 1) // Start saving the laptime once they finished a lap
             {
                 _lapTime[participant][lap - 1] = DateTime.Now - RaceInfo.StartTime;
-                RaceInfo.ParticipantLapTimes.Add(new ParticipantTimes(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
-            }
-            else if (lap > 1) // Compare the times to all previous section times combined and add it to the array
-            {
-                _lapTime[participant][lap - 1] = DateTime.Now - RaceInfo.StartTime;
-                for (int i = 2; i < lap + 1; i++)
+                if (lap > 1) // Compare the times to all previous section times combined and add it to the array
                 {
-                    _lapTime[participant][lap - 1] = _lapTime[participant][lap - 1] - _lapTime[participant][lap - i];
+                    for (int i = 2; i < lap + 1; i++)
+                    {
+                        _lapTime[participant][lap - 1] = _lapTime[participant][lap - 1] - _lapTime[participant][lap - i];
+                    }
                 }
                 RaceInfo.ParticipantLapTimes.Add(new ParticipantTimes(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
             }

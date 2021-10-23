@@ -15,7 +15,7 @@ namespace Controller.Classes
 
         // Events
         public static event EventHandler<NextRaceEventArgs> NextRaceEvent;
-        public static event EventHandler CompetitionFinished;
+        public static event EventHandler<NextRaceEventArgs> CompetitionFinished;
 
         // Methods
         public static void Initialize()
@@ -42,62 +42,62 @@ namespace Controller.Classes
         { // Method that adds all the tracks in the list TrackList to the queue of GrandPrix
             Track[] TrackList = // Create list of tracks
             {
-                new Track("Yoshi Circuit", 2, new SectionTypes[] {
-                    SectionTypes.Finish,
-                    SectionTypes.RightCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.Straight,
-                    SectionTypes.RightCorner,
-                    SectionTypes.RightCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.Straight,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.RightCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.RightCorner,
-                    SectionTypes.RightCorner,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.RightCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.Straight,
-                    SectionTypes.Straight,
-                    SectionTypes.RightCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.StartGrid,
-                    SectionTypes.StartGrid
-                } ),
-                new Track("Figure 8 Circuit", 3, new SectionTypes[] {
-                    SectionTypes.Finish,
-                    SectionTypes.RightCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.RightCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.Straight,
-                    SectionTypes.Straight,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.Straight,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.StartGrid,
-                    SectionTypes.StartGrid,
-                    SectionTypes.RightCorner
-                } ),
-                new Track("Rainbow Road", 4, new SectionTypes[] {
-                    SectionTypes.Finish,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner,
-                    SectionTypes.StartGrid,
-                    SectionTypes.LeftCorner
-                } ),
+                //new Track("Yoshi Circuit", 2, new SectionTypes[] {
+                //    SectionTypes.Finish,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.Straight,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.Straight,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.Straight,
+                //    SectionTypes.Straight,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.StartGrid
+                //} ),
+                //new Track("Figure 8 Circuit", 3, new SectionTypes[] {
+                //    SectionTypes.Finish,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.RightCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.Straight,
+                //    SectionTypes.Straight,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.Straight,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.RightCorner
+                //} ),
+                //new Track("Rainbow Road", 4, new SectionTypes[] {
+                //    SectionTypes.Finish,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.LeftCorner,
+                //    SectionTypes.StartGrid,
+                //    SectionTypes.LeftCorner
+                //} ),
                 new Track("Coconut Mall", 1, new SectionTypes[] {
                     SectionTypes.Finish,
                     SectionTypes.LeftCorner,
@@ -161,7 +161,7 @@ namespace Controller.Classes
             }
             else
             {
-                CompetitionFinished(null, null);
+                CompetitionFinished(CurrentRace, new NextRaceEventArgs() { Race = CurrentRace });
             }
         }
         private static void OnRaceFinished(object sender, EventArgs e)

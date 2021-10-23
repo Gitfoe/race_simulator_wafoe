@@ -12,7 +12,7 @@
     </Window.DataContext>
     <Grid>
         <Image x:Name="TrackScreen" Margin="20,48,0,0" HorizontalAlignment="Left"/>
-        <DockPanel LastChildFill="False">
+        <DockPanel LastChildFill="False" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Menu Height="20" DockPanel.Dock="Top" Width="800">
                 <MenuItem Header="Menu">
                     <MenuItem Header="Statistics current race" Click="MenuItem_CurrentRaceStatistics_Click"/>

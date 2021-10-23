@@ -328,6 +328,48 @@ namespace ViewGraphic.Classes
                 };
         }
 
+        public static BitmapSource DrawCelebration(List<IParticipant> participants)
+        { // Draw the top 3 on a fun celebration image after the competition is over
+            // Make a list of the top 3 racers from the competition and sort them
+            List<IParticipant> ding = participants.Where(x => 
+            x.PositionInCompetition == "1st" ||
+            x.PositionInCompetition == "2nd" ||
+            x.PositionInCompetition == "3rd").ToList().OrderBy(s => s.GetType().GetProperty("PositionInCompetition").GetValue(s)).ToList();
+
+            // Generate canvas
+            Bitmap canvas = GraphicsCache.EmptyTrack(256, 224);
+            Graphics graphics = Graphics.FromImage(canvas);
+
+            // Draw celebration background image
+            graphics.DrawImage(GraphicsCache.GetBitmap(_celebration), 0, 0, 256, 224);
+
+            // Find correct celebration bitmaps, add them to the cache and a temporary array
+            Bitmap[] participantBitmaps = new Bitmap[3];
+            for (int i = 0; i < ding.Count; i++)
+            {
+                Bitmap participantBitmap = ding[i].TeamColor switch
+                {
+                    TeamColors.Bowser => GraphicsCache.GetBitmap(_bowserCelebration),
+                    TeamColors.DKJunior => GraphicsCache.GetBitmap(_dkJuniorCelebration),
+                    TeamColors.Koopa => GraphicsCache.GetBitmap(_koopaCelebration),
+                    TeamColors.Luigi => GraphicsCache.GetBitmap(_luigiCelebration),
+                    TeamColors.Mario => GraphicsCache.GetBitmap(_marioCelebration),
+                    TeamColors.Peach => GraphicsCache.GetBitmap(_peachCelebration),
+                    TeamColors.Toad => GraphicsCache.GetBitmap(_toadCelebration),
+                    TeamColors.Wafoe => GraphicsCache.GetBitmap(_wafoeCelebration),
+                    _ => default
+                };
+                participantBitmaps[i] = participantBitmap;
+            }
+
+            // Draw the participants on the blocks
+            graphics.DrawImage(participantBitmaps[0], 112, 159, 32, 32);
+            graphics.DrawImage(participantBitmaps[1], 80, 167, 32, 32);
+            graphics.DrawImage(participantBitmaps[2], 144, 175, 32, 32);
+
+            return GraphicsCache.CreateBitmapSourceFromGdiBitmap(canvas);
+        }
+
         #region graphics
         // Sections
         private const string _startGridNorth = @"..\..\..\Graphics\Sections\StartGridNorth.png";
@@ -352,7 +394,18 @@ namespace ViewGraphic.Classes
         private const string _mario = @"..\..\..\Graphics\Racers\Mario.png";
         private const string _peach = @"..\..\..\Graphics\Racers\Peach.png";
         private const string _toad = @"..\..\..\Graphics\Racers\Toad.png";
-        private const string _wafoe = @"..\..\..\Graphics\Racers\Wafoe.png";
+        private const string _wafoe = @"..\..\..\Graphics\Racers\Yoshi.png";
+
+        // Celebration
+        private const string _celebration = @"..\..\..\Graphics\Sections\Celebration.png";
+        private const string _bowserCelebration = @"..\..\..\Graphics\Racers\BowserCelebration.png";
+        private const string _dkJuniorCelebration = @"..\..\..\Graphics\Racers\DKJuniorCelebration.png";
+        private const string _koopaCelebration = @"..\..\..\Graphics\Racers\KoopaCelebration.png";
+        private const string _luigiCelebration = @"..\..\..\Graphics\Racers\LuigiCelebration.png";
+        private const string _marioCelebration = @"..\..\..\Graphics\Racers\MarioCelebration.png";
+        private const string _peachCelebration = @"..\..\..\Graphics\Racers\PeachCelebration.png";
+        private const string _toadCelebration = @"..\..\..\Graphics\Racers\ToadCelebration.png";
+        private const string _wafoeCelebration = @"..\..\..\Graphics\Racers\YoshiCelebration.png";
 
         // IsBroken
         private const string _thwomp = @"..\..\..\Graphics\Racers\Thwomp.png";

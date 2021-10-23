@@ -20,12 +20,14 @@ namespace Model
         // Properties
         public List<IParticipant> Participants { get; set; }
         public List<ParticipantTimes> ParticipantRaceTimes { get; set; }
+        public List<Track> Tracks { get; set; }
 
         // Event methods
         private void OnEvent()
         {
             Participants = _currentRace.Participants.OrderByDescending(x => x.Points).ToList();
             ParticipantRaceTimes = Data.CompetitionInfo.ParticipantRaceTimes.ToList();
+            Tracks = Data.GrandPrix.Tracks.ToList();
             PropertyChanged(this, new PropertyChangedEventArgs(""));
         }
 
