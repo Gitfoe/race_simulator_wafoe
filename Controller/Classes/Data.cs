@@ -34,7 +34,7 @@ namespace Controller.Classes
                 new Driver("Peach", new Kart(10), TeamColors.Peach),
                 new Driver("Wafoe", new Kart(10), TeamColors.Wafoe),
                 new Driver("Bowser", new Kart(10), TeamColors.Bowser),
-                //new Driver("Koopa", new Kart(10), TeamColors.Koopa),
+                //new Driver("Koopa", new Kart(10), TeamColors.Koopa), // The program will work with more drivers than StartGrid sections, but some functions won't function properly
                 //new Driver("DK Junior", new Kart(10), TeamColors.DKJunior)
             }); 
         }

@@ -11,7 +11,7 @@
         <Model:CompetitionInfoDataContext/>
     </Window.DataContext>
     <Grid>
-        <Grid Margin="0,0,400,217">
+        <Grid Margin="400,0,0,217">
             <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Total points achieved by racers as of now:"/>
             <ListView Margin="0,22,0,0" ItemsSource="{Binding Participants}">
                 <ListView.View>
@@ -23,7 +23,7 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <Grid Margin="400,0,0,217">
+        <Grid Margin="0,0,400,0">
             <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Total times per track per participant:"/>
             <ListView Margin="0,22,0,0" ItemsSource="{Binding ParticipantRaceTimes}">
                 <ListView.View>
