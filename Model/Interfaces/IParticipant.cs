@@ -1,9 +1,4 @@
-﻿using Model.Classes;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Model.Interfaces
+﻿namespace Model.Interfaces
 {
     public interface IParticipant // Deelnemer
     {

@@ -1,11 +1,7 @@
-﻿using Model;
-using Model.Classes;
-using Model.Interfaces;
-using Controller;
+﻿using Model.Classes;
 using Controller.Classes;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using static Model.Classes.Section;
 
 namespace View.Classes

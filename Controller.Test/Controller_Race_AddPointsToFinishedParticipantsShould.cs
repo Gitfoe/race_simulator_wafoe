@@ -3,12 +3,12 @@ using Model.Classes;
 using Model.Interfaces;
 using Controller.Classes;
 using System.Collections.Generic;
-using System.Linq;
+using static Model.Classes.Section;
 
 namespace ControllerTest
 {
     [TestFixture]
-    public class Controller_Race_AddPointsToFinishedParticipantShould
+    public class Controller_Race_DeterminePositionsOnTrackShould
     {
         // Fields
         private Competition _competition;
@@ -25,71 +25,101 @@ namespace ControllerTest
                 new Driver("Peach", new Kart(10), TeamColors.Peach),
                 new Driver("Wafoe", new Kart(10), TeamColors.Wafoe),
                 new Driver("Bowser", new Kart(10), TeamColors.Bowser),
-                new Driver("Koopa", new Kart(10), TeamColors.Koopa),
-                new Driver("DK Junior", new Kart(10), TeamColors.DKJunior),
             });
         }
 
-        [TestCase(15, new int[] { 0, 0, 0, 0, 0, 0, 0, 0 })]
-        [TestCase(12, new int[] { 0, 15, 0, 0, 0, 0, 0, 0 })]
-        [TestCase(10, new int[] { 0, 12, 0, 15, 0, 0, 0, 0 })]
-        [TestCase(8, new int[] { 0, 0, 15, 0, 0, 12, 0, 10 })]
-        [TestCase(7, new int[] { 0, 12, 10, 15, 8, 0, 0, 0 })]
-        [TestCase(6, new int[] { 0, 0, 0, 7, 8, 10, 12, 15 })]
-        [TestCase(5, new int[] { 0, 0, 10, 12, 8, 7, 6, 15 })]
-        [TestCase(4, new int[] { 0, 15, 10, 6, 5, 7, 8, 12 })]
-        public void AddPointsToFinishedParticipant_CheckForCorrectOutput(int toAchievePoints, int[] achievedPointsByOtherRacers)
+        [TestCase(1, false)]
+        [TestCase(2, false)]
+        [TestCase(3, false)]
+        [TestCase(4, false)]
+        [TestCase(5, false)]
+        [TestCase(6, false)]
+        [TestCase(1, true)]
+        [TestCase(2, true)]
+        [TestCase(3, true)]
+        [TestCase(4, true)]
+        [TestCase(5, true)]
+        public void DeterminePositionsOnTrack_CheckForCorrectOutput(int roundsFinished, bool oneParticipantLapFurther)
         { // This test case always uses the first participant (in this case, Mario)
-            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { }), _competition.Participants); // Setup faux race
-            
-            List<IParticipant> copyParticipants = new List<IParticipant>();
-            foreach (var item in _competition.Participants) // Make copy without reference type of the Participants list
+            #region Preparation
+            Race race = new Race(new Track("Rainbow Road", 6, new Section.SectionTypes[] {
+                    SectionTypes.Finish,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.RightCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.RightCorner,
+                    SectionTypes.LeftCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.RightCorner,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid,
+                    SectionTypes.StartGrid}), _competition.Participants); // Setup faux race
+
+            // First clear the _positions because by default it gets filled, but we want to manually control it
+            foreach (KeyValuePair<Section, SectionData> item in race._positions)
             {
-                copyParticipants.Add(new Driver(item.Name, item.Equipment, item.TeamColor));
+                item.Value.Left = null;
+                item.Value.Right = null;
             }
 
-            for (int i = 0; i < copyParticipants.Count; i++)
-            { // First add the points to all cloned participants in the list order (check Setup)
-                copyParticipants[i].Points = copyParticipants[i] != copyParticipants[0] ? achievedPointsByOtherRacers[i] : toAchievePoints;
-            }
+            // Enqueue the participants so we can place them nicely
+            Queue<IParticipant> tempQueue = new Queue<IParticipant>(_competition.Participants);
 
-            for (int i = 0; i < copyParticipants.Count; i++)
-            { // Then add the points to all participants in the list order (check Setup) but skip the participant
-                if (i >= 1 && copyParticipants[i].Points != 0)
+            // Fill the participants on straight sections
+            foreach (KeyValuePair<Section, SectionData> item in race._positions)
+            {
+                if (item.Key.SectionType == Section.SectionTypes.Straight)
                 {
-                    race._raceParticipantPoints.Add(_competition.Participants[i], copyParticipants[i].Points);
+                    item.Value.Left = tempQueue.Dequeue();
+                    item.Value.Right = tempQueue.Dequeue();
+                }
+                if (tempQueue.Count == 0) // Break out of the loop if the queue is empty to save on resources
+                {
+                    break;
                 }
             }
+            #endregion
 
-            // Calculate the needed points for the participant with the method
-            race.DeterminePointsForFinishedParticipant(_competition.Participants[0]);
-            race.AddPointsToAllParticipants();
-
-            Assert.AreEqual(true, _competition.Participants[0].Points == copyParticipants[0].Points);
-        }
-
-        [Test]
-        public void AddPointsToFinishedParticipant_CheckIfTopThreeCorrect()
-        { // This test case always uses the first participant (in this case, Mario)
-            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { }), _competition.Participants); // Setup faux race
-            int[] achievedPointsByOtherRacers = new int[] { 0, 10, 15, 6, 5, 7, 8, 12 }; // Declare some random point winners
-            List<IParticipant> correctList = new List<IParticipant>() { _competition.Participants[1], _competition.Participants[2], _competition.Participants[7] }; // Toad, Luigi and DK Junior
-            List<IParticipant> executedListFromMethod = new List<IParticipant>();
-
-            for (int i = 0; i < _competition.Participants.Count; i++)
-            { // First add the points to all participants in the list order (check Setup)
-                _competition.Participants[i].Points = achievedPointsByOtherRacers[i];
-            }
-
-            foreach (IParticipant participant in _competition.Participants)
+            string firstDriverPlacement = "6th";
+            string secondDriverPlacement = "1st";
+            // Add all the participant to the _roundsFinished dictionary
+            foreach (IParticipant participant in race.Participants)
             {
-                if (participant.Points >= 10 && participant.Points <= 15)
+                if (oneParticipantLapFurther) // If we want one participant to be a lap further to test the lap handling part of the function
                 {
-                    executedListFromMethod.Add(participant);
+                    race._roundsFinished.Add(participant, roundsFinished + 1);
+                    firstDriverPlacement = "1st";
+                    secondDriverPlacement = "2nd";
+                    oneParticipantLapFurther = false;
                 }
+                else // If not, just add normally
+                {
+                    race._roundsFinished.Add(participant, roundsFinished);
+                }
+                
             }
 
-            Assert.AreEqual(correctList, executedListFromMethod);
+            // Execute the method we want to test
+            race.DeterminePositionsOnTrack();
+
+            // Now, we test if the first one is last and the last one is first (reversed, because we didn't use the method to fix the positions by reversing the order of placement)
+            Assert.IsTrue(race.Participants[0].PositionOnTrack == firstDriverPlacement);
+            Assert.IsTrue(race.Participants[5].PositionOnTrack == secondDriverPlacement);
         }
     }
 }
