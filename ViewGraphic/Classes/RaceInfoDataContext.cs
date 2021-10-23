@@ -21,7 +21,7 @@ namespace Model
         public int AmountOfLaps { get; set; }
         public int AmountOfSections { get; set; }
         public int AmountOfRacers { get; set; }
-        public List<ParticipantLapTime> ParticipantLapTimes { get; set; }
+        public List<ParticipantTimes> ParticipantLapTimes { get; set; }
         public string RaceTimer { get; set; }
 
         // Event methods

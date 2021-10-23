@@ -36,8 +36,8 @@ namespace ControllerTest
         [TestCase(false, 3)]
         [TestCase(false, 4)]
         public void CountLapsOfParticipant_CheckIfParticipantFinishedRace(bool boolShould, int lapsOfParticipant)
-        { // Keep the value of const "_amountOfLaps" in mind -- the default is 2
-            Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] { // Setup a new temporary race
+        {
+            Race race = new Race(new Track("Rainbow Road", 2, new Section.SectionTypes[] { // Setup a new temporary race
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
@@ -58,7 +58,7 @@ namespace ControllerTest
         [Test]
         public void CountLapsOfParticipant_CheckIfAddsToDictionary()
         {
-            Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] { // Setup a new temporary race
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { // Setup a new temporary race
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,

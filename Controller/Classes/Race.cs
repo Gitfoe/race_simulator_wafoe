@@ -381,20 +381,21 @@ namespace Controller.Classes
             else if (lap == 1) // Start saving the laptime once they finished a lap
             {
                 _lapTime[participant][lap - 1] = DateTime.Now - RaceInfo.StartTime;
-                RaceInfo.ParticipantLapTimes.Add(new ParticipantLapTime(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
+                RaceInfo.ParticipantLapTimes.Add(new ParticipantTimes(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
             }
             else if (lap > 1) // Compare the times to the previous section times and add it to the array
             {
                 _lapTime[participant][lap - 1] = DateTime.Now - RaceInfo.StartTime;
                 _lapTime[participant][lap - 1] = _lapTime[participant][lap - 1] - _lapTime[participant][lap - 2];
-                RaceInfo.ParticipantLapTimes.Add(new ParticipantLapTime(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
+                RaceInfo.ParticipantLapTimes.Add(new ParticipantTimes(participant.Name, lap, _lapTime[participant][lap - 1])); // Add the internal data to the ParticipantLapTimes list
             }
             if (lap == _amountOfLaps) // If it's the last lap and they finished the race, sum up the total amount of race time and add it to the end of the array
             {
                 for (int i = 0; i < lap; i++)
                 {
                     _lapTime[participant][lap] += _lapTime[participant][i];
-                }   
+                }
+                Data.CompetitionInfo.ParticipantRaceTimes.Add(new ParticipantTimes(participant.Name, Track, _lapTime[participant][lap])); // Add the internal data to the ParticipantRaceTimes list
             }
         }
 
@@ -407,7 +408,7 @@ namespace Controller.Classes
             return false;
         }
 
-        public void AddPointsToFinishedParticipant(IParticipant finishedParticipant)
+        public void AddPointsToFinishedParticipant(IParticipant finishedParticipant) // !!!!!! needs fixing !!!!!!!!!
         { // Give the points to the finished participant complying to Mario Kart Wii points
             HashSet<int> availablePoints = new HashSet<int>() { 15, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1, 0};
             foreach (IParticipant participant in Participants)

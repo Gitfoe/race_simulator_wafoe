@@ -11,7 +11,7 @@ namespace Model.Classes
         public int AmountOfLaps { get; set; }
         public int AmountOfSections { get; set; }
         public int AmountOfRacers { get; set; }
-        public List<ParticipantLapTime> ParticipantLapTimes { get; set; }
+        public List<ParticipantTimes> ParticipantLapTimes { get; set; }
         public List<IParticipant> TopThree { get; set; }
         public DateTime StartTime { get; set; }
         public TimeSpan RaceTimer { get; set; }
@@ -21,7 +21,7 @@ namespace Model.Classes
         {
             Participants = participants;
             AmountOfRacers = Participants.Count; // Delcare the amount of racers from the given List<IParticipant>
-            ParticipantLapTimes = new List<ParticipantLapTime>();
+            ParticipantLapTimes = new List<ParticipantTimes>();
         }
     }
 }

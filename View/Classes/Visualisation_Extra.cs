@@ -19,7 +19,7 @@ namespace View.Classes
             Console.Write("What is the name of your track? ");
             string name = Console.ReadLine();
             Console.Clear();
-            Track userTrack = new Track(name, new Section.SectionTypes[0]);
+            Track userTrack = new Track(name, 3, new Section.SectionTypes[0]);
 
             string input = null;
             while (input != "done")

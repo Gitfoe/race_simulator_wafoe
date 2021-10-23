@@ -44,8 +44,8 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn Header="Team" DisplayMemberBinding="{Binding Lap}"/>
-                        <GridViewColumn Header="Speed" DisplayMemberBinding="{Binding Time}" />
+                        <GridViewColumn Header="Lap" DisplayMemberBinding="{Binding Lap}"/>
+                        <GridViewColumn Header="Time" DisplayMemberBinding="{Binding LapTime}" />
                     </GridView>
                 </ListView.View>
             </ListView>

@@ -27,7 +27,7 @@ namespace ControllerTest
         [TestCase(SectionTypes.Straight, 0)]
         public void CountCertainSectionTypes_CheckIfCorrectSectionCount(SectionTypes sectionTypeToCount, int correctSectionTypeCount)
         {
-            Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] { // Setup a new temporary race
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { // Setup a new temporary race
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,

@@ -22,5 +22,17 @@
                 </ListView.View>
             </ListView>
         </Grid>
+        <Grid Margin="400,0,0,217">
+            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Total times per track per participant:"/>
+            <ListView Margin="0,22,0,0" ItemsSource="{Binding ParticipantRaceTimes}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Track" DisplayMemberBinding="{Binding Track.Name}" />
+                        <GridViewColumn Header="Time" DisplayMemberBinding="{Binding RaceTime}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </Grid>
 </Window>

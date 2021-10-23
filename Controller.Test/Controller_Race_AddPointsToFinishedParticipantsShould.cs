@@ -39,7 +39,7 @@ namespace ControllerTest
         [TestCase(4, new int[] { 0, 15, 10, 6, 5, 7, 8, 12 })]
         public void AddPointsToFinishedParticipant_CheckForCorrectOutput(int toAchievePoints, int[] achievedPointsByOtherRacers)
         { // This test case always uses the first participant (in this case, Mario)
-            Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] { }), _competition.Participants); // Setup faux race
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { }), _competition.Participants); // Setup faux race
 
             for (int i = 0; i < _competition.Participants.Count; i++)
             { // First add the points to all participants in the list order (check Setup) but skip the participant
@@ -57,7 +57,7 @@ namespace ControllerTest
         [Test]
         public void AddPointsToFinishedParticipant_CheckIfTopThreeCorrect()
         { // This test case always uses the first participant (in this case, Mario)
-            Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] { }), _competition.Participants); // Setup faux race
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { }), _competition.Participants); // Setup faux race
             int[] achievedPointsByOtherRacers = new int[] { 0, 10, 15, 6, 5, 7, 8, 12 }; // Declare some random point winners
             List<IParticipant> correctList = new List<IParticipant>() { _competition.Participants[1], _competition.Participants[2], _competition.Participants[7] }; // Toad, Luigi and DK Junior
             List<IParticipant> executedListFromMethod = new List<IParticipant>();

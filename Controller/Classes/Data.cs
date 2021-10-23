@@ -23,6 +23,7 @@ namespace Controller.Classes
             GrandPrix = new Competition();
             AddParticipants(); // Call the AddParticipant method to add partiticpants to the Grand Prix
             AddTracks(); // Call the AddTracks method to add tracks to the Grand Prix
+            CompetitionInfo = new CompetitionInfo();
         }
         private static void AddParticipants()
         { // Add some participants to the race
@@ -154,7 +155,6 @@ namespace Controller.Classes
             if (currentTrack != null)
             {
                 CurrentRace = new Race(currentTrack, GrandPrix.Participants);
-                CompetitionInfo = new CompetitionInfo();
                 CurrentRace.RaceFinished += OnRaceFinished;
                 NextRaceEvent(CurrentRace, new NextRaceEventArgs() { Race = CurrentRace }); // Throw event that the next race is happening
                 CurrentRace.Start(); // Start the timer for the race

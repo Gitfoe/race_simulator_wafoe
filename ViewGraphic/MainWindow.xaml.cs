@@ -77,6 +77,7 @@ namespace WpfApp1
         {
             Data.NextRaceEvent += ((CompetitionInfoDataContext)_competitionStatistics.DataContext).OnNextRaceEvent;
             ((CompetitionInfoDataContext)_competitionStatistics.DataContext).OnNextRaceEvent(null, new NextRaceEventArgs() { Race = Data.CurrentRace }); // Fix to update every time
+            Data.CompetitionFinished += ((CompetitionInfoDataContext)_competitionStatistics.DataContext).OnCompetitionFinished;
 
             _competitionStatistics.Show();
         }

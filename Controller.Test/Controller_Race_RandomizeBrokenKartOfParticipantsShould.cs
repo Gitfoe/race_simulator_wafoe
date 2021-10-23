@@ -24,7 +24,7 @@ namespace ControllerTest
         public void RandomizeKartBreakValues_RandomValuesShould()
         { // The average of the true and false bools should fall within the range of the wanted odds (0,9% chance)
           // This test will still fail sometime!
-            Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] {
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] {
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
@@ -70,7 +70,7 @@ namespace ControllerTest
         public void RandomizeKartFixValues_RandomValuesShould()
         { // The average of the true and false bools should fall within the range of the wanted odds (10% chance)
           // This test will still fail sometime!
-            Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] {
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] {
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,

@@ -31,7 +31,7 @@ namespace ControllerTest
         [Test]
         public void PlaceParticipantsOnStartGrids_CheckIfParticipantsArePlaced()
         {
-            Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] { // Setup a new temporary race
+            Race race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { // Setup a new temporary race
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
@@ -67,7 +67,7 @@ namespace ControllerTest
             Race race;
             if (selectRace == 1)
             {
-                race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] { // Setup a new temporary race
+                race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { // Setup a new temporary race
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
@@ -80,7 +80,7 @@ namespace ControllerTest
             }
             else if (selectRace == 2)
             {
-                race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] { // Setup a new temporary race
+                race = new Race(new Track("Rainbow Road", 4, new Section.SectionTypes[] { // Setup a new temporary race
                     SectionTypes.LeftCorner,
                     SectionTypes.LeftCorner,
                     SectionTypes.LeftCorner,

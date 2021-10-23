@@ -38,8 +38,8 @@ namespace ControllerTest
         [TestCase(false, 4, 4)]
         [TestCase(false, 0, 0)]
         public void CheckIfEveryoneFinishedRace_CheckForTrueAndFalse(bool boolShould, int lapsOfParticipants, int lapsOfFirstParticipant)
-        { // Keep the value of const "_amountOfLaps" in mind -- the default is 2
-            Race race = new Race(new Track("Rainbow Road", new Section.SectionTypes[] { // Setup a new temporary race
+        {
+            Race race = new Race(new Track("Rainbow Road", 2, new Section.SectionTypes[] { // Setup a new temporary race
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,

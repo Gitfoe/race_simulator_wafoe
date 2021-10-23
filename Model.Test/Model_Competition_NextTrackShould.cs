@@ -28,7 +28,7 @@ namespace ControllerTest
         public void NextTrack_OneInQueue_ReturnTrack()
         {
             // Create a new track with some info
-            Track _track = new Track("Test Track", new Section.SectionTypes[] {
+            Track _track = new Track("Test Track", 4, new Section.SectionTypes[] {
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
@@ -45,7 +45,7 @@ namespace ControllerTest
         [Test]
         public void NextTrack_OneInQueue_RemoveTrackFromQueue()
         {
-            _competition.Tracks.Enqueue(new Track("Another Test Track", new Section.SectionTypes[] {
+            _competition.Tracks.Enqueue(new Track("Another Test Track", 4, new Section.SectionTypes[] {
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
@@ -63,7 +63,7 @@ namespace ControllerTest
         public void NextTrack_TwoInQueue_ReturnNextTrack()
         {
             // First enqueue 2 tracks
-            Track _trackOne = new Track("Test Track One", new Section.SectionTypes[] {
+            Track _trackOne = new Track("Test Track One", 4, new Section.SectionTypes[] {
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
@@ -72,7 +72,7 @@ namespace ControllerTest
                     SectionTypes.StartGrid,
                     SectionTypes.LeftCorner,
                     SectionTypes.StartGrid });
-            Track _trackTwo = new Track("Test Track Two", new Section.SectionTypes[] {
+            Track _trackTwo = new Track("Test Track Two", 4, new Section.SectionTypes[] {
                     SectionTypes.RightCorner,
                     SectionTypes.StartGrid,
                     SectionTypes.RightCorner,
