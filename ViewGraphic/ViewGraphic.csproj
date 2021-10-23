@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Graphics\Racers\Bowser.png" />
+    <None Remove="Graphics\Racers\BowserCelebration.png" />
+    <None Remove="Graphics\Racers\DKJunior.png" />
+    <None Remove="Graphics\Racers\DKJuniorCelebration.png" />
+    <None Remove="Graphics\Racers\Koopa.png" />
+    <None Remove="Graphics\Racers\KoopaCelebration.png" />
+    <None Remove="Graphics\Racers\Luigi.png" />
+    <None Remove="Graphics\Racers\LuigiCelebration.png" />
+    <None Remove="Graphics\Racers\Mario.png" />
+    <None Remove="Graphics\Racers\MarioCelebration.png" />
+    <None Remove="Graphics\Racers\Peach.png" />
+    <None Remove="Graphics\Racers\PeachCelebration.png" />
+    <None Remove="Graphics\Racers\Thwomp.png" />
+    <None Remove="Graphics\Racers\Toad.png" />
+    <None Remove="Graphics\Racers\ToadCelebration.png" />
+    <None Remove="Graphics\Racers\Wafoe.png" />
+    <None Remove="Graphics\Racers\Yoshi.png" />
+    <None Remove="Graphics\Racers\YoshiCelebration.png" />
+    <None Remove="Graphics\Sections\Celebration.png" />
+    <None Remove="Graphics\Sections\CornerEastSouth.png" />
+    <None Remove="Graphics\Sections\CornerNorthEast.png" />
+    <None Remove="Graphics\Sections\CornerNorthWest.png" />
+    <None Remove="Graphics\Sections\CornerSouthWest.png" />
+    <None Remove="Graphics\Sections\FinishEast.png" />
+    <None Remove="Graphics\Sections\FinishNorth.png" />
+    <None Remove="Graphics\Sections\FinishSouth.png" />
+    <None Remove="Graphics\Sections\FinishWest.png" />
+    <None Remove="Graphics\Sections\StartGridEast.png" />
+    <None Remove="Graphics\Sections\StartGridNorth.png" />
+    <None Remove="Graphics\Sections\StartGridSouth.png" />
+    <None Remove="Graphics\Sections\StartGridWest.png" />
+    <None Remove="Graphics\Sections\Straight.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Graphics\Racers\Bowser.png" />
+    <Content Include="Graphics\Racers\BowserCelebration.png" />
+    <Content Include="Graphics\Racers\DKJunior.png" />
+    <Content Include="Graphics\Racers\DKJuniorCelebration.png" />
+    <Content Include="Graphics\Racers\Koopa.png" />
+    <Content Include="Graphics\Racers\KoopaCelebration.png" />
+    <Content Include="Graphics\Racers\Luigi.png" />
+    <Content Include="Graphics\Racers\LuigiCelebration.png" />
+    <Content Include="Graphics\Racers\Mario.png" />
+    <Content Include="Graphics\Racers\MarioCelebration.png" />
+    <Content Include="Graphics\Racers\Peach.png" />
+    <Content Include="Graphics\Racers\PeachCelebration.png" />
+    <Content Include="Graphics\Racers\Thwomp.png" />
+    <Content Include="Graphics\Racers\Toad.png" />
+    <Content Include="Graphics\Racers\ToadCelebration.png" />
+    <Content Include="Graphics\Racers\Yoshi.png" />
+    <Content Include="Graphics\Racers\YoshiCelebration.png" />
+    <Content Include="Graphics\Sections\Celebration.png" />
+    <Content Include="Graphics\Sections\CornerEastSouth.png" />
+    <Content Include="Graphics\Sections\CornerNorthEast.png" />
+    <Content Include="Graphics\Sections\CornerNorthWest.png" />
+    <Content Include="Graphics\Sections\CornerSouthWest.png" />
+    <Content Include="Graphics\Sections\FinishEast.png" />
+    <Content Include="Graphics\Sections\FinishNorth.png" />
+    <Content Include="Graphics\Sections\FinishSouth.png" />
+    <Content Include="Graphics\Sections\FinishWest.png" />
+    <Content Include="Graphics\Sections\StartGridEast.png" />
+    <Content Include="Graphics\Sections\StartGridNorth.png" />
+    <Content Include="Graphics\Sections\StartGridSouth.png" />
+    <Content Include="Graphics\Sections\StartGridWest.png" />
+    <Content Include="Graphics\Sections\Straight.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Controller\Controller.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+</Project>

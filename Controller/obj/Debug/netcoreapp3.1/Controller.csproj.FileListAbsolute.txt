@@ -1,0 +1,13 @@
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\bin\Debug\netcoreapp3.1\Controller.deps.json
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\bin\Debug\netcoreapp3.1\Controller.dll
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\bin\Debug\netcoreapp3.1\Controller.pdb
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\bin\Debug\netcoreapp3.1\Model.dll
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\bin\Debug\netcoreapp3.1\Model.pdb
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\obj\Debug\netcoreapp3.1\Controller.csproj.AssemblyReference.cache
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\obj\Debug\netcoreapp3.1\Controller.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\obj\Debug\netcoreapp3.1\Controller.AssemblyInfoInputs.cache
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\obj\Debug\netcoreapp3.1\Controller.AssemblyInfo.cs
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\obj\Debug\netcoreapp3.1\Controller.csproj.CoreCompileInputs.cache
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\obj\Debug\netcoreapp3.1\Controller.csproj.CopyComplete
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\obj\Debug\netcoreapp3.1\Controller.dll
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Controller\obj\Debug\netcoreapp3.1\Controller.pdb
