@@ -1317,7 +1317,7 @@
           "bin/placeholder/Model.dll": {}
         }
       },
-      "ViewGraphic/1.0.0": {
+      "race_simulator_wafoe/1.0.2": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
@@ -1326,10 +1326,10 @@
           "System.Drawing.Common": "5.0.2"
         },
         "compile": {
-          "bin/placeholder/ViewGraphic.dll": {}
+          "bin/placeholder/race_simulator_wafoe.dll": {}
         },
         "runtime": {
-          "bin/placeholder/ViewGraphic.dll": {}
+          "bin/placeholder/race_simulator_wafoe.dll": {}
         },
         "frameworkReferences": [
           "Microsoft.WindowsDesktop.App.WPF"
@@ -5107,7 +5107,7 @@
       "path": "../Model/Model.csproj",
       "msbuildProject": "../Model/Model.csproj"
     },
-    "ViewGraphic/1.0.0": {
+    "race_simulator_wafoe/1.0.2": {
       "type": "project",
       "path": "../ViewGraphic/ViewGraphic.csproj",
       "msbuildProject": "../ViewGraphic/ViewGraphic.csproj"
@@ -5120,8 +5120,8 @@
       "Model >= 1.0.0",
       "NUnit >= 3.13.1",
       "NUnit3TestAdapter >= 3.17.0",
-      "ViewGraphic >= 1.0.0",
-      "coverlet.collector >= 3.0.2"
+      "coverlet.collector >= 3.0.2",
+      "race_simulator_wafoe >= 1.0.2"
     ]
   },
   "packageFolders": {

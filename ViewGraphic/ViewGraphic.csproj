@@ -4,6 +4,19 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <PackageId>race_simulator_wafoe</PackageId>
+    <Version>1.0.2</Version>
+    <Authors>Wafoe</Authors>
+    <Product>Racing simulator Wafoe</Product>
+    <Copyright>Wafoe</Copyright>
+    <PackageProjectUrl>https://github.com/Gitfoe/race_simulator_wafoe</PackageProjectUrl>
+    <PackageIcon>YoshiCelebration.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/Gitfoe/race_simulator_wafoe</RepositoryUrl>
+    <Company>Wafoe</Company>
+    <Description>A "Racing Simulator" game to learn object-oriented programming in C#.</Description>
+    <AssemblyName>race_simulator_wafoe</AssemblyName>
+    <RootNamespace>race_simulator_wafoe</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,40 +52,106 @@
     <None Remove="Graphics\Sections\StartGridSouth.png" />
     <None Remove="Graphics\Sections\StartGridWest.png" />
     <None Remove="Graphics\Sections\Straight.png" />
+    <None Include="Graphics\Racers\YoshiCelebration.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Graphics\Racers\Bowser.png" />
-    <Content Include="Graphics\Racers\BowserCelebration.png" />
-    <Content Include="Graphics\Racers\DKJunior.png" />
-    <Content Include="Graphics\Racers\DKJuniorCelebration.png" />
-    <Content Include="Graphics\Racers\Koopa.png" />
-    <Content Include="Graphics\Racers\KoopaCelebration.png" />
-    <Content Include="Graphics\Racers\Luigi.png" />
-    <Content Include="Graphics\Racers\LuigiCelebration.png" />
-    <Content Include="Graphics\Racers\Mario.png" />
-    <Content Include="Graphics\Racers\MarioCelebration.png" />
-    <Content Include="Graphics\Racers\Peach.png" />
-    <Content Include="Graphics\Racers\PeachCelebration.png" />
-    <Content Include="Graphics\Racers\Thwomp.png" />
-    <Content Include="Graphics\Racers\Toad.png" />
-    <Content Include="Graphics\Racers\ToadCelebration.png" />
-    <Content Include="Graphics\Racers\Yoshi.png" />
-    <Content Include="Graphics\Racers\YoshiCelebration.png" />
-    <Content Include="Graphics\Sections\Celebration.png" />
-    <Content Include="Graphics\Sections\CornerEastSouth.png" />
-    <Content Include="Graphics\Sections\CornerNorthEast.png" />
-    <Content Include="Graphics\Sections\CornerNorthWest.png" />
-    <Content Include="Graphics\Sections\CornerSouthWest.png" />
-    <Content Include="Graphics\Sections\FinishEast.png" />
-    <Content Include="Graphics\Sections\FinishNorth.png" />
-    <Content Include="Graphics\Sections\FinishSouth.png" />
-    <Content Include="Graphics\Sections\FinishWest.png" />
-    <Content Include="Graphics\Sections\StartGridEast.png" />
-    <Content Include="Graphics\Sections\StartGridNorth.png" />
-    <Content Include="Graphics\Sections\StartGridSouth.png" />
-    <Content Include="Graphics\Sections\StartGridWest.png" />
-    <Content Include="Graphics\Sections\Straight.png" />
+    <Content Include="Graphics\Racers\Bowser.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\BowserCelebration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\DKJunior.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\DKJuniorCelebration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\Koopa.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\KoopaCelebration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\Luigi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\LuigiCelebration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\Mario.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\MarioCelebration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\Peach.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\PeachCelebration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\Thwomp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\Toad.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\ToadCelebration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\Yoshi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Racers\YoshiCelebration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\Celebration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\CornerEastSouth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\CornerNorthEast.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\CornerNorthWest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\CornerSouthWest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\FinishEast.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\FinishNorth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\FinishSouth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\FinishWest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\StartGridEast.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\StartGridNorth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\StartGridSouth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\StartGridWest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Sections\Straight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
