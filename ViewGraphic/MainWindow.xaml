@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:Model="clr-namespace:Model;assembly=Model" xmlns:Model1="clr-namespace:Model" x:Class="WpfApp1.MainWindow"
         mc:Ignorable="d"
-        Title="Race simulator van Wafoe" Height="450" Width="800">
+        Title="Wafoe's Race Simulator" Height="450" Width="800">
     <Window.DataContext>
         <Model1:MainDataContext/>
     </Window.DataContext>

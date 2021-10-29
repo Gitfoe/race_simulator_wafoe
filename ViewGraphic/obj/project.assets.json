@@ -187,10 +187,10 @@
     "C:\\Users\\wafoe\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.0.2",
     "restore": {
       "projectUniqueName": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ViewGraphic\\ViewGraphic.csproj",
-      "projectName": "ViewGraphic",
+      "projectName": "race_simulator_wafoe",
       "projectPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ViewGraphic\\ViewGraphic.csproj",
       "packagesPath": "C:\\Users\\wafoe\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\wafoe\\OneDrive - Windesheim Office365\\School\\7 ICTOOSDD2c\\Programmeren in C#\\Visual Studio\\race_simulator_wafoe\\ViewGraphic\\obj\\",

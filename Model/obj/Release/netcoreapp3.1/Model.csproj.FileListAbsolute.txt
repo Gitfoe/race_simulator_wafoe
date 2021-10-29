@@ -1,0 +1,10 @@
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\bin\Release\netcoreapp3.1\Model.deps.json
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\bin\Release\netcoreapp3.1\Model.dll
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\bin\Release\netcoreapp3.1\Model.pdb
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\obj\Release\netcoreapp3.1\Model.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\obj\Release\netcoreapp3.1\Model.AssemblyInfoInputs.cache
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\obj\Release\netcoreapp3.1\Model.AssemblyInfo.cs
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\obj\Release\netcoreapp3.1\Model.csproj.CoreCompileInputs.cache
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\obj\Release\netcoreapp3.1\Model.dll
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\obj\Release\netcoreapp3.1\Model.pdb
+C:\Users\wafoe\OneDrive - Windesheim Office365\School\7 ICTOOSDD2c\Programmeren in C#\Visual Studio\race_simulator_wafoe\Model\obj\Release\netcoreapp3.1\Model.csproj.AssemblyReference.cache
